@@ -36,7 +36,7 @@
   function getPreferredTheme() {
     const saved = localStorage.getItem('bs_theme');
     if (saved) return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return 'light';
   }
 
   function applyTheme(theme) {
@@ -50,6 +50,19 @@
     const current = document.documentElement.getAttribute('data-theme');
     applyTheme(current === 'dark' ? 'light' : 'dark');
   });
+
+  // ── Logo Navigation ──
+  const headerLogo = document.querySelector('.header__logo');
+  if (headerLogo) {
+    headerLogo.addEventListener('click', () => {
+      currentCategory = 'beer';
+      currentSubcategory = 'all';
+      renderCategories();
+      renderSubcategories();
+      renderProducts();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   // ── Language Overlay ──
   document.querySelectorAll('.lang-overlay__btn').forEach(btn => {
@@ -170,6 +183,10 @@
       // Build specs line based on category
       const specsHtml = buildSpecs(item, cat, lang);
 
+      const stockBadge = item.inStock !== false
+        ? `<div class="product-card__badge in-stock">${lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : lang === 'et' ? 'Laos' : 'In Stock'}</div>`
+        : `<div class="product-card__badge out-of-stock">${lang === 'uk' ? 'Немає в наявності' : lang === 'ru' ? 'Нет в наличии' : lang === 'et' ? 'Otsas' : 'Out of Stock'}</div>`;
+
       card.innerHTML = `
         <div class="product-card__info">
           <div class="product-card__name">${item.name[lang]}</div>
@@ -180,6 +197,7 @@
         </div>
         <div class="product-card__image-wrap">
           <img class="product-card__image" src="${item.image}" alt="${item.name[lang]}" loading="lazy" />
+          ${stockBadge}
         </div>
       `;
 
@@ -221,6 +239,11 @@
     footerAddressValue.textContent = t.footer.addressValue;
     footerHoursLabel.textContent = t.footer.hours;
     footerHoursValue.textContent = t.footer.hoursValue;
+
+    const footerEmailLabel = document.getElementById('footer-email-label');
+    if (footerEmailLabel && t.footer.email) {
+      footerEmailLabel.textContent = t.footer.email;
+    }
     footerRights.textContent = t.footer.rights;
   }
 
@@ -238,6 +261,22 @@
     renderSubcategories();
     renderProducts();
     renderFooter();
+  }
+
+  // ── Scroll to Top ──
+  const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+  if (scrollToTopBtn) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollToTopBtn.classList.add('visible');
+      } else {
+        scrollToTopBtn.classList.remove('visible');
+      }
+    });
+
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
 
   // ── Init ──

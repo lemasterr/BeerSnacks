@@ -27,13 +27,23 @@ const translations = {
       "crackers": "Сухарики",
       "seeds": "Насіння",
       "seafood": "Морепродукти",
-      "nuts": "Горішки"
+      "nuts": "Горішки",
+      "candies": "Цукерки",
+      "dragee": "Драже",
+      "wafers": "Вафлі",
+      "desserts": "Десерти",
+      "cakes": "Кекси",
+      "fruit_cider": "Фруктовий",
+      "berry_cider": "Ягідний",
+      "non_alc_cider": "Безалкогольний"
     },
     "footer": {
       "about": "Beer&Snacks — ваш магазин крафтових напоїв та смачних снеків у Таллінні.",
       "phone": "Телефон",
       "address": "Адреса",
       "addressValue": "Õismäe tee 1a, 13514 Tallinn",
+      "email": "Email",
+      "emailValue": "beermix.ee@gmail.com",
       "hours": "Години роботи",
       "hoursValue": "Пн–Пт: 13:00–22:00 | Сб-Нд: 10:00–22:00",
       "rights": "© 2026 Beer&Snacks. Усі права захищені."
@@ -68,7 +78,15 @@ const translations = {
       "crackers": "Crackers",
       "seeds": "Seeds",
       "seafood": "Seafood",
-      "nuts": "Nuts"
+      "nuts": "Nuts",
+      "candies": "Candies",
+      "dragee": "Dragee",
+      "wafers": "Wafers",
+      "desserts": "Desserts",
+      "cakes": "Cakes",
+      "fruit_cider": "Fruit",
+      "berry_cider": "Berry",
+      "non_alc_cider": "Non-alcoholic"
     },
     "footer": {
       "about": "Beer&Snacks — your craft drinks and tasty snacks store in Tallinn.",
@@ -109,7 +127,15 @@ const translations = {
       "crackers": "Kuivikud",
       "seeds": "Seemned",
       "seafood": "Mereannid",
-      "nuts": "Pähklid"
+      "nuts": "Pähklid",
+      "candies": "Kommid",
+      "dragee": "Dražee",
+      "wafers": "Vahvlid",
+      "desserts": "Magustoidud",
+      "cakes": "Koogid",
+      "fruit_cider": "Puuvilja",
+      "berry_cider": "Marja",
+      "non_alc_cider": "Alkoholivaba"
     },
     "footer": {
       "about": "Beer&Snacks — teie käsitööjookide ja maitsvate suupistete pood Tallinnas.",
@@ -150,13 +176,23 @@ const translations = {
       "crackers": "Сухарики",
       "seeds": "Семечки",
       "seafood": "Морепродукты",
-      "nuts": "Орешки"
+      "nuts": "Орешки",
+      "candies": "Конфеты",
+      "dragee": "Драже",
+      "wafers": "Вафли",
+      "desserts": "Десерты",
+      "cakes": "Кексы",
+      "fruit_cider": "Фруктовый",
+      "berry_cider": "Ягодный",
+      "non_alc_cider": "Безалкогольный"
     },
     "footer": {
       "about": "Beer&Snacks — ваш магазин крафтовых напитков и вкусных снеков в Таллинне.",
       "phone": "Телефон",
       "address": "Адрес",
       "addressValue": "Õismäe tee 1a, 13514 Tallinn",
+      "email": "Email",
+      "emailValue": "beermix.ee@gmail.com",
       "hours": "Часы работы",
       "hoursValue": "Пн–Пт: 13:00–22:00 | Сб-Вс: 10:00–22:00",
       "rights": "© 2026 Beer&Snacks. Все права защищены."
@@ -174,7 +210,7 @@ const categorySubcategories = {
     "germany",
     "estonia"
   ],
-  "cider": [],
+  "cider": ["all", "fruit_cider", "berry_cider", "non_alc_cider"],
   "drinks": [
     "all",
     "juices",
@@ -183,7 +219,7 @@ const categorySubcategories = {
     "energy",
     "tea_coffee"
   ],
-  "sweets": [],
+  "sweets": ["all", "candies", "dragee", "wafers", "desserts", "cakes"],
   "snacks": [
     "all",
     "chips",
@@ -206,7 +242,7 @@ const products = {
       "abv": "6.5%",
       "type": { "uk": "Світле, медовий лагер", "en": "Light Honey Lager", "et": "Hele mee lager", "ru": "Светлое, лагер с мёдом" },
       "ibu": 15,
-      "description": { "uk": "Світлий лагер з медовими нотками", "en": "Light lager with honey notes", "et": "Hele lager meenootidega", "ru": "Светлый лагер с медовыми нотками" }
+      "description": { "uk": "Світлий лагер з медовими нотками", "en": "Light lager with honey notes", "et": "Hele lager meenootidega", "ru": "Светлый лагер с медовыми нотками" },
     },
     {
       "id": "beer-2",
@@ -512,7 +548,7 @@ const products = {
   "cider": [
     {
       "id": "cider-1",
-      "subcategory": null,
+      "subcategory": "fruit_cider",
       "image": "img/cider_apple_pear.png",
       "name": { "uk": "Сидр Яблуко-Груша", "en": "Apple Pear Cider", "et": "Apple Pear Siider", "ru": "Сидр Яблоко-Груша" },
       "price": 7.8,
@@ -523,7 +559,7 @@ const products = {
     },
     {
       "id": "cider-2",
-      "subcategory": null,
+      "subcategory": "berry_cider",
       "image": "img/cider_blackcurrant.png",
       "name": { "uk": "Сидр Чорна Смородина", "en": "Black Currant Cider", "et": "Black Currant Siider", "ru": "Сидр Чёрная Смородина" },
       "price": 7.8,
@@ -534,7 +570,7 @@ const products = {
     },
     {
       "id": "cider-3",
-      "subcategory": null,
+      "subcategory": "fruit_cider",
       "image": "img/cider_apricot.png",
       "name": { "uk": "Сидр Абрикос", "en": "Apricot Cider", "et": "Aprikoosi Siider", "ru": "Сидр Абрикос" },
       "price": 7.8,
@@ -545,7 +581,7 @@ const products = {
     },
     {
       "id": "cider-4",
-      "subcategory": null,
+      "subcategory": "fruit_cider",
       "image": "img/cider_grapefruit.png",
       "name": { "uk": "Сидр Грейпфрут", "en": "Grapefruit Cider", "et": "Greipfruudi Siider", "ru": "Сидр Грейпфрут" },
       "price": 7.8,
@@ -556,7 +592,7 @@ const products = {
     },
     {
       "id": "cider-5",
-      "subcategory": null,
+      "subcategory": "berry_cider",
       "image": "img/medusa_special.png",
       "name": { "uk": "Сидр Medusa", "en": "Medusa Cider", "et": "Medusa Siider", "ru": "Сидр Медуза" },
       "price": 7.8,
@@ -567,7 +603,7 @@ const products = {
     },
     {
       "id": "cider-6",
-      "subcategory": null,
+      "subcategory": "non_alc_cider",
       "image": "img/cidre_royal0.png",
       "name": { "uk": "Cidre Royal 0%", "en": "Cidre Royal 0%", "et": "Cidre Royal 0%", "ru": "Cidre Royal 0%" },
       "price": 2.3,
@@ -611,7 +647,7 @@ const products = {
     {
       "id": "drink-3",
       "subcategory": "water",
-      "image": "img/morshynska_gaz.png",
+      "image": "img/morshynska-gaz.png",
       "name": { "uk": "Моршинська газована", "en": "Morshynska Sparkling", "et": "Morshynska gaseeritud", "ru": "Моршинская газированная" },
       "price": 1.95,
       "volume": "1.5L",
@@ -782,7 +818,7 @@ const products = {
   "sweets": [
     {
       "id": "sweet-1a",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/avk_trufel_original.png",
       "name": { "uk": "АВК Трюфель Оригінал", "en": "AVK Truffle Original", "et": "AVK Trüffel Originaal", "ru": "АВК Трюфель Оригинал" },
       "price": 1.7,
@@ -792,7 +828,7 @@ const products = {
     },
     {
       "id": "sweet-1b",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/avk_trufel_biskvit.png",
       "name": { "uk": "АВК Трюфель смак Бісквіту", "en": "AVK Truffle Biscuit", "et": "AVK Trüffel Küpsis", "ru": "АВК Трюфель вкус Бисквита" },
       "price": 1.7,
@@ -802,7 +838,7 @@ const products = {
     },
     {
       "id": "sweet-1c",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/avk_trufel_molochnyi.png",
       "name": { "uk": "АВК Трюфель Молочний", "en": "AVK Truffle Milk", "et": "AVK Trüffel Piima", "ru": "АВК Трюфель Молочный" },
       "price": 1.7,
@@ -812,7 +848,7 @@ const products = {
     },
     {
       "id": "sweet-1d",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/avk_tryufel_original_polunytsia_biskvit.png",
       "name": { "uk": "АВК Трюфель Полуниця", "en": "AVK Truffle Strawberry", "et": "AVK Trüffel Maasikas", "ru": "АВК Трюфель Клубника" },
       "price": 1.7,
@@ -822,7 +858,7 @@ const products = {
     },
     {
       "id": "sweet-1e",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/avk_trufali_apelsin.png",
       "name": { "uk": "АВК Труфалі Апельсин", "en": "AVK Trufalie Orange", "et": "AVK Trüffel Apelsin", "ru": "АВК Труфали Апельсин" },
       "price": 1.7,
@@ -832,7 +868,7 @@ const products = {
     },
     {
       "id": "sweet-2",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/avk_trufalie.png",
       "name": { "uk": "АВК Trufalie", "en": "AVK Trufalie", "et": "AVK Trufalie", "ru": "АВК Труфалье" },
       "price": 1.7,
@@ -842,7 +878,7 @@ const products = {
     },
     {
       "id": "sweet-3",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/avk_korolivskyi_sharm.png",
       "name": { "uk": "АВК Королівський Шарм", "en": "AVK Royal Charm", "et": "AVK Kuninglik Sharm", "ru": "АВК Королевский Шарм" },
       "price": 1.8,
@@ -852,7 +888,7 @@ const products = {
     },
     {
       "id": "sweet-4",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/avk_tortufel.png",
       "name": { "uk": "АВК Тортюфель", "en": "AVK Tortufel", "et": "AVK Tortufel", "ru": "АВК Тортюфель" },
       "price": 1.4,
@@ -862,7 +898,7 @@ const products = {
     },
     {
       "id": "sweet-5",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/roshen_winter_dream.png",
       "name": { "uk": "Рошен Зимова Мрія", "en": "Roshen Winter Dream", "et": "Roshen Talvine Unistus", "ru": "Рошен Зимняя Мечта" },
       "price": 1.7,
@@ -872,7 +908,7 @@ const products = {
     },
     {
       "id": "sweet-6a",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/roshen_mont_blanc_sesame.png",
       "name": { "uk": "Рошен Mon Blanc Кунжут", "en": "Roshen Mon Blanc Sesame", "et": "Roshen Mon Blanc Seesamiga", "ru": "Рошен Mon Blanc Кунжут" },
       "price": 2,
@@ -882,7 +918,7 @@ const products = {
     },
     {
       "id": "sweet-6b",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/roshen_mont_blanc_caramel.png",
       "name": { "uk": "Рошен Mon Blanc Карамель-Мигдаль", "en": "Roshen Mon Blanc Caramel-Almond", "et": "Roshen Mon Blanc Karamell-Mandel", "ru": "Рошен Mon Blanc Карамель-Миндаль" },
       "price": 2,
@@ -892,7 +928,7 @@ const products = {
     },
     {
       "id": "sweet-6c",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/roshen_mont_blanc_coconut.png",
       "name": { "uk": "Рошен Mon Blanc Кокос-Мигдаль", "en": "Roshen Mon Blanc Coconut-Almond", "et": "Roshen Mon Blanc Kookos-Mandel", "ru": "Рошен Mon Blanc Кокос-Миндаль" },
       "price": 2,
@@ -902,7 +938,7 @@ const products = {
     },
     {
       "id": "sweet-7",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/roshen_chocolapki.png",
       "name": { "uk": "Рошен Chocolapki", "en": "Roshen Chocolapki", "et": "Roshen Chocolapki", "ru": "Рошен Chocolapki" },
       "price": 1.4,
@@ -912,7 +948,7 @@ const products = {
     },
     {
       "id": "sweet-9",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/roshen_sheridan.png",
       "name": { "uk": "Рошен Шеридан", "en": "Roshen Sheridan", "et": "Roshen Sheridan", "ru": "Рошен Шеридан" },
       "price": 1.4,
@@ -922,7 +958,7 @@ const products = {
     },
     {
       "id": "sweet-8",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/crispy_jack.png",
       "name": { "uk": "Crispy Jack", "en": "Crispy Jack", "et": "Crispy Jack", "ru": "Crispy Jack" },
       "price": 1.2,
@@ -932,7 +968,7 @@ const products = {
     },
     {
       "id": "sweet-10",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/tsukerky_svitoch_zoryane_syivo.png",
       "name": { "uk": "Світоч Зоряне Сяйво", "en": "Svitoch Star Glow", "et": "Svitoch Tähehelk", "ru": "Свиточ Звёздное Сияние" },
       "price": 2,
@@ -942,7 +978,7 @@ const products = {
     },
     {
       "id": "sweet-11",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/rurrita.png",
       "name": { "uk": "Цукерки Purrita", "en": "Purrita Candies", "et": "Purrita Kommid", "ru": "Конфеты Purrita" },
       "price": 1.2,
@@ -962,7 +998,7 @@ const products = {
     },
     {
       "id": "sweet-14",
-      "subcategory": null,
+      "subcategory": "dragee",
       "image": "img/skawa_kokos_arakhis.png",
       "name": { "uk": "Драже Skawa Кокос/Арахіс", "en": "Skawa Coconut/Peanut Dragee", "et": "Skawa Kookos/Maapähkli dražee", "ru": "Dražee Skawa Кокос/Арахис" },
       "price": 1.5,
@@ -972,7 +1008,7 @@ const products = {
     },
     {
       "id": "sweet-15",
-      "subcategory": null,
+      "subcategory": "candies",
       "image": "img/creamo_korolivskyi_sharm.png",
       "name": { "uk": "Вафлі Creamo", "en": "Creamo Wafers", "et": "Creamo vahvlid", "ru": "Вафли Creamo" },
       "price": 0.99,
@@ -982,7 +1018,7 @@ const products = {
     },
     {
       "id": "sweet-16",
-      "subcategory": null,
+      "subcategory": "desserts",
       "image": "img/bonjour_classic.png",
       "name": { "uk": "Десерт Bonjour Classic", "en": "Bonjour Classic Dessert", "et": "Bonjour Classic", "ru": "Десерт Bonjour Classic" },
       "price": 3.5,
@@ -992,7 +1028,7 @@ const products = {
     },
     {
       "id": "sweet-17",
-      "subcategory": null,
+      "subcategory": "desserts",
       "image": "img/bambuk_trubochky.png",
       "name": { "uk": "Трубочки Bambuk", "en": "Bambuk Tubes", "et": "Bambuk Torud", "ru": "Трубочки Бамбук" },
       "price": 2.5,
@@ -1002,7 +1038,7 @@ const products = {
     },
     {
       "id": "sweet-18",
-      "subcategory": null,
+      "subcategory": "cakes",
       "image": "img/keks_velykodniy_volodymyrskyi.png",
       "name": { "uk": "Кекс Великодній 300г", "en": "Easter Cake 300g", "et": "Kuliš 300g", "ru": "Кекс Пасхальный 300г" },
       "price": 5.5,
@@ -1012,7 +1048,7 @@ const products = {
     },
     {
       "id": "sweet-19",
-      "subcategory": null,
+      "subcategory": "cakes",
       "image": "img/keks_velykodniy_volodymyrskyi.png",
       "name": { "uk": "Кекс Великодній 450г", "en": "Easter Cake 450g", "et": "Kuliš 450g", "ru": "Кекс Пасхальный 450г" },
       "price": 7.5,
@@ -1022,7 +1058,7 @@ const products = {
     },
     {
       "id": "sweet-20",
-      "subcategory": null,
+      "subcategory": "cakes",
       "image": "img/keks_velykodniy_volodymyrskyi.png",
       "name": { "uk": "Кекс Великодній 600г", "en": "Easter Cake 600g", "et": "Kuliš 600g", "ru": "Кекс Пасхальный 600г" },
       "price": 11.5,
