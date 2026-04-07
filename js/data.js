@@ -381,7 +381,7 @@ const products = {
       }
     },
     {
-      "id": "beer-13",
+      "id": "beer-8",
       "subcategory": "poland",
       "image": "img/lomza_miodowe.png",
       "name": {
@@ -408,7 +408,7 @@ const products = {
       }
     },
     {
-      "id": "beer-14",
+      "id": "beer-9",
       "subcategory": "poland",
       "image": "img/cornelius_vaarika.png",
       "name": {
@@ -435,7 +435,7 @@ const products = {
       }
     },
         {
-      "id": "beer-18",
+      "id": "beer-10",
       "subcategory": "czech",
       "image": "img/bernard_12.png",
       "name": {
@@ -462,7 +462,7 @@ const products = {
       }
     },
     {
-      "id": "beer-19",
+      "id": "beer-11",
       "subcategory": "czech",
       "image": "img/svijany_rytir.png",
       "name": {
@@ -489,7 +489,7 @@ const products = {
       }
     },
     {
-      "id": "beer-20",
+      "id": "beer-12",
       "subcategory": "czech",
       "image": "img/kozel_cerny.png",
       "name": {
@@ -516,7 +516,7 @@ const products = {
       }
     },
     {
-      "id": "beer-21",
+      "id": "beer-13",
       "subcategory": "czech",
       "image": "img/starobrno_medium.png",
       "name": {
@@ -543,7 +543,7 @@ const products = {
       }
     },
     {
-      "id": "beer-22",
+      "id": "beer-14",
       "subcategory": "czech",
       "image": "img/gambrinus_patron_12.png",
       "name": {
@@ -570,7 +570,7 @@ const products = {
       }
     },
     {
-      "id": "beer-23",
+      "id": "beer-15",
       "subcategory": "germany",
       "image": "img/paulaner_munchner_hell.png",
       "name": {
@@ -597,7 +597,7 @@ const products = {
       }
     },
     {
-      "id": "beer-24",
+      "id": "beer-16",
       "subcategory": "germany",
       "image": "img/paulaner_hefe_weissbier.png",
       "name": {
@@ -624,7 +624,7 @@ const products = {
       }
     },
     {
-      "id": "beer-8",
+      "id": "beer-17",
       "subcategory": "ukraine",
       "image": "img/chernihivske_svitle.png",
       "name": {
@@ -651,7 +651,7 @@ const products = {
       }
     },
     {
-      "id": "beer-9",
+      "id": "beer-18",
       "subcategory": "ukraine",
       "image": "img/chernihivske_bochkove.png",
       "name": {
@@ -678,7 +678,7 @@ const products = {
       }
     },
     {
-      "id": "beer-10",
+      "id": "beer-19",
       "subcategory": "ukraine",
       "image": "img/dizhka_oksamytove.png",
       "name": {
@@ -705,7 +705,7 @@ const products = {
       }
     },
     {
-      "id": "beer-11",
+      "id": "beer-20",
       "subcategory": "ukraine",
       "image": "img/teteriv_vyshnia.png",
       "name": {
@@ -732,7 +732,7 @@ const products = {
       }
     },
     {
-      "id": "beer-12",
+      "id": "beer-21",
       "subcategory": "ukraine",
       "image": "img/mikulin_novorichne.png",
       "name": {
@@ -759,7 +759,7 @@ const products = {
       }
     },
     {
-      "id": "beer-15",
+      "id": "beer-22",
       "subcategory": "poland",
       "image": "img/kultowe_banana.png",
       "name": {
@@ -786,7 +786,7 @@ const products = {
       }
     },
     {
-      "id": "beer-16",
+      "id": "beer-23",
       "subcategory": "poland",
       "image": "img/kultowe_malina.png",
       "name": {
@@ -813,7 +813,7 @@ const products = {
       }
     },
     {
-      "id": "beer-17",
+      "id": "beer-24",
       "subcategory": "poland",
       "image": "img/kultowe_mango.png",
       "name": {
