@@ -797,6 +797,9 @@ body {
 
 /* ── Product Badges ── */
 .product-card__badge {
+  flex-shrink: 0;
+  display: inline-block;
+  min-width: max-content;
   align-self: center;
   justify-self: center;
   margin: 10px auto 0 auto;
