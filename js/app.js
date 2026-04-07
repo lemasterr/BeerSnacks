@@ -21,6 +21,7 @@
   const langCurrent = document.getElementById('lang-current');
   const langDropdown = document.getElementById('lang-dropdown');
   const siteTitle = document.getElementById('site-title');
+  const themeToggle = document.getElementById('theme-toggle');
 
   // Footer
   const footerAbout = document.getElementById('footer-about');
@@ -30,6 +31,25 @@
   const footerHoursLabel = document.getElementById('footer-hours-label');
   const footerHoursValue = document.getElementById('footer-hours-value');
   const footerRights = document.getElementById('footer-rights');
+
+  // ── Theme Toggle ──
+  function getPreferredTheme() {
+    const saved = localStorage.getItem('bs_theme');
+    if (saved) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('bs_theme', theme);
+  }
+
+  applyTheme(getPreferredTheme());
+
+  themeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
 
   // ── Language Overlay ──
   document.querySelectorAll('.lang-overlay__btn').forEach(btn => {
