@@ -17,6 +17,7 @@ const translations = {
       "poland": "Польща",
       "czech": "Чехія",
       "germany": "Німеччина",
+      "estonia": "Естонія",
       "juices": "Соки",
       "sodas": "Газовані",
       "water": "Вода",
@@ -57,6 +58,7 @@ const translations = {
       "poland": "Poland",
       "czech": "Czech Republic",
       "germany": "Germany",
+      "estonia": "Estonia",
       "juices": "Juices",
       "sodas": "Sodas",
       "water": "Water",
@@ -97,13 +99,14 @@ const translations = {
       "poland": "Poola",
       "czech": "Tšehhi",
       "germany": "Saksamaa",
+      "estonia": "Eesti",
       "juices": "Mahlad",
       "sodas": "Gaseeritud",
       "water": "Vesi",
       "energy": "Energiajoogid",
       "tea_coffee": "Tee ja kohv",
       "chips": "Krõpsud",
-      "crackers": "Leivakesed",
+      "crackers": "Kuivikud",
       "seeds": "Seemned",
       "seafood": "Mereannid",
       "nuts": "Pähklid"
@@ -137,6 +140,7 @@ const translations = {
       "poland": "Польша",
       "czech": "Чехия",
       "germany": "Германия",
+      "estonia": "Эстония",
       "juices": "Соки",
       "sodas": "Газировки",
       "water": "Вода",
@@ -167,7 +171,8 @@ const categorySubcategories = {
     "ukraine",
     "poland",
     "czech",
-    "germany"
+    "germany",
+    "estonia"
   ],
   "cider": [],
   "drinks": [
@@ -195,649 +200,313 @@ const products = {
       "id": "beer-1",
       "subcategory": "ukraine",
       "image": "img/mykulyn_medove.png",
-      "name": {
-        "uk": "Микулин Медове",
-        "en": "Mykulyn Medove",
-        "et": "Mykulyn Medove",
-        "ru": "Микулин Медовое"
-      },
+      "name": { "uk": "Микулин Медове", "en": "Mykulyn Medove", "et": "Mykulyn Medove", "ru": "Микулин Медовое" },
       "price": 6.7,
       "volume": "1L",
       "abv": "6.5%",
-      "type": {
-        "uk": "Світле, медовий лагер",
-        "en": "Light Honey Lager",
-        "et": "Hele mee lager",
-        "ru": "Светлое, лагер с мёдом"
-      },
+      "type": { "uk": "Світле, медовий лагер", "en": "Light Honey Lager", "et": "Hele mee lager", "ru": "Светлое, лагер с мёдом" },
       "ibu": 15,
-      "description": {
-        "uk": "Світлий лагер з медовими нотками",
-        "en": "Light lager with honey notes",
-        "et": "Hele lager meenootidega",
-        "ru": "Светлый лагер с медовыми нотками"
-      }
+      "description": { "uk": "Світлий лагер з медовими нотками", "en": "Light lager with honey notes", "et": "Hele lager meenootidega", "ru": "Светлый лагер с медовыми нотками" }
     },
     {
       "id": "beer-2",
       "subcategory": "ukraine",
       "image": "img/mykulyn_dunkel.png",
-      "name": {
-        "uk": "Микулин Дункель",
-        "en": "Mykulyn Dunkel",
-        "et": "Mykulyn Dunkel",
-        "ru": "Микулин Дункель"
-      },
+      "name": { "uk": "Микулин Дункель", "en": "Mykulyn Dunkel", "et": "Mykulyn Dunkel", "ru": "Микулин Дункель" },
       "price": 6.7,
       "volume": "1L",
       "abv": "4.7%",
-      "type": {
-        "uk": "Темне",
-        "en": "Dark Lager",
-        "et": "Tume lager",
-        "ru": "Тёмное"
-      },
+      "type": { "uk": "Темне", "en": "Dark Lager", "et": "Tume lager", "ru": "Тёмное" },
       "ibu": 18,
-      "description": {
-        "uk": "Темне пиво з карамельним та солодовим смаком",
-        "en": "Dark beer with caramel and malt flavor",
-        "et": "Tume õlu karamelli ja linnase maitsega",
-        "ru": "Тёмное пиво с карамельным и солодовым вкусом"
-      }
+      "description": { "uk": "Темне пиво з карамельним та солодовим смаком", "en": "Dark beer with caramel and malt flavor", "et": "Tume õlu karamelli ja linnase maitsega", "ru": "Тёмное пиво с карамельным и солодовым вкусом" }
     },
     {
       "id": "beer-3",
       "subcategory": "ukraine",
       "image": "img/mykulyn_wheat_malt.png",
-      "name": {
-        "uk": "Микулин Пшеничне",
-        "en": "Mykulyn Wheat Malt",
-        "et": "Mykulyn Wheat Malt",
-        "ru": "Микулин Пшеничное"
-      },
+      "name": { "uk": "Микулин Пшеничне", "en": "Mykulyn Wheat Malt", "et": "Mykulyn Wheat Malt", "ru": "Микулин Пшеничное" },
       "price": 5.95,
       "volume": "1L",
       "abv": "5.0%",
-      "type": {
-        "uk": "Пшеничне",
-        "en": "Wheat Beer",
-        "et": "Nisuõlu",
-        "ru": "Пшеничное"
-      },
+      "type": { "uk": "Пшеничне", "en": "Wheat Beer", "et": "Nisuõlu", "ru": "Пшеничное" },
       "ibu": 13,
-      "description": {
-        "uk": "Класичне пшеничне нефільтроване",
-        "en": "Classic unfiltered wheat beer",
-        "et": "Klassikaline filtreerimata nisuõlu",
-        "ru": "Классическое пшеничное нефильтрованное"
-      }
+      "description": { "uk": "Класичне пшеничне нефільтроване", "en": "Classic unfiltered wheat beer", "et": "Klassikaline filtreerimata nisuõlu", "ru": "Классическое пшеничное нефильтрованное" }
     },
     {
       "id": "beer-4",
       "subcategory": "ukraine",
       "image": "img/mykulyn_hele_lager.png",
-      "name": {
-        "uk": "Микулин Хеле Лагер",
-        "en": "Mykulyn Hele Lager",
-        "et": "Mykulyn Hele Lager",
-        "ru": "Микулин Хеле Лагер"
-      },
+      "name": { "uk": "Микулин Світлий Лагер", "en": "Mykulyn Hele Lager", "et": "Mykulyn Hele Lager", "ru": "Микулин Светлый Лагер" },
       "price": 6.5,
       "volume": "1L",
       "abv": "4.7%",
-      "type": {
-        "uk": "Світле",
-        "en": "Light Lager",
-        "et": "Hele lager",
-        "ru": "Светлое"
-      },
+      "type": { "uk": "Світле", "en": "Light Lager", "et": "Hele lager", "ru": "Светлое" },
       "ibu": 19,
-      "description": {
-        "uk": "Легкий світлий лагер з хмельовою гіркотою",
-        "en": "Light lager with hoppy bitterness",
-        "et": "Kerge hele lager humalase kibedusega",
-        "ru": "Лёгкий светлый лагер с хмелевой горечью"
-      }
+      "description": { "uk": "Легкий світлий лагер з хмельовою гіркотою", "en": "Light lager with hoppy bitterness", "et": "Kerge hele lager humalase kibedusega", "ru": "Лёгкий светлый лагер с хмелевой горечью" }
     },
     {
       "id": "beer-5",
       "subcategory": "ukraine",
       "image": "img/mykulyn_honey_beer.png",
-      "name": {
-        "uk": "Микулин Медове сухе",
-        "en": "Mykulyn Honey Beer",
-        "et": "Mykulyn Meeõlu",
-        "ru": "Микулин Медовое сухое"
-      },
+      "name": { "uk": "Микулин Медове сухе", "en": "Mykulyn Honey Beer", "et": "Mykulyn Meeõlu", "ru": "Микулин Медовое сухое" },
       "price": 6.7,
       "volume": "1L",
       "abv": "5.8%",
-      "type": {
-        "uk": "Світле, сухе медове",
-        "en": "Light Dry Honey",
-        "et": "Hele kuiv meeõlu",
-        "ru": "Светлое, сухое медовое"
-      },
+      "type": { "uk": "Світле, сухе медове", "en": "Light Dry Honey", "et": "Hele kuiv meeõlu", "ru": "Светлое, сухое медовое" },
       "ibu": 16,
-      "description": {
-        "uk": "Медове пиво з сухим фінішем",
-        "en": "Honey beer with dry finish",
-        "et": "Meeõlu kuiva järelmaitsega",
-        "ru": "Медовое пиво с сухим финишем"
-      }
+      "description": { "uk": "Медове пиво з сухим післясмаком", "en": "Honey beer with a dry aftertaste", "et": "Mesiõlu kuiva järelmaitsega", "ru": "Медовое пиво с сухим послевкусием" }
     },
     {
       "id": "beer-6",
       "subcategory": "ukraine",
       "image": "img/mykulyn_jasne.png",
-      "name": {
-        "uk": "Микулин Ясне",
-        "en": "Mykulyn Jasne",
-        "et": "Mikulin Jasne",
-        "ru": "Микулин Ясне"
-      },
+      "name": { "uk": "Микулин Ясне", "en": "Mykulyn Jasne", "et": "Mikulin Jasne", "ru": "Микулин Ясне" },
       "price": 6.5,
       "volume": "1L",
       "abv": "4.3%",
-      "type": {
-        "uk": "Світле",
-        "en": "Light Lager",
-        "et": "Hele lager",
-        "ru": "Светлое"
-      },
+      "type": { "uk": "Світле", "en": "Light Lager", "et": "Hele lager", "ru": "Светлое" },
       "ibu": 17,
-      "description": {
-        "uk": "М'яке світле пиво з чистим смаком",
-        "en": "Soft light beer with clean taste",
-        "et": "Pehme hele õlu puhta maitsega",
-        "ru": "Мягкое светлое пиво с чистым вкусом"
-      }
+      "description": { "uk": "М'яке світле пиво з чистим смаком", "en": "Soft light beer with clean taste", "et": "Pehme hele õlu puhta maitsega", "ru": "Мягкое светлое пиво с чистым вкусом" }
     },
     {
       "id": "beer-7",
       "subcategory": "ukraine",
       "image": "img/mykulyn_blanche.png",
-      "name": {
-        "uk": "Микулин Бланш",
-        "en": "Mykulyn Blanche",
-        "et": "Mykulyn Blanche",
-        "ru": "Микулин Бланш"
-      },
+      "name": { "uk": "Микулин Бланш", "en": "Mykulyn Blanche", "et": "Mykulyn Blanche", "ru": "Микулин Бланш" },
       "price": 6.5,
       "volume": "1L",
       "abv": "4.3%",
-      "type": {
-        "uk": "Бланш",
-        "en": "Blanche",
-        "et": "Blanche",
-        "ru": "Бланш"
-      },
+      "type": { "uk": "Бланш", "en": "Blanche", "et": "Blanche", "ru": "Бланш" },
       "ibu": 12,
-      "description": {
-        "uk": "Пшеничне бельгійського стилю",
-        "en": "Belgian-style wheat beer",
-        "et": "Belgia stiilis nisuõlu",
-        "ru": "Пшеничное в бельгийском стиле"
-      }
+      "description": { "uk": "Пшеничне пиво бельгійського стилю", "en": "Belgian-style wheat beer", "et": "Belgia stiilis nisuõlu", "ru": "Пшеничное пиво в бельгийском стиле" }
+    },
+    {
+      "id": "beer-25",
+      "subcategory": "estonia",
+      "image": "img/genika_amber_lager.png",
+      "name": { "uk": "Genika Amber Lager", "en": "Genika Amber Lager", "et": "Genika Amber Lager", "ru": "Genika Amber Lager" },
+      "price": 4.9,
+      "volume": "1L",
+      "abv": "4.8%",
+      "type": { "uk": "Бурштиновий лагер", "en": "Amber Lager", "et": "Merevaigune lager", "ru": "Янтарный лагер" },
+      "ibu": 22,
+      "description": { "uk": "Крафтовий бурштиновий лагер", "en": "Craft amber lager", "et": "Käsitöö merevaigune lager", "ru": "Крафтовый янтарный лагер" }
+    },
+    {
+      "id": "beer-26",
+      "subcategory": "estonia",
+      "image": "img/genika_red_ale.png",
+      "name": { "uk": "Genika Red Ale", "en": "Genika Red Ale", "et": "Genika Red Ale", "ru": "Genika Red Ale" },
+      "price": 4.9,
+      "volume": "1L",
+      "abv": "5.2%",
+      "type": { "uk": "Червоний ель", "en": "Red Ale", "et": "Punane ale", "ru": "Красный эль" },
+      "ibu": 25,
+      "description": { "uk": "Крафтовий червоний ель", "en": "Craft red ale", "et": "Käsitöö punane ale", "ru": "Крафтовый красный эль" }
     },
     {
       "id": "beer-8",
       "subcategory": "poland",
       "image": "img/lomza_miodowe.png",
-      "name": {
-        "uk": "Łomża Miodowe",
-        "en": "Łomża Honey",
-        "et": "Łomża Meeõlu",
-        "ru": "Ломжа Медовое"
-      },
+      "name": { "uk": "Культове Медове", "en": "Kultowe Honey", "et": "Kultowe Meeõlu", "ru": "Культове Медовое" },
       "price": 6.7,
       "volume": "1L",
       "abv": "4.7%",
-      "type": {
-        "uk": "Світле медове",
-        "en": "Light Honey",
-        "et": "Hele meeõlu",
-        "ru": "Светлое сладкое медовое"
-      },
+      "type": { "uk": "Світле солодке медове", "en": "Light Honey", "et": "Hele meeõlu", "ru": "Светлое сладкое медовое" },
       "ibu": 10,
-      "description": {
-        "uk": "Польське солодке медове пиво",
-        "en": "Polish sweet honey beer",
-        "et": "Poola magus meeõlu",
-        "ru": "Польское сладкое медовое пиво"
-      }
+      "description": { "uk": "Польське солодке медове пиво", "en": "Polish sweet honey beer", "et": "Poola magus meeõlu", "ru": "Польское сладкое медовое пиво" }
     },
     {
       "id": "beer-9",
       "subcategory": "poland",
       "image": "img/cornelius_vaarika.png",
-      "name": {
-        "uk": "Cornelius Малинове",
-        "en": "Cornelius Raspberry",
-        "et": "Cornelius Vaarikaõlu",
-        "ru": "Cornelius Малиновое"
-      },
+      "name": { "uk": "Kultowe Малинове", "en": "Kultowe Raspberry", "et": "Kultowe Vaarikaõlu", "ru": "Kultowe Малиновое" },
       "price": 6.7,
       "volume": "1L",
       "abv": "4.7%",
-      "type": {
-        "uk": "Фруктове, малина",
-        "en": "Fruit, Raspberry",
-        "et": "Puuviljaõlu, vaarikas",
-        "ru": "Фруктовое, малина"
-      },
+      "type": { "uk": "Фруктове, малина", "en": "Fruit, Raspberry", "et": "Puuviljaõlu, vaarikas", "ru": "Фруктовое, малина" },
       "ibu": 8,
-      "description": {
-        "uk": "Фруктове пиво зі смаком малини",
-        "en": "Fruit beer with raspberry flavor",
-        "et": "Puuviljaõlu vaarikamaitsega",
-        "ru": "Фруктовое пиво со вкусом малины"
-      }
+      "description": { "uk": "Фруктове пиво зі смаком малини", "en": "Fruit beer with raspberry flavor", "et": "Puuviljaõlu vaarikamaitsega", "ru": "Фруктовое пиво со вкусом малины" }
     },
-        {
+    {
       "id": "beer-10",
       "subcategory": "czech",
       "image": "img/bernard_12.png",
-      "name": {
-        "uk": "Bernard 12°",
-        "en": "Bernard 12°",
-        "et": "Bernard 12",
-        "ru": "Бернард 12°"
-      },
+      "name": { "uk": "Бернард 12°", "en": "Bernard 12°", "et": "Bernard 12", "ru": "Бернард 12°" },
       "price": 7.5,
       "volume": "1L",
       "abv": "5.0%",
-      "type": {
-        "uk": "Світле",
-        "en": "Light Lager",
-        "et": "Hele lager",
-        "ru": "Светлое"
-      },
+      "type": { "uk": "Світле", "en": "Light Lager", "et": "Hele lager", "ru": "Светлое" },
       "ibu": 32,
-      "description": {
-        "uk": "Преміальний чеський лагер",
-        "en": "Premium Czech lager",
-        "et": "Premium tšehhi lager",
-        "ru": "Премиальный чешский лагер"
-      }
+      "description": { "uk": "Преміальний чеський лагер", "en": "Premium Czech lager", "et": "Premium tšehhi lager", "ru": "Премиальный чешский лагер" }
     },
     {
       "id": "beer-11",
       "subcategory": "czech",
       "image": "img/svijany_rytir.png",
-      "name": {
-        "uk": "Svijany Rytíř",
-        "en": "Svijany Rytíř",
-        "et": "Svijany Rytíř",
-        "ru": "Свияны Рытирж"
-      },
+      "name": { "uk": "Svijany Rytíř", "en": "Svijany Rytíř", "et": "Svijany Rytíř", "ru": "Svijany Rytíř" },
       "price": 7.5,
       "volume": "1L",
       "abv": "5.0%",
-      "type": {
-        "uk": "Світле",
-        "en": "Light Lager",
-        "et": "Hele lager",
-        "ru": "Светлое"
-      },
+      "type": { "uk": "Світле", "en": "Light Lager", "et": "Hele lager", "ru": "Светлое" },
       "ibu": 30,
-      "description": {
-        "uk": "Чеський світлий лагер з хмельовим ароматом",
-        "en": "Czech light lager with hoppy aroma",
-        "et": "Tšehhi hele lager humalase aroomiga",
-        "ru": "Чешский светлый лагер с хмельным ароматом"
-      }
+      "description": { "uk": "Чеський світлий лагер з хмельовим ароматом", "en": "Czech light lager with hoppy aroma", "et": "Tšehhi hele lager humalase aroomiga", "ru": "Чешский светлый лагер с хмельным ароматом" }
     },
     {
       "id": "beer-12",
       "subcategory": "czech",
       "image": "img/kozel_cerny.png",
-      "name": {
-        "uk": "Kozel Černý",
-        "en": "Kozel Dark",
-        "et": "Kozel Tume",
-        "ru": "Козел Чёрный"
-      },
+      "name": { "uk": "Kozel Чорний", "en": "Kozel Dark", "et": "Kozel Tume", "ru": "Козел Чёрный" },
       "price": 7.5,
       "volume": "1L",
       "abv": "3.8%",
-      "type": {
-        "uk": "Темне",
-        "en": "Dark Lager",
-        "et": "Tume lager",
-        "ru": "Тёмное"
-      },
+      "type": { "uk": "Темне", "en": "Dark Lager", "et": "Tume lager", "ru": "Тёмное" },
       "ibu": 14,
-      "description": {
-        "uk": "Чеське темне з м'яким карамельним смаком",
-        "en": "Czech dark with soft caramel taste",
-        "et": "Tšehhi tume pehme karamelimaitsega",
-        "ru": "Чешское тёмное с мягким карамельным вкусом"
-      }
+      "description": { "uk": "Чеське темне з м'яким карамельним смаком", "en": "Czech dark with soft caramel taste", "et": "Tšehhi tume pehme karamelimaitsega", "ru": "Чешское тёмное с мягким карамельным вкусом" }
     },
     {
       "id": "beer-13",
       "subcategory": "czech",
       "image": "img/starobrno_medium.png",
-      "name": {
-        "uk": "Starobrno Medium",
-        "en": "Starobrno Medium",
-        "et": "Starobrno Medium",
-        "ru": "Старобрно Медиум"
-      },
+      "name": { "uk": "Starobrno Medium", "en": "Starobrno Medium", "et": "Starobrno Medium", "ru": "Starobrno Medium" },
       "price": 7.5,
       "volume": "1L",
       "abv": "4.7%",
-      "type": {
-        "uk": "Світле",
-        "en": "Light Lager",
-        "et": "Hele lager",
-        "ru": "Светлое"
-      },
+      "type": { "uk": "Світле", "en": "Light Lager", "et": "Hele lager", "ru": "Светлое" },
       "ibu": 25,
-      "description": {
-        "uk": "Традиційний моравський лагер",
-        "en": "Traditional Moravian lager",
-        "et": "Traditsiooniline moraavia lager",
-        "ru": "Традиционный моравский лагер"
-      }
+      "description": { "uk": "Традиційний моравський лагер", "en": "Traditional Moravian lager", "et": "Traditsiooniline moraavia lager", "ru": "Традиционный моравский лагер" }
     },
     {
       "id": "beer-14",
       "subcategory": "czech",
       "image": "img/gambrinus_patron_12.png",
-      "name": {
-        "uk": "Gambrinus Patron 12",
-        "en": "Gambrinus Patron 12",
-        "et": "Gambrinus Patron 12",
-        "ru": "Гамбринус Патрон 12"
-      },
+      "name": { "uk": "Gambrinus Patron 12", "en": "Gambrinus Patron 12", "et": "Gambrinus Patron 12", "ru": "Gambrinus Patron 12" },
       "price": 7.5,
       "volume": "1L",
       "abv": "4.6%",
-      "type": {
-        "uk": "Світле",
-        "en": "Light Lager",
-        "et": "Hele lager",
-        "ru": "Светлое"
-      },
+      "type": { "uk": "Світле", "en": "Light Lager", "et": "Hele lager", "ru": "Светлое" },
       "ibu": 26,
-      "description": {
-        "uk": "Класичний чеський лагер",
-        "en": "Classic Czech lager",
-        "et": "Klassikaline tšehhi lager",
-        "ru": "Классический чешский лагер"
-      }
+      "description": { "uk": "Класичний чеський лагер, непастеризований", "en": "Classic Czech lager, unpasteurized", "et": "Klassikaline tšehhi lager, pastöriseerimata", "ru": "Классический чешский лагер, непастеризованный" }
     },
     {
       "id": "beer-15",
       "subcategory": "germany",
       "image": "img/paulaner_munchner_hell.png",
-      "name": {
-        "uk": "Paulaner Münchner Hell",
-        "en": "Paulaner Münchner Hell",
-        "et": "Paulaner Münchner Hell",
-        "ru": "Пауланер Мюнхенский Хелль"
-      },
+      "name": { "uk": "Paulaner Münchner Hell", "en": "Paulaner Münchner Hell", "et": "Paulaner Münchner Hell", "ru": "Paulaner Münchner Hell" },
       "price": 7.9,
       "volume": "1L",
       "abv": "4.9%",
-      "type": {
-        "uk": "Світле",
-        "en": "Light Lager",
-        "et": "Hele lager",
-        "ru": "Светлое"
-      },
+      "type": { "uk": "Світле", "en": "Light Lager", "et": "Hele lager", "ru": "Светлое" },
       "ibu": 20,
-      "description": {
-        "uk": "Баварський світлий лагер у мюнхенському стилі",
-        "en": "Bavarian light lager, Munich style",
-        "et": "Baieri hele lager, Müncheni stiilis",
-        "ru": "Баварский светлый лагер в мюнхенском стиле"
-      }
+      "description": { "uk": "Баварський світлий лагер у мюнхенському стилі", "en": "Bavarian light lager, Munich style", "et": "Baieri hele lager, Müncheni stiilis", "ru": "Баварский светлый лагер в мюнхенском стиле" }
     },
     {
       "id": "beer-16",
       "subcategory": "germany",
       "image": "img/paulaner_hefe_weissbier.png",
-      "name": {
-        "uk": "Paulaner Hefe-Weißbier",
-        "en": "Paulaner Hefe-Weißbier",
-        "et": "Paulaner Hefe-Weißbier",
-        "ru": "Пауланер Хефе-Вайсбир"
-      },
+      "name": { "uk": "Paulaner Hefe-Weißbier", "en": "Paulaner Hefe-Weißbier", "et": "Paulaner Hefe-Weißbier", "ru": "Paulaner Hefe-Weißbier" },
       "price": 7.9,
       "volume": "1L",
       "abv": "5.5%",
-      "type": {
-        "uk": "Пшеничне нефільтроване",
-        "en": "Wheat Unfiltered",
-        "et": "Filtreerimata nisuõlu",
-        "ru": "Пшеничное нефильтрованное"
-      },
+      "type": { "uk": "Пшеничне нефільтроване", "en": "Wheat Unfiltered", "et": "Filtreerimata nisuõlu", "ru": "Пшеничное нефильтрованное" },
       "ibu": 12,
-      "description": {
-        "uk": "Баварське пшеничне з фруктовим ароматом",
-        "en": "Bavarian wheat beer with fruity aroma",
-        "et": "Baieri nisuõlu puuviljalise aroomiga",
-        "ru": "Баварское пшеничное с фруктовым ароматом"
-      }
-    },
-    {
-      "id": "beer-17",
-      "subcategory": "ukraine",
-      "image": "img/chernihivske_svitle.png",
-      "name": {
-        "uk": "Чернігівське Світле",
-        "en": "Chernihivske Light",
-        "et": "Tsernigivske Svitle",
-        "ru": "Черниговское Светлое"
-      },
-      "price": 1.9,
-      "volume": "0.5L",
-      "abv": "4.6%",
-      "type": {
-        "uk": "Світле класичне",
-        "en": "Classic Light",
-        "et": "Hele klassikaline",
-        "ru": "Светлое классическое"
-      },
-      "ibu": 19,
-      "description": {
-        "uk": "Класичне українське світле, пляшка",
-        "en": "Classic Ukrainian light beer, bottle",
-        "et": "Klassikaline ukraina hele õlu, pudel",
-        "ru": "Классическое украинское светлое, бутылка"
-      }
-    },
-    {
-      "id": "beer-18",
-      "subcategory": "ukraine",
-      "image": "img/chernihivske_bochkove.png",
-      "name": {
-        "uk": "Чернігівське Бочкове",
-        "en": "Chernihivske Bochkove",
-        "et": "Bochkove Nefiltrovane",
-        "ru": "Черниговское Бочковое"
-      },
-      "price": 1.9,
-      "volume": "0.5L",
-      "abv": "4.3%",
-      "type": {
-        "uk": "Нефільтроване",
-        "en": "Unfiltered",
-        "et": "Filtreerimata",
-        "ru": "Нефильтрованное"
-      },
-      "ibu": 14,
-      "description": {
-        "uk": "Світле нефільтроване, пляшка",
-        "en": "Light unfiltered, bottle",
-        "et": "Filtreerimata hele õlu, pudel",
-        "ru": "Светлое нефильтрованное, бутылка"
-      }
-    },
-    {
-      "id": "beer-19",
-      "subcategory": "ukraine",
-      "image": "img/dizhka_oksamytove.png",
-      "name": {
-        "uk": "Повна Діжка Оксамитове",
-        "en": "Povna Dizhka Oksamytove",
-        "et": "Povna Dizka Oksamitove",
-        "ru": "Полная Бочка Бархатное"
-      },
-      "price": 1.9,
-      "volume": "0.43L",
-      "abv": "4.2%",
-      "type": {
-        "uk": "Темне оксамитове",
-        "en": "Dark Velvet",
-        "et": "Tume sametine",
-        "ru": "Тёмное бархатное"
-      },
-      "ibu": 12,
-      "description": {
-        "uk": "Темне бархатне з м'яким смаком, пляшка",
-        "en": "Dark velvet with soft taste, bottle",
-        "et": "Tume sametine pehme maitsega, pudel",
-        "ru": "Тёмное бархатное с мягким вкусом, бутылка"
-      }
-    },
-    {
-      "id": "beer-20",
-      "subcategory": "ukraine",
-      "image": "img/teteriv_vyshnia.png",
-      "name": {
-        "uk": "Тетерів Хмільна Вишня",
-        "en": "Teteriv Cherry",
-        "et": "Teteriv Hmilna Vishnja",
-        "ru": "Тетерев Хмельная Вишня"
-      },
-      "price": 2.5,
-      "volume": "1L",
-      "abv": "7.0%",
-      "type": {
-        "uk": "Вишневе міцне",
-        "en": "Strong Cherry",
-        "et": "Tugev kirsiõlu",
-        "ru": "Крепкое вишнёвое"
-      },
-      "ibu": 10,
-      "description": {
-        "uk": "Міцне пиво з вишневим смаком",
-        "en": "Strong beer with cherry flavor",
-        "et": "Tugev õlu kirsimaitsega",
-        "ru": "Крепкое пиво с вишнёвым вкусом"
-      }
+      "description": { "uk": "Баварське пшеничне з фруктовим ароматом", "en": "Bavarian wheat beer with fruity aroma", "et": "Baieri nisuõlu puuviljalise aroomiga", "ru": "Баварское пшеничное с фруктовым ароматом" }
     },
     {
       "id": "beer-21",
       "subcategory": "ukraine",
       "image": "img/mikulin_novorichne.png",
-      "name": {
-        "uk": "Микулин Новорічне",
-        "en": "Mikulin Novoriche",
-        "et": "Mikulin Novoriche",
-        "ru": "Микулин Новогоднее"
-      },
+      "name": { "uk": "Микулин Новорічне", "en": "Mikulin Novoriche", "et": "Mikulin Novoriche", "ru": "Микулин Новогоднее" },
       "price": 3.2,
       "volume": "0.5L",
       "abv": "7.0%",
-      "type": {
-        "uk": "Міцне святкове",
-        "en": "Strong Festive",
-        "et": "Tugev pidulik",
-        "ru": "Крепкое праздничное"
-      },
+      "type": { "uk": "Міцне святкове", "en": "Strong Festive", "et": "Tugev pidulik", "ru": "Крепкое праздничное" },
       "ibu": 20,
-      "description": {
-        "uk": "Міцне святкове пиво",
-        "en": "Strong festive beer",
-        "et": "Tugev pidulik õlu",
-        "ru": "Крепкое праздничное пиво"
-      }
+      "description": { "uk": "Міцне святкове пиво", "en": "Strong festive beer", "et": "Tugev pidulik õlu", "ru": "Крепкое праздничное пиво" }
+    },
+    {
+      "id": "beer-17",
+      "subcategory": "ukraine",
+      "image": "img/chernihivske_svitle.png",
+      "name": { "uk": "Чернігівське Світле", "en": "Chernihivske Light", "et": "Tsernigivske Svitle", "ru": "Черниговское Светлое" },
+      "price": 1.9,
+      "volume": "0.5L",
+      "abv": "4.6%",
+      "type": { "uk": "Світле класичне", "en": "Classic Light", "et": "Hele klassikaline", "ru": "Светлое классическое" },
+      "ibu": 19,
+      "description": { "uk": "Класичне українське світле", "en": "Classic Ukrainian light beer", "et": "Klassikaline ukraina hele õlu", "ru": "Классическое украинское светлое" }
+    },
+    {
+      "id": "beer-18",
+      "subcategory": "ukraine",
+      "image": "img/bochkove.png",
+      "name": { "uk": "Перша Приватна Броварня Бочкове", "en": "The First Private Brewery Bochkove", "et": "Esimene eraõlletehas Bochkove", "ru": "Первая Приватная Броварня Бочковое" },
+      "price": 1.9,
+      "volume": "0.5L",
+      "abv": "4.3%",
+      "type": { "uk": "Світле Нефільтроване", "en": "Unfiltered Light", "et": "Filtreerimata hele", "ru": "Нефильтрованное светлое" },
+      "ibu": 14,
+      "description": { "uk": "Світле нефільтроване", "en": "Light unfiltered", "et": "Filtreerimata hele õlu", "ru": "Светлое нефильтрованное" }
+    },
+    {
+      "id": "beer-19",
+      "subcategory": "ukraine",
+      "image": "img/dizhka_oksamytove.png",
+      "name": { "uk": "Повна Діжка Оксамитове", "en": "Povna Dizhka Oksamytove", "et": "Povna Dizka Oksamitove", "ru": "Полная Бочка Бархатное" },
+      "price": 1.9,
+      "volume": "0.43L",
+      "abv": "4.2%",
+      "type": { "uk": "Темне оксамитове", "en": "Dark Velvet", "et": "Tume sametine", "ru": "Тёмное бархатное" },
+      "ibu": 12,
+      "description": { "uk": "Темне бархатне з м'яким смаком", "en": "Dark velvet with soft taste", "et": "Tume sametine pehme maitsega", "ru": "Тёмное бархатное с мягким вкусом" }
+    },
+    {
+      "id": "beer-20",
+      "subcategory": "ukraine",
+      "image": "img/teteriv_vyshnia.png",
+      "name": { "uk": "Тетерів Хмільна Вишня", "en": "Teteriv Cherry", "et": "Teteriv Hmilna Vishnja", "ru": "Тетерев Хмельная Вишня" },
+      "price": 2.5,
+      "volume": "1L",
+      "abv": "7.0%",
+      "type": { "uk": "Вишневе міцне", "en": "Strong Cherry", "et": "Tugev kirsiõlu", "ru": "Крепкое вишнёвое" },
+      "ibu": 10,
+      "description": { "uk": "Міцне пиво з вишневим смаком", "en": "Strong beer with cherry flavor", "et": "Tugev õlu kirsimaitsega", "ru": "Крепкое пиво с вишнёвым вкусом" }
     },
     {
       "id": "beer-22",
       "subcategory": "poland",
       "image": "img/kultowe_banana.png",
-      "name": {
-        "uk": "Kultowe Бананове",
-        "en": "Kultowe Banana",
-        "et": "Kultowe Banana gluteenivaba",
-        "ru": "Kultowe Банановое"
-      },
+      "name": { "uk": "Kultowe Бананове", "en": "Kultowe Banana", "et": "Kultowe Banana", "ru": "Kultowe Банановое" },
       "price": 2.9,
       "volume": "0.5L",
       "abv": "4.7%",
-      "type": {
-        "uk": "Фруктове, без глютену",
-        "en": "Fruit, Gluten-free",
-        "et": "Puuviljaõlu, gluteenivaba",
-        "ru": "Фруктовое, без глютена"
-      },
+      "type": { "uk": "Фруктове, без глютену", "en": "Fruit, Gluten-free", "et": "Puuviljaõlu, gluteenivaba", "ru": "Фруктовое, без глютена" },
       "ibu": 6,
-      "description": {
-        "uk": "Бананове безглютенове пиво",
-        "en": "Banana gluten-free beer",
-        "et": "Banaanimaitseline gluteenivaba õlu",
-        "ru": "Банановое безглютеновое пиво"
-      }
+      "description": { "uk": "Бананове безглютенове пиво", "en": "Banana gluten-free beer", "et": "Banaanimaitseline gluteenivaba õlu", "ru": "Банановое безглютеновое пиво" }
     },
     {
       "id": "beer-23",
       "subcategory": "poland",
-      "image": "img/kultowe_malina.png",
-      "name": {
-        "uk": "Kultowe Малинове",
-        "en": "Kultowe Raspberry",
-        "et": "Kultowe Vaarika gluteenivaba",
-        "ru": "Kultowe Малиновое"
-      },
+      "image": "img/raspberry.png",
+      "name": { "uk": "Kultowe Малинове", "en": "Kultowe Raspberry", "et": "Kultowe Vaarika", "ru": "Kultowe Малиновое" },
       "price": 2.9,
       "volume": "0.5L",
       "abv": "4.7%",
-      "type": {
-        "uk": "Фруктове, без глютену",
-        "en": "Fruit, Gluten-free",
-        "et": "Puuviljaõlu, gluteenivaba",
-        "ru": "Фруктовое, без глютена"
-      },
+      "type": { "uk": "Фруктове, без глютену", "en": "Fruit, Gluten-free", "et": "Puuviljaõlu, gluteenivaba", "ru": "Фруктовое, без глютена" },
       "ibu": 6,
-      "description": {
-        "uk": "Малинове безглютенове пиво",
-        "en": "Raspberry gluten-free beer",
-        "et": "Vaarikamaitseline gluteenivaba õlu",
-        "ru": "Малиновое безглютеновое пиво"
-      }
+      "description": { "uk": "Малинове безглютенове пиво", "en": "Raspberry gluten-free beer", "et": "Vaarikamaitseline gluteenivaba õlu", "ru": "Малиновое безглютеновое пиво" }
     },
     {
       "id": "beer-24",
       "subcategory": "poland",
       "image": "img/kultowe_mango.png",
-      "name": {
-        "uk": "Kultowe Манго",
-        "en": "Kultowe Mango",
-        "et": "Kultowe Mango gluteenivaba",
-        "ru": "Kultowe Манго"
-      },
+      "name": { "uk": "Kultowe Манго", "en": "Kultowe Mango", "et": "Kultowe Mango", "ru": "Kultowe Манго" },
       "price": 2.9,
       "volume": "0.5L",
       "abv": "4.7%",
-      "type": {
-        "uk": "Фруктове, без глютену",
-        "en": "Fruit, Gluten-free",
-        "et": "Puuviljaõlu, gluteenivaba",
-        "ru": "Фруктовое, без глютена"
-      },
+      "type": { "uk": "Фруктове, без глютену", "en": "Fruit, Gluten-free", "et": "Puuviljaõlu, gluteenivaba", "ru": "Фруктовое, без глютена" },
       "ibu": 6,
-      "description": {
-        "uk": "Мангове безглютенове пиво",
-        "en": "Mango gluten-free beer",
-        "et": "Mangomaitseline gluteenivaba õlu",
-        "ru": "Манговое безглютеновое пиво"
-      }
+      "description": { "uk": "Мангове безглютенове пиво", "en": "Mango gluten-free beer", "et": "Mangomaitseline gluteenivaba õlu", "ru": "Манговое безглютеновое пиво" }
     }
   ],
   "cider": [
@@ -845,1613 +514,1053 @@ const products = {
       "id": "cider-1",
       "subcategory": null,
       "image": "img/cider_apple_pear.png",
-      "name": {
-        "uk": "Apple Pear Cider",
-        "en": "Apple Pear Cider",
-        "et": "Apple Pear Siider",
-        "ru": "Сидр Яблоко-Груша"
-      },
+      "name": { "uk": "Сидр Яблуко-Груша", "en": "Apple Pear Cider", "et": "Apple Pear Siider", "ru": "Сидр Яблоко-Груша" },
       "price": 7.8,
       "volume": "1L",
       "abv": "5.0%",
-      "type": {
-        "uk": "Яблучно-грушевий",
-        "en": "Apple-Pear",
-        "et": "Õuna-pirni",
-        "ru": "Яблочно-грушевый"
-      },
-      "description": {
-        "uk": "Натуральний яблучно-грушевий сидр",
-        "en": "Natural apple-pear cider",
-        "et": "Naturaalne õuna-pirni siider",
-        "ru": "Натуральный яблочно-грушевый сидр"
-      }
+      "type": { "uk": "Яблучно-грушевий", "en": "Apple-Pear", "et": "Õuna-pirni", "ru": "Яблочно-грушевый" },
+      "description": { "uk": "Натуральний яблучно-грушевий сидр", "en": "Natural apple-pear cider", "et": "Naturaalne õuna-pirni siider", "ru": "Натуральный яблочно-грушевый сидр" }
     },
     {
       "id": "cider-2",
       "subcategory": null,
       "image": "img/cider_blackcurrant.png",
-      "name": {
-        "uk": "Black Currant Cider",
-        "en": "Black Currant Cider",
-        "et": "Black Currant Siider",
-        "ru": "Сидр Чёрная Смородина"
-      },
+      "name": { "uk": "Сидр Чорна Смородина", "en": "Black Currant Cider", "et": "Black Currant Siider", "ru": "Сидр Чёрная Смородина" },
       "price": 7.8,
       "volume": "1L",
       "abv": "5.0%",
-      "type": {
-        "uk": "Чорна смородина",
-        "en": "Black Currant",
-        "et": "Must sõstar",
-        "ru": "Чёрная смородина"
-      },
-      "description": {
-        "uk": "Сидр зі смаком чорної смородини",
-        "en": "Cider with black currant flavor",
-        "et": "Siider musta sõstra maitsega",
-        "ru": "Сидр со вкусом чёрной смородины"
-      }
+      "type": { "uk": "Чорна смородина", "en": "Black Currant", "et": "Must sõstar", "ru": "Чёрная смородина" },
+      "description": { "uk": "Сидр зі смаком чорної смородини", "en": "Cider with black currant flavor", "et": "Siider musta sõstra maitsega", "ru": "Сидр со вкусом чёрной смородины" }
     },
     {
       "id": "cider-3",
       "subcategory": null,
       "image": "img/cider_apricot.png",
-      "name": {
-        "uk": "Apricot Cider",
-        "en": "Apricot Cider",
-        "et": "Aprikoosi Siider",
-        "ru": "Сидр Абрикос"
-      },
+      "name": { "uk": "Сидр Абрикос", "en": "Apricot Cider", "et": "Aprikoosi Siider", "ru": "Сидр Абрикос" },
       "price": 7.8,
       "volume": "1L",
       "abv": "5.0%",
-      "type": {
-        "uk": "Абрикосовий",
-        "en": "Apricot",
-        "et": "Aprikoos",
-        "ru": "Абрикосовый"
-      },
-      "description": {
-        "uk": "Фруктовий сидр з абрикосовим смаком",
-        "en": "Fruity cider with apricot flavor",
-        "et": "Puuviljaline siider aprikoosi maitsega",
-        "ru": "Фруктовый сидр с абрикосовым вкусом"
-      }
+      "type": { "uk": "Абрикосовий", "en": "Apricot", "et": "Aprikoos", "ru": "Абрикосовый" },
+      "description": { "uk": "Фруктовий сидр з абрикосовим смаком", "en": "Fruity cider with apricot flavor", "et": "Puuviljaline siider aprikoosi maitsega", "ru": "Фруктовый сидр с абрикосовым вкусом" }
     },
     {
       "id": "cider-4",
       "subcategory": null,
       "image": "img/cider_grapefruit.png",
-      "name": {
-        "uk": "Grapefruit Cider",
-        "en": "Grapefruit Cider",
-        "et": "Greipfruudi Siider",
-        "ru": "Сидр Грейпфрут"
-      },
+      "name": { "uk": "Сидр Грейпфрут", "en": "Grapefruit Cider", "et": "Greipfruudi Siider", "ru": "Сидр Грейпфрут" },
       "price": 7.8,
       "volume": "1L",
       "abv": "5.0%",
-      "type": {
-        "uk": "Грейпфрутовий",
-        "en": "Grapefruit",
-        "et": "Greipfruut",
-        "ru": "Грейпфрутовый"
-      },
-      "description": {
-        "uk": "Освіжаючий сидр з грейпфрутом",
-        "en": "Refreshing grapefruit cider",
-        "et": "Värskendav greipfruudisiider",
-        "ru": "Освежающий сидр с грейпфрутом"
-      }
+      "type": { "uk": "Грейпфрутовий", "en": "Grapefruit", "et": "Greipfruut", "ru": "Грейпфрутовый" },
+      "description": { "uk": "Освіжаючий сидр з грейпфрутом", "en": "Refreshing grapefruit cider", "et": "Värskendav greipfruudisiider", "ru": "Освежающий сидр с грейпфрутом" }
     },
     {
       "id": "cider-5",
       "subcategory": null,
       "image": "img/medusa_special.png",
-      "name": {
-        "uk": "Medusa Specialty",
-        "en": "Medusa Specialty",
-        "et": "Medusa Siider",
-        "ru": "Медуза Спешиалти"
-      },
+      "name": { "uk": "Сидр Medusa", "en": "Medusa Cider", "et": "Medusa Siider", "ru": "Сидр Медуза" },
       "price": 7.8,
       "volume": "1L",
       "abv": "5.0%",
-      "type": {
-        "uk": "Крафтовий ягідний",
-        "en": "Craft Berry",
-        "et": "Käsitöö marja",
-        "ru": "Крафтовый ягодный"
-      },
-      "description": {
-        "uk": "Крафтовий ягідний сидр",
-        "en": "Craft berry cider",
-        "et": "Käsitöö marjasiider",
-        "ru": "Крафтовый ягодный сидр"
-      }
+      "type": { "uk": "Крафтовий ягідний", "en": "Craft Berry", "et": "Käsitöö marja", "ru": "Крафтовый ягодный" },
+      "description": { "uk": "Крафтовий ягідний сидр", "en": "Craft berry cider", "et": "Käsitöö marjasiider", "ru": "Крафтовый ягодный сидр" }
     },
     {
       "id": "cider-6",
       "subcategory": null,
       "image": "img/cidre_royal0.png",
-      "name": {
-        "uk": "Cidre Royal 0%",
-        "en": "Cidre Royal 0%",
-        "et": "Cidre Royal 0%",
-        "ru": "Cidre Royal 0%"
-      },
+      "name": { "uk": "Cidre Royal 0%", "en": "Cidre Royal 0%", "et": "Cidre Royal 0%", "ru": "Cidre Royal 0%" },
       "price": 2.3,
       "volume": "0.33L",
       "abv": "0%",
-      "type": {
-        "uk": "Безалкогольний",
-        "en": "Non-Alcoholic",
-        "et": "Alkoholivaba",
-        "ru": "Безалкогольный"
-      },
-      "description": {
-        "uk": "Безалкогольний сидр у скляній пляшці",
-        "en": "Non-alcoholic cider in glass bottle",
-        "et": "Alkoholivaba siider klaaspudelis",
-        "ru": "Безалкогольный сидр в стеклянной бутылке"
-      }
+      "type": { "uk": "Безалкогольний", "en": "Non-Alcoholic", "et": "Alkoholivaba", "ru": "Безалкогольный" },
+      "description": { "uk": "Безалкогольний сидр у скляній пляшці", "en": "Non-alcoholic cider in glass bottle", "et": "Alkoholivaba siider klaaspudelis", "ru": "Безалкогольный сидр в стеклянной бутылке" }
     }
   ],
   "drinks": [
     {
       "id": "drink-1",
       "subcategory": "juices",
-      "image": "img/nash_sik_sliva_granat_aroniya.png",
-      "name": {
-        "uk": "Наш Сік Слива / Гранат-Аронія",
-        "en": "Nash Sik Plum / Pomegranate",
-        "et": "Nash Sik Mahl",
-        "ru": "Наш Сок Слива / Гранат-Арония"
-      },
+      "image": "img/nash_sik_sliva.png",
+      "name": { "uk": "Наш Сік Слива", "en": "Nash Sik Plum", "et": "Nash Sik Ploomimahl", "ru": "Наш Сок Слива" },
       "price": 2.5,
       "volume": "0.95L",
-      "type": {
-        "uk": "Сік / нектар",
-        "en": "Juice / Nectar",
-        "et": "Mahl / nektar",
-        "ru": "Сок / нектар"
-      },
-      "description": {
-        "uk": "Натуральний сік-нектар",
-        "en": "Natural juice-nectar",
-        "et": "Naturaalne mahl-nektar",
-        "ru": "Натуральный сок-нектар"
-      }
+      "type": { "uk": "Сік", "en": "Juice", "et": "Mahl", "ru": "Сок" },
+      "description": { "uk": "Натуральний сливовий сік-нектар", "en": "Natural plum juice-nectar", "et": "Naturaalne ploomimahl-nektar", "ru": "Натуральный сливовый сок-нектар" }
+    },
+    {
+      "id": "drink-1b",
+      "subcategory": "juices",
+      "image": "img/nash_sik_sliva_granat_aroniya.png",
+      "name": { "uk": "Наш Сік Гранат-Аронія", "en": "Nash Sik Pomegranate-Aronia", "et": "Nash Sik Granaatõun-Aronia", "ru": "Наш Сок Гранат-Арония" },
+      "price": 2.5,
+      "volume": "0.95L",
+      "type": { "uk": "Сік / нектар", "en": "Juice / Nectar", "et": "Mahl / nektar", "ru": "Сок / нектар" },
+      "description": { "uk": "Натуральний гранатово-аронієвий нектар", "en": "Natural pomegranate-aronia nectar", "et": "Naturaalne granaatõuna-aronia nektar", "ru": "Натуральный гранатово-арониевый нектар" }
     },
     {
       "id": "drink-2",
       "subcategory": "water",
       "image": "img/morshynska.png",
-      "name": {
-        "uk": "Моршинська негазована",
-        "en": "Morshynska Still",
-        "et": "Morshynska",
-        "ru": "Моршинская негазированная"
-      },
+      "name": { "uk": "Моршинська негазована", "en": "Morshynska Still", "et": "Morshynska Karboneerimata", "ru": "Моршинская негазированная" },
       "price": 1.9,
       "volume": "1.5L",
-      "type": {
-        "uk": "Негазована",
-        "en": "Still",
-        "et": "Karboneerimata",
-        "ru": "Негазированная"
-      },
-      "description": {
-        "uk": "Чиста гірська вода з Карпат",
-        "en": "Pure mountain water from Carpathians",
-        "et": "Puhas mägivesi Karpaatidest",
-        "ru": "Чистая горная вода из Карпат"
-      }
+      "type": { "uk": "Негазована", "en": "Still", "et": "Karboneerimata", "ru": "Негазированная" },
+      "description": { "uk": "Чиста гірська вода з Карпат", "en": "Pure mountain water from Carpathians", "et": "Puhas mägivesi Karpaatidest", "ru": "Чистая горная вода из Карпат" }
     },
     {
       "id": "drink-3",
       "subcategory": "water",
-      "image": "img/morshynska_spark.png",
-      "name": {
-        "uk": "Моршинська газована",
-        "en": "Morshynska Sparkling",
-        "et": "Morshynska gaseeritud",
-        "ru": "Моршинская газированная"
-      },
+      "image": "img/morshynska_gaz.png",
+      "name": { "uk": "Моршинська газована", "en": "Morshynska Sparkling", "et": "Morshynska gaseeritud", "ru": "Моршинская газированная" },
       "price": 1.95,
       "volume": "1.5L",
-      "type": {
-        "uk": "Газована",
-        "en": "Sparkling",
-        "et": "Gaseeritud",
-        "ru": "Газированная"
-      },
-      "description": {
-        "uk": "Мінеральна газована вода",
-        "en": "Sparkling mineral water",
-        "et": "Gaseeritud mineraalvesi",
-        "ru": "Газированная минеральная вода"
-      }
+      "type": { "uk": "Газована", "en": "Sparkling", "et": "Gaseeritud", "ru": "Газированная" },
+      "description": { "uk": "Мінеральна газована вода", "en": "Sparkling mineral water", "et": "Gaseeritud mineraalvesi", "ru": "Газированная минеральная вода" }
     },
     {
       "id": "drink-4",
       "subcategory": "sodas",
       "image": "img/zhyvchyk_z_yablukom.png",
-      "name": {
-        "uk": "Живчик з яблуком",
-        "en": "Zhyvchyk Apple",
-        "et": "Zhyvchyk Õuna",
-        "ru": "Живчик с яблоком"
-      },
+      "name": { "uk": "Живчик з яблуком 1л", "en": "Zhyvchyk Apple 1L", "et": "Zhyvchyk Õuna 1L", "ru": "Живчик с яблоком 1л" },
       "price": 1.5,
       "volume": "1.0L",
-      "type": {
-        "uk": "Газований напій",
-        "en": "Carbonated Drink",
-        "et": "Gaseeritud jook",
-        "ru": "Газированный напиток"
-      },
-      "description": {
-        "uk": "Газований напій зі смаком яблука",
-        "en": "Carbonated drink with apple flavor",
-        "et": "Gaseeritud jook õunamaitsega",
-        "ru": "Газированный напиток со вкусом яблока"
-      }
+      "type": { "uk": "Газований напій", "en": "Carbonated Drink", "et": "Gaseeritud jook", "ru": "Газированный напиток" },
+      "description": { "uk": "Газований напій зі смаком яблука", "en": "Carbonated drink with apple flavor", "et": "Gaseeritud jook õunamaitsega", "ru": "Газированный напиток со вкусом яблока" }
     },
     {
       "id": "drink-5",
       "subcategory": "sodas",
       "image": "img/zhyvchyk_z_yablukom.png",
-      "name": {
-        "uk": "Живчик з яблуком 2л",
-        "en": "Zhyvchyk Apple 2L",
-        "et": "Zhyvchyk Õuna 2L",
-        "ru": "Живчик с яблоком 2л"
-      },
+      "name": { "uk": "Живчик з яблуком 2л", "en": "Zhyvchyk Apple 2L", "et": "Zhyvchyk Õuna 2L", "ru": "Живчик с яблоком 2л" },
       "price": 2.4,
       "volume": "2.0L",
-      "type": {
-        "uk": "Газований напій",
-        "en": "Carbonated Drink",
-        "et": "Gaseeritud jook",
-        "ru": "Газированный напиток"
-      },
-      "description": {
-        "uk": "Газований напій зі смаком яблука, велика пляшка",
-        "en": "Apple carbonated drink, large bottle",
-        "et": "Gaseeritud jook õunamaitsega, suur pudel",
-        "ru": "Газированный напиток со вкусом яблока, большая бутылка"
-      }
+      "type": { "uk": "Газований напій", "en": "Carbonated Drink", "et": "Gaseeritud jook", "ru": "Газированный напиток" },
+      "description": { "uk": "Газований напій зі смаком яблука", "en": "Apple carbonated drink", "et": "Gaseeritud jook õunamaitsega", "ru": "Газированный напиток со вкусом яблока" }
     },
     {
       "id": "drink-6",
       "subcategory": "sodas",
       "image": "img/umani_lemonade.png",
-      "name": {
-        "uk": "Уманський Лимонад",
-        "en": "Uman Lemonade",
-        "et": "Umani Limonaad",
-        "ru": "Уманский Лимонад"
-      },
+      "name": { "uk": "Уманський Лимонад", "en": "Uman Lemonade", "et": "Umani Limonaad", "ru": "Уманский Лимонад" },
       "price": 1.7,
       "volume": "0.5L",
-      "type": {
-        "uk": "Лимонад",
-        "en": "Lemonade",
-        "et": "Limonaad",
-        "ru": "Лимонад"
-      },
-      "description": {
-        "uk": "Класичний лимонад",
-        "en": "Classic lemonade",
-        "et": "Klassikaline limonaad",
-        "ru": "Классический лимонад"
-      }
+      "type": { "uk": "Лимонад", "en": "Lemonade", "et": "Limonaad", "ru": "Лимонад" },
+      "description": { "uk": "Класичний лимонад", "en": "Classic lemonade", "et": "Klassikaline limonaad", "ru": "Классический лимонад" }
     },
     {
       "id": "drink-7",
       "subcategory": "sodas",
       "image": "img/obolon_limonad.png",
-      "name": {
-        "uk": "Оболонь Лимонад",
-        "en": "Obolon Lemonade",
-        "et": "Obolon Limonaad",
-        "ru": "Оболонь Лимонад"
-      },
+      "name": { "uk": "Оболонь Лимонад", "en": "Obolon Lemonade", "et": "Obolon Limonaad", "ru": "Оболонь Лимонад" },
       "price": 2.4,
       "volume": "2.0L",
-      "type": {
-        "uk": "Лимонад",
-        "en": "Lemonade",
-        "et": "Limonaad",
-        "ru": "Лимонад"
-      },
-      "description": {
-        "uk": "Класичний лимонад, велика пляшка",
-        "en": "Classic lemonade, large bottle",
-        "et": "Klassikaline limonaad, suur pudel",
-        "ru": "Классический лимонад, большая бутылка"
-      }
+      "type": { "uk": "Лимонад", "en": "Lemonade", "et": "Limonaad", "ru": "Лимонад" },
+      "description": { "uk": "Класичний лимонад", "en": "Classic lemonade", "et": "Klassikaline limonaad", "ru": "Классический лимонад" }
     },
     {
       "id": "drink-8",
       "subcategory": "sodas",
-      "image": "img/mojo_mint_lime_pineapple.png",
-      "name": {
-        "uk": "Mojo Mint/Lime",
-        "en": "Mojo Mint/Lime",
-        "et": "Mojo Mint/Lime",
-        "ru": "Mojo Мята/Лайм"
-      },
+      "image": "img/mojo_mint.png",
+      "name": { "uk": "Mojo М'ята-Лайм", "en": "Mojo Mint-Lime", "et": "Mojo Mint-Lime", "ru": "Mojo Мята-Лайм" },
       "price": 2.5,
       "volume": "0.33L",
-      "type": {
-        "uk": "Газований напій",
-        "en": "Carbonated Drink",
-        "et": "Gaseeritud jook",
-        "ru": "Газированный напиток"
-      },
-      "description": {
-        "uk": "Газований напій з м'ятою та лаймом",
-        "en": "Sparkling drink with mint and lime",
-        "et": "Gaseeritud jook mündi ja laimiga",
-        "ru": "Газированный напиток с мятой и лаймом"
-      }
+      "type": { "uk": "Газований напій", "en": "Carbonated Drink", "et": "Gaseeritud jook", "ru": "Газированный напиток" },
+      "description": { "uk": "Газований напій з м'ятою та лаймом", "en": "Sparkling drink with mint and lime", "et": "Gaseeritud jook mündi ja laimiga", "ru": "Газированный напиток с мятой и лаймом" }
+    },
+    {
+      "id": "drink-8b",
+      "subcategory": "sodas",
+      "image": "img/mojo_pineapple.png",
+      "name": { "uk": "Mojo Ананас", "en": "Mojo Pineapple", "et": "Mojo Ananass", "ru": "Mojo Ананас" },
+      "price": 2.5,
+      "volume": "0.33L",
+      "type": { "uk": "Газований напій", "en": "Carbonated Drink", "et": "Gaseeritud jook", "ru": "Газированный напиток" },
+      "description": { "uk": "Газований напій зі смаком ананаса", "en": "Sparkling drink with pineapple flavor", "et": "Gaseeritud jook ananassi maitsega", "ru": "Газированный напиток со вкусом ананаса" }
     },
     {
       "id": "drink-9",
       "subcategory": "sodas",
       "image": "img/arizona_iced_tea.png",
-      "name": {
-        "uk": "Arizona Iced Tea",
-        "en": "Arizona Iced Tea",
-        "et": "Arizona Iced Tea",
-        "ru": "Arizona Iced Tea"
-      },
+      "name": { "uk": "Arizona Iced Tea", "en": "Arizona Iced Tea", "et": "Arizona Iced Tea", "ru": "Arizona Iced Tea" },
       "price": 3.1,
       "volume": "0.5L",
-      "type": {
-        "uk": "Холодний чай",
-        "en": "Iced Tea",
-        "et": "Jäätee",
-        "ru": "Холодный чай"
-      },
-      "description": {
-        "uk": "Холодний чай зелений / персиковий",
-        "en": "Iced tea green / peach",
-        "et": "Jäätee roheline / virsik",
-        "ru": "Холодный чай зелёный / персиковый"
-      }
+      "type": { "uk": "Холодний чай", "en": "Iced Tea", "et": "Jäätee", "ru": "Холодный чай" },
+      "description": { "uk": "Холодний чай зелений / персиковий", "en": "Iced tea green / peach", "et": "Jäätee roheline / virsik", "ru": "Холодный чай зелёный / персиковый" }
     },
     {
       "id": "drink-10",
       "subcategory": "sodas",
       "image": "img/a_le_coq_kali.png",
-      "name": {
-        "uk": "A. Le Coq Kali",
-        "en": "A. Le Coq Kali",
-        "et": "A. Le Coq Kali",
-        "ru": "A. Le Coq Квас"
-      },
+      "name": { "uk": "A. Le Coq Квас", "en": "A. Le Coq Kali", "et": "A. Le Coq Kali", "ru": "A. Le Coq Квас" },
       "price": 5,
       "volume": "1.0L",
-      "type": {
-        "uk": "Квас",
-        "en": "Kvass",
-        "et": "Kali",
-        "ru": "Квас"
-      },
-      "description": {
-        "uk": "Естонський темний квас",
-        "en": "Estonian dark kvass",
-        "et": "Eesti tume kali",
-        "ru": "Эстонский тёмный квас"
-      }
+      "type": { "uk": "Квас", "en": "Kvass", "et": "Kali", "ru": "Квас" },
+      "description": { "uk": "Естонський темний квас", "en": "Estonian dark kvass", "et": "Eesti tume kali", "ru": "Эстонский тёмный квас" }
     },
     {
       "id": "drink-11",
       "subcategory": "energy",
       "image": "img/non_stop_original.png",
-      "name": {
-        "uk": "Non Stop Original",
-        "en": "Non Stop Original",
-        "et": "Non Stop Original",
-        "ru": "Non Stop Original"
-      },
+      "name": { "uk": "Non Stop Original", "en": "Non Stop Original", "et": "Non Stop Original", "ru": "Non Stop Original" },
       "price": 2.1,
       "volume": "0.5L",
-      "type": {
-        "uk": "Енергетик",
-        "en": "Energy Drink",
-        "et": "Energiajook",
-        "ru": "Энергетик"
-      },
-      "description": {
-        "uk": "Енергетичний напій, оригінальний смак",
-        "en": "Energy drink, original flavor",
-        "et": "Energiajook, originaalmaitse",
-        "ru": "Энергетический напиток, оригинальный вкус"
-      }
+      "type": { "uk": "Енергетик", "en": "Energy Drink", "et": "Energiajook", "ru": "Энергетик" },
+      "description": { "uk": "Енергетичний напій, оригінальний смак", "en": "Energy drink, original flavor", "et": "Energiajook, originaalmaitse", "ru": "Энергетический напиток, оригинальный вкус" }
     },
     {
       "id": "drink-12",
       "subcategory": "energy",
       "image": "img/non_stop_boost.png",
-      "name": {
-        "uk": "Non Stop Boost",
-        "en": "Non Stop Boost",
-        "et": "Non Stop Boost",
-        "ru": "Non Stop Boost"
-      },
+      "name": { "uk": "Non Stop Boost", "en": "Non Stop Boost", "et": "Non Stop Boost", "ru": "Non Stop Boost" },
       "price": 2.1,
       "volume": "0.5L",
-      "type": {
-        "uk": "Енергетик",
-        "en": "Energy Drink",
-        "et": "Energiajook",
-        "ru": "Энергетик"
-      },
-      "description": {
-        "uk": "Енергетичний напій Boost",
-        "en": "Energy drink Boost",
-        "et": "Energiajook Boost",
-        "ru": "Энергетический напиток Boost"
-      }
+      "type": { "uk": "Енергетик", "en": "Energy Drink", "et": "Energiajook", "ru": "Энергетик" },
+      "description": { "uk": "Енергетичний напій, смак Boost", "en": "Energy drink Boost flavor", "et": "Energiajook Boost maitsega", "ru": "Энергетический напиток, вкус Boost" }
     },
     {
       "id": "drink-13",
       "subcategory": "energy",
       "image": "img/non_stop_jungle.png",
-      "name": {
-        "uk": "Non Stop Jungle",
-        "en": "Non Stop Jungle",
-        "et": "Non Stop Jungle",
-        "ru": "Non Stop Jungle"
-      },
+      "name": { "uk": "Non Stop Jungle", "en": "Non Stop Jungle", "et": "Non Stop Jungle", "ru": "Non Stop Jungle" },
       "price": 2.1,
       "volume": "0.5L",
-      "type": {
-        "uk": "Енергетик",
-        "en": "Energy Drink",
-        "et": "Energiajook",
-        "ru": "Энергетик"
-      },
-      "description": {
-        "uk": "Енергетичний напій Jungle",
-        "en": "Energy drink Jungle",
-        "et": "Energiajook Jungle",
-        "ru": "Энергетический напиток Jungle"
-      }
+      "type": { "uk": "Енергетик", "en": "Energy Drink", "et": "Energiajook", "ru": "Энергетик" },
+      "description": { "uk": "Енергетичний напій, смак Jungle", "en": "Energy drink Jungle flavor", "et": "Energiajook Jungle maitsega", "ru": "Энергетический напиток, вкус Jungle" }
     },
     {
       "id": "drink-14",
       "subcategory": "energy",
       "image": "img/non_stop_stalker.png",
-      "name": {
-        "uk": "Non Stop Stalker",
-        "en": "Non Stop Stalker",
-        "et": "Non Stop Stalker",
-        "ru": "Non Stop Stalker"
-      },
+      "name": { "uk": "Non Stop Stalker", "en": "Non Stop Stalker", "et": "Non Stop Stalker", "ru": "Non Stop Stalker" },
       "price": 2.1,
       "volume": "0.5L",
-      "type": {
-        "uk": "Енергетик",
-        "en": "Energy Drink",
-        "et": "Energiajook",
-        "ru": "Энергетик"
-      },
-      "description": {
-        "uk": "Енергетичний напій Stalker",
-        "en": "Energy drink Stalker",
-        "et": "Energiajook Stalker",
-        "ru": "Энергетический напиток Stalker"
-      }
+      "type": { "uk": "Енергетик", "en": "Energy Drink", "et": "Energiajook", "ru": "Энергетик" },
+      "description": { "uk": "Енергетичний напій, смак Stalker", "en": "Energy drink Stalker flavor", "et": "Energiajook Stalker maitsega", "ru": "Энергетический напиток, вкус Stalker" }
     },
     {
       "id": "drink-15",
       "subcategory": "energy",
       "image": "img/non_stop_spark.png",
-      "name": {
-        "uk": "Non Stop Spark",
-        "en": "Non Stop Spark",
-        "et": "Non Stop Spark",
-        "ru": "Non Stop Spark"
-      },
+      "name": { "uk": "Non Stop Spark", "en": "Non Stop Spark", "et": "Non Stop Spark", "ru": "Non Stop Spark" },
       "price": 2.1,
       "volume": "0.5L",
-      "type": {
-        "uk": "Енергетик",
-        "en": "Energy Drink",
-        "et": "Energiajook",
-        "ru": "Энергетик"
-      },
-      "description": {
-        "uk": "Енергетичний напій Spark",
-        "en": "Energy drink Spark",
-        "et": "Energiajook Spark",
-        "ru": "Энергетический напиток Spark"
-      }
+      "type": { "uk": "Енергетик", "en": "Energy Drink", "et": "Energiajook", "ru": "Энергетик" },
+      "description": { "uk": "Енергетичний напій зі смаком Spark", "en": "Energy drink Spark flavor", "et": "Energiajook Spark maitsega", "ru": "Энергетический напиток, вкус Spark" }
     },
     {
       "id": "drink-16",
       "subcategory": "tea_coffee",
       "image": "img/kava_starogo_lvova.png",
-      "name": {
-        "uk": "Кава Старого Львова",
-        "en": "Vana Lviv Coffee",
-        "et": "Kohv Vana Lviv",
-        "ru": "Кофе Старого Львова"
-      },
+      "name": { "uk": "Кава Старого Львова", "en": "Old Lviv Coffee", "et": "Kohv Vana Lviv", "ru": "Кофе Старого Львова" },
       "price": 3.5,
       "volume": "100г",
-      "type": {
-        "uk": "Мелена кава",
-        "en": "Ground Coffee",
-        "et": "Jahvatatud kohv",
-        "ru": "Молотый кофе"
-      },
-      "description": {
-        "uk": "Натуральна мелена кава, різні види",
-        "en": "Natural ground coffee, various types",
-        "et": "Naturaalne jahvatatud kohv, erinevad sordid",
-        "ru": "Натуральный молотый кофе, разные виды"
-      }
+      "type": { "uk": "Мелена кава", "en": "Ground Coffee", "et": "Jahvatatud kohv", "ru": "Молотый кофе" },
+      "description": { "uk": "Натуральна мелена кава", "en": "Natural ground coffee", "et": "Naturaalne jahvatatud kohv", "ru": "Натуральный молотый кофе" }
     },
     {
       "id": "drink-17",
       "subcategory": "tea_coffee",
-      "image": "img/tea.png",
-      "name": {
-        "uk": "Чай ",
-        "en": "Tea",
-        "et": "Tee",
-        "ru": "Чай"
-      },
+      "image": "img/tea_moments_fruit.png",
+      "name": { "uk": "Tea Moments Фруктовий", "en": "Tea Moments Fruit", "et": "Tea Moments Puuvilja", "ru": "Tea Moments Фруктовый" },
       "price": 3.2,
       "volume": "33г",
-      "type": {
-        "uk": "Чай у пірамідках",
-        "en": "Pyramid Tea",
-        "et": "Püramiidtee",
-        "ru": "Чай в пирамидках"
-      },
-      "description": {
-        "uk": "Чай у пірамідках, зелений / фруктовий",
-        "en": "Pyramid tea, green / fruit",
-        "et": "Püramiidtee, roheline / puuviljaline",
-        "ru": "Чай в пирамидках, зелёный / фруктовый"
-      }
+      "type": { "uk": "Чай у пірамідках", "en": "Pyramid Tea", "et": "Püramiidtee", "ru": "Чай в пирамидках" },
+      "description": { "uk": "Фруктовий чай у пірамідках", "en": "Fruit pyramid tea", "et": "Puuviljaline püramiidtee", "ru": "Фруктовый чай в пирамидках" }
+    },
+    {
+      "id": "drink-17b",
+      "subcategory": "tea_coffee",
+      "image": "img/tea_moments_green.png",
+      "name": { "uk": "Tea Moments Зелений", "en": "Tea Moments Green", "et": "Tea Moments Roheline", "ru": "Tea Moments Зелёный" },
+      "price": 3.2,
+      "volume": "33г",
+      "type": { "uk": "Чай у пірамідках", "en": "Pyramid Tea", "et": "Püramiidtee", "ru": "Чай в пирамидках" },
+      "description": { "uk": "Зелений чай у пірамідках", "en": "Green pyramid tea", "et": "Roheline püramiidtee", "ru": "Зелёный чай в пирамидках" }
     }
   ],
   "sweets": [
     {
-      "id": "sweet-1",
+      "id": "sweet-1a",
       "subcategory": null,
-      "image": "img/avk_tryufel_original_polunytsia_biskvit.png",
-      "name": {
-        "uk": "АВК Трюфель Оригінальний",
-        "en": "AVK Truffle Original",
-        "et": "AVK Trüffel Originaal",
-        "ru": "АВК Трюфель Оригинальный"
-      },
+      "image": "img/avk_trufel_original.png",
+      "name": { "uk": "АВК Трюфель Оригінал", "en": "AVK Truffle Original", "et": "AVK Trüffel Originaal", "ru": "АВК Трюфель Оригинал" },
       "price": 1.7,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Шоколадні трюфельні цукерки",
-        "en": "Chocolate truffle candies",
-        "et": "Šokolaadi trühvlikommid",
-        "ru": "Шоколадные трюфельные конфеты"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Шоколадні трюфельні цукерки, оригінал", "en": "Chocolate truffle candies, original", "et": "Šokolaadi trühvlikommid, originaal", "ru": "Шоколадные трюфельные конфеты, оригинал" }
+    },
+    {
+      "id": "sweet-1b",
+      "subcategory": null,
+      "image": "img/avk_trufel_biskvit.png",
+      "name": { "uk": "АВК Трюфель смак Бісквіту", "en": "AVK Truffle Biscuit", "et": "AVK Trüffel Küpsis", "ru": "АВК Трюфель вкус Бисквита" },
+      "price": 1.7,
+      "weight": "100г",
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Шоколадні трюфельні цукерки зі смаком бісквіту", "en": "Chocolate truffle candies with biscuit flavor", "et": "Šokolaadi trühvlikommid küpsisemaitsega", "ru": "Шоколадные трюфельные конфеты со вкусом бисквита" }
+    },
+    {
+      "id": "sweet-1c",
+      "subcategory": null,
+      "image": "img/avk_trufel_molochnyi.png",
+      "name": { "uk": "АВК Трюфель Молочний", "en": "AVK Truffle Milk", "et": "AVK Trüffel Piima", "ru": "АВК Трюфель Молочный" },
+      "price": 1.7,
+      "weight": "100г",
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Шоколадні трюфельні цукерки, молочний шоколад", "en": "Chocolate truffle candies, milk chocolate", "et": "Šokolaadi trühvlikommid, piimašokolaad", "ru": "Шоколадные трюфельные конфеты, молочный шоколад" }
+    },
+    {
+      "id": "sweet-1d",
+      "subcategory": null,
+      "image": "img/avk_tryufel_original_polunytsia_biskvit.png",
+      "name": { "uk": "АВК Трюфель Полуниця", "en": "AVK Truffle Strawberry", "et": "AVK Trüffel Maasikas", "ru": "АВК Трюфель Клубника" },
+      "price": 1.7,
+      "weight": "100г",
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Шоколадні трюфельні цукерки зі смаком полуниці", "en": "Chocolate truffle candies with strawberry flavor", "et": "Šokolaadi trühvlikommid maasikamaitsega", "ru": "Шоколадные трюфельные конфеты со вкусом клубники" }
+    },
+    {
+      "id": "sweet-1e",
+      "subcategory": null,
+      "image": "img/avk_trufali_apelsin.png",
+      "name": { "uk": "АВК Труфалі Апельсин", "en": "AVK Trufalie Orange", "et": "AVK Trüffel Apelsin", "ru": "АВК Труфали Апельсин" },
+      "price": 1.7,
+      "weight": "100г",
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Шоколадні трюфельні цукерки зі смаком апельсину", "en": "Chocolate truffle candies with orange flavor", "et": "Šokolaadi trühvlikommid apelsinimaitsega", "ru": "Шоколадные трюфельные конфеты со вкусом апельсина" }
     },
     {
       "id": "sweet-2",
       "subcategory": null,
       "image": "img/avk_trufalie.png",
-      "name": {
-        "uk": "АВК Trufalie",
-        "en": "AVK Trufalie",
-        "et": "AVK Trufalie",
-        "ru": "АВК Труфалье"
-      },
+      "name": { "uk": "АВК Trufalie", "en": "AVK Trufalie", "et": "AVK Trufalie", "ru": "АВК Труфалье" },
       "price": 1.7,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Цукерки-трюфелі з ніжною начинкою",
-        "en": "Truffle candies with delicate filling",
-        "et": "Trühvlikommid õrna täidisega",
-        "ru": "Конфеты-трюфели с нежной начинкой"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Цукерки-трюфелі з ніжною начинкою", "en": "Truffle candies with delicate filling", "et": "Trühvlikommid õrna täidisega", "ru": "Конфеты-трюфели с нежной начинкой" }
     },
     {
       "id": "sweet-3",
       "subcategory": null,
       "image": "img/avk_korolivskyi_sharm.png",
-      "name": {
-        "uk": "АВК Королівський Шарм",
-        "en": "AVK Royal Charm",
-        "et": "AVK Kuninglik Sharm",
-        "ru": "АВК Королевский Шарм"
-      },
+      "name": { "uk": "АВК Королівський Шарм", "en": "AVK Royal Charm", "et": "AVK Kuninglik Sharm", "ru": "АВК Королевский Шарм" },
       "price": 1.8,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Шоколадні цукерки з вишуканим смаком",
-        "en": "Chocolate candies with exquisite taste",
-        "et": "Šokolaadikommid peenemaitselised",
-        "ru": "Шоколадные конфеты с изысканным вкусом"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Шоколадні цукерки з вишуканим смаком", "en": "Chocolate candies with exquisite taste", "et": "Šokolaadikommid peenemaitselised", "ru": "Шоколадные конфеты с изысканным вкусом" }
     },
     {
       "id": "sweet-4",
       "subcategory": null,
       "image": "img/avk_tortufel.png",
-      "name": {
-        "uk": "АВК Тортюфель",
-        "en": "AVK Tortufel",
-        "et": "AVK Tortufel",
-        "ru": "АВК Тортюфель"
-      },
+      "name": { "uk": "АВК Тортюфель", "en": "AVK Tortufel", "et": "AVK Tortufel", "ru": "АВК Тортюфель" },
       "price": 1.4,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Цукерки з шоколадною начинкою",
-        "en": "Candies with chocolate filling",
-        "et": "Kommid šokolaadi täidisega",
-        "ru": "Конфеты с шоколадной начинкой"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Цукерки з шоколадною начинкою", "en": "Candies with chocolate filling", "et": "Kommid šokolaadi täidisega", "ru": "Конфеты с шоколадной начинкой" }
     },
     {
       "id": "sweet-5",
       "subcategory": null,
       "image": "img/roshen_winter_dream.png",
-      "name": {
-        "uk": "Roshen Winter Dream",
-        "en": "Roshen Winter Dream",
-        "et": "Roshen Winter Dream",
-        "ru": "Рошен Зимова Мрія"
-      },
+      "name": { "uk": "Рошен Зимова Мрія", "en": "Roshen Winter Dream", "et": "Roshen Talvine Unistus", "ru": "Рошен Зимняя Мечта" },
       "price": 1.7,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Шоколадні цукерки з зимовим настроєм",
-        "en": "Chocolate candies with winter spirit",
-        "et": "Šokolaadikommid talvise meeleoluga",
-        "ru": "Шоколадные конфеты с зимним настроением"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Шоколадні цукерки з зимовим настроєм", "en": "Chocolate candies with winter spirit", "et": "Šokolaadikommid talvise meeleoluga", "ru": "Шоколадные конфеты с зимним настроением" }
     },
     {
-      "id": "sweet-6",
+      "id": "sweet-6a",
       "subcategory": null,
-      "image": "img/roshen_mon_blanc.png",
-      "name": {
-        "uk": "Roshen Mon Blanc",
-        "en": "Roshen Mon Blanc",
-        "et": "Roshen Mon Blanc",
-        "ru": "Рошен Мон Блан"
-      },
+      "image": "img/roshen_mont_blanc_sesame.png",
+      "name": { "uk": "Рошен Mon Blanc Кунжут", "en": "Roshen Mon Blanc Sesame", "et": "Roshen Mon Blanc Seesamiga", "ru": "Рошен Mon Blanc Кунжут" },
       "price": 2,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Вершкові цукерки",
-        "en": "Creamy candies",
-        "et": "Koorekastemommid",
-        "ru": "Сливочные конфеты"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Вершкові цукерки з кунжутом", "en": "Creamy candies with sesame", "et": "Kreemkommid seesamiga", "ru": "Сливочные конфеты с кунжутом" }
+    },
+    {
+      "id": "sweet-6b",
+      "subcategory": null,
+      "image": "img/roshen_mont_blanc_caramel.png",
+      "name": { "uk": "Рошен Mon Blanc Карамель-Мигдаль", "en": "Roshen Mon Blanc Caramel-Almond", "et": "Roshen Mon Blanc Karamell-Mandel", "ru": "Рошен Mon Blanc Карамель-Миндаль" },
+      "price": 2,
+      "weight": "100г",
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Вершкові цукерки з карамеллю та мигдалем", "en": "Creamy candies with caramel and almond", "et": "Kreemkommid karamelli ja mandlitega", "ru": "Сливочные конфеты с карамелью и миндалём" }
+    },
+    {
+      "id": "sweet-6c",
+      "subcategory": null,
+      "image": "img/roshen_mont_blanc_coconut.png",
+      "name": { "uk": "Рошен Mon Blanc Кокос-Мигдаль", "en": "Roshen Mon Blanc Coconut-Almond", "et": "Roshen Mon Blanc Kookos-Mandel", "ru": "Рошен Mon Blanc Кокос-Миндаль" },
+      "price": 2,
+      "weight": "100г",
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Вершкові цукерки з кокосом та мигдалем", "en": "Creamy candies with coconut and almond", "et": "Kreemkommid kookose ja mandlitega", "ru": "Сливочные конфеты с кокосом и миндалём" }
     },
     {
       "id": "sweet-7",
       "subcategory": null,
       "image": "img/roshen_chocolapki.png",
-      "name": {
-        "uk": "Roshen Chocolapki",
-        "en": "Roshen Chocolapki",
-        "et": "Roshen Chocolapki",
-        "ru": "Рошен Шоколапки"
-      },
+      "name": { "uk": "Рошен Chocolapki", "en": "Roshen Chocolapki", "et": "Roshen Chocolapki", "ru": "Рошен Chocolapki" },
       "price": 1.4,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Хрусткі вафельні цукерки в шоколаді",
-        "en": "Crispy wafer candies in chocolate",
-        "et": "Krõbedad vahvlikommid šokolaadis",
-        "ru": "Хрустящие вафельные конфеты в шоколаде"
-      }
-    },
-    {
-      "id": "sweet-8",
-      "subcategory": null,
-      "image": "img/crispy_jack.png",
-      "name": {
-        "uk": "Crispy Jack",
-        "en": "Crispy Jack",
-        "et": "Crispy Jack",
-        "ru": "Криспи Джек"
-      },
-      "price": 1.2,
-      "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Хрусткі цукерки з повітряним рисом",
-        "en": "Crispy candies with puffed rice",
-        "et": "Krõbedad kommid puhutud riisiga",
-        "ru": "Хрустящие конфеты с воздушным рисом"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Хрусткі вафельні цукерки в шоколаді", "en": "Crispy wafer candies in chocolate", "et": "Krõbedad vahvlikommid šokolaadis", "ru": "Хрустящие вафельные конфеты в шоколаде" }
     },
     {
       "id": "sweet-9",
       "subcategory": null,
       "image": "img/roshen_sheridan.png",
-      "name": {
-        "uk": "Roshen Sheridan",
-        "en": "Roshen Sheridan",
-        "et": "Roshen Sheridan",
-        "ru": "Рошен Шеридан"
-      },
+      "name": { "uk": "Рошен Шеридан", "en": "Roshen Sheridan", "et": "Roshen Sheridan", "ru": "Рошен Шеридан" },
       "price": 1.4,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Цукерки з лікерною начинкою",
-        "en": "Candies with liqueur filling",
-        "et": "Kommid likööritäidisega",
-        "ru": "Конфеты с ликёрной начинкой"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Цукерки з лікерною начинкою", "en": "Candies with liqueur filling", "et": "Kommid likööritäidisega", "ru": "Конфеты с ликёрной начинкой" }
+    },
+    {
+      "id": "sweet-8",
+      "subcategory": null,
+      "image": "img/crispy_jack.png",
+      "name": { "uk": "Crispy Jack", "en": "Crispy Jack", "et": "Crispy Jack", "ru": "Crispy Jack" },
+      "price": 1.2,
+      "weight": "100г",
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Хрусткі цукерки з повітряним рисом", "en": "Crispy candies with puffed rice", "et": "Krõbedad kommid puhutud riisiga", "ru": "Хрустящие конфеты с воздушным рисом" }
     },
     {
       "id": "sweet-10",
       "subcategory": null,
       "image": "img/tsukerky_svitoch_zoryane_syivo.png",
-      "name": {
-        "uk": "Світоч Зоряне Сяйво",
-        "en": "Svitoch Star Glow",
-        "et": "Svitoch Tähehelk",
-        "ru": "Свиточ Звёздное Сияние"
-      },
+      "name": { "uk": "Світоч Зоряне Сяйво", "en": "Svitoch Star Glow", "et": "Svitoch Tähehelk", "ru": "Свиточ Звёздное Сияние" },
       "price": 2,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Шоколадні цукерки з горіховою начинкою",
-        "en": "Chocolate candies with nut filling",
-        "et": "Šokolaadikommid pähklitäidisega",
-        "ru": "Шоколадные конфеты с ореховой начинкой"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Шоколадні цукерки з горіховою начинкою", "en": "Chocolate candies with nut filling", "et": "Šokolaadikommid pähklitäidisega", "ru": "Шоколадные конфеты с ореховой начинкой" }
     },
     {
       "id": "sweet-11",
       "subcategory": null,
-      "image": "img/tsukerky_purrita.png",
-      "name": {
-        "uk": "Цукерки Purrita",
-        "en": "Purrita Candies",
-        "et": "Purrita Kommid",
-        "ru": "Конфеты Пуррита"
-      },
+      "image": "img/rurrita.png",
+      "name": { "uk": "Цукерки Purrita", "en": "Purrita Candies", "et": "Purrita Kommid", "ru": "Конфеты Purrita" },
       "price": 1.2,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Молочні цукерки з ніжним смаком",
-        "en": "Milk candies with delicate taste",
-        "et": "Piimakommid õrna maitsega",
-        "ru": "Молочные конфеты с нежным вкусом"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Молочні цукерки з ніжним смаком", "en": "Milk candies with delicate taste", "et": "Piimakommid õrna maitsega", "ru": "Молочные конфеты с нежным вкусом" }
     },
     {
       "id": "sweet-12",
       "subcategory": null,
       "image": "img/tsukerky_ametyst.png",
-      "name": {
-        "uk": "Цукерки Аметист",
-        "en": "Ametist Candies",
-        "et": "Ametist Kommid",
-        "ru": "Конфеты Аметист"
-      },
+      "name": { "uk": "Цукерки Ametist", "en": "Ametist Candies", "et": "Ametist Kommid", "ru": "Конфеты Ametist" },
       "price": 1.8,
       "weight": "100г",
-      "type": {
-        "uk": "Цукерки",
-        "en": "Candies",
-        "et": "Kommid",
-        "ru": "Конфеты"
-      },
-      "description": {
-        "uk": "Цукерки з фруктовою начинкою",
-        "en": "Candies with fruit filling",
-        "et": "Kommid puuviljalise täidisega",
-        "ru": "Конфеты с фруктовой начинкой"
-      }
-    },
-    {
-      "id": "sweet-13",
-      "subcategory": null,
-      "image": "img/assorti_box.png",
-      "name": {
-        "uk": "Асорті Цукерок",
-        "en": "Assorted Candies",
-        "et": "Kommid Assorti",
-        "ru": "Ассорти Конфет"
-      },
-      "price": 8.5,
-      "weight": "500г",
-      "type": {
-        "uk": "Набір цукерок",
-        "en": "Candy Box",
-        "et": "Kommikarp",
-        "ru": "Набор конфет"
-      },
-      "description": {
-        "uk": "Асорті шоколадних цукерок",
-        "en": "Assorted chocolate candies box",
-        "et": "Šokolaadikommide valik",
-        "ru": "Ассорти шоколадных конфет"
-      }
+      "type": { "uk": "Цукерки", "en": "Candies", "et": "Kommid", "ru": "Конфеты" },
+      "description": { "uk": "Цукерки з фруктовою начинкою", "en": "Candies with fruit filling", "et": "Kommid puuviljalise täidisega", "ru": "Конфеты с фруктовой начинкой" }
     },
     {
       "id": "sweet-14",
       "subcategory": null,
       "image": "img/skawa_kokos_arakhis.png",
-      "name": {
-        "uk": "Драже Skawa Кокос/Арахіс",
-        "en": "Skawa Coconut/Peanut Dragee",
-        "et": "Skawa Kookos/Maapähkli dražee",
-        "ru": "Драже Skawa Кокос/Арахис"
-      },
+      "name": { "uk": "Драже Skawa Кокос/Арахіс", "en": "Skawa Coconut/Peanut Dragee", "et": "Skawa Kookos/Maapähkli dražee", "ru": "Dražee Skawa Кокос/Арахис" },
       "price": 1.5,
       "weight": "70г",
-      "type": {
-        "uk": "Драже",
-        "en": "Dragee",
-        "et": "Dražee",
-        "ru": "Драже"
-      },
-      "description": {
-        "uk": "Горіхи та кокос у шоколадній глазурі",
-        "en": "Nuts and coconut in chocolate glaze",
-        "et": "Pähklid ja kookos šokolaadglasuuris",
-        "ru": "Орехи и кокос в шоколадной глазури"
-      }
+      "type": { "uk": "Драже", "en": "Dragee", "et": "Dražee", "ru": "Драже" },
+      "description": { "uk": "Горіхи та кокос у шоколадній глазурі", "en": "Nuts and coconut in chocolate glaze", "et": "Pähklid ja kookos šokolaadglasuuris", "ru": "Орехи и кокос в шоколадной глазури" }
     },
     {
       "id": "sweet-15",
       "subcategory": null,
       "image": "img/creamo_korolivskyi_sharm.png",
-      "name": {
-        "uk": "Вафлі Creamo",
-        "en": "Creamo Wafers",
-        "et": "Creamo vahvlid",
-        "ru": "Вафли Creamo"
-      },
+      "name": { "uk": "Вафлі Creamo", "en": "Creamo Wafers", "et": "Creamo vahvlid", "ru": "Вафли Creamo" },
       "price": 0.99,
       "weight": "1шт",
-      "type": {
-        "uk": "Вафлі",
-        "en": "Wafers",
-        "et": "Vahvlid",
-        "ru": "Вафли"
-      },
-      "description": {
-        "uk": "Вафлі з кремовою начинкою",
-        "en": "Wafers with cream filling",
-        "et": "Vahvlid kreemtäidisega",
-        "ru": "Вафли с кремовой начинкой"
-      }
+      "type": { "uk": "Вафлі", "en": "Wafers", "et": "Vahvlid", "ru": "Вафли" },
+      "description": { "uk": "Вафлі з кремовою начинкою", "en": "Wafers with cream filling", "et": "Vahvlid kreemtäidisega", "ru": "Вафли с кремовой начинкой" }
     },
     {
       "id": "sweet-16",
       "subcategory": null,
       "image": "img/bonjour_classic.png",
-      "name": {
-        "uk": "Десерт Bonjour Classic",
-        "en": "Bonjour Classic Dessert",
-        "et": "Bonjour Classic",
-        "ru": "Десерт Bonjour Classic"
-      },
+      "name": { "uk": "Десерт Bonjour Classic", "en": "Bonjour Classic Dessert", "et": "Bonjour Classic", "ru": "Десерт Bonjour Classic" },
       "price": 3.5,
       "weight": "232г",
-      "type": {
-        "uk": "Десерт",
-        "en": "Dessert",
-        "et": "Magustoit",
-        "ru": "Десерт"
-      },
-      "description": {
-        "uk": "Десерт з ніжним суфле та шоколадом",
-        "en": "Dessert with delicate souffle and chocolate",
-        "et": "Magustoit õrna suflee ja šokolaadiga",
-        "ru": "Десерт с нежным суфле и шоколадом"
-      }
+      "type": { "uk": "Десерт", "en": "Dessert", "et": "Magustoit", "ru": "Десерт" },
+      "description": { "uk": "Десерт з ніжним суфле та шоколадом", "en": "Dessert with delicate souffle and chocolate", "et": "Magustoit õrna suflee ja šokolaadiga", "ru": "Десерт с нежным суфле и шоколадом" }
     },
     {
       "id": "sweet-17",
       "subcategory": null,
       "image": "img/bambuk_trubochky.png",
-      "name": {
-        "uk": "Трубочки Bambuk",
-        "en": "Bambuk Tubes",
-        "et": "Bambuk Torukesed",
-        "ru": "Трубочки Бамбук"
-      },
+      "name": { "uk": "Трубочки Bambuk", "en": "Bambuk Tubes", "et": "Bambuk Torud", "ru": "Трубочки Бамбук" },
       "price": 2.5,
       "weight": "200г",
-      "type": {
-        "uk": "Трубочки",
-        "en": "Wafer Tubes",
-        "et": "Vahvlitorukesed",
-        "ru": "Трубочки"
-      },
-      "description": {
-        "uk": "Вафельні трубочки з начинкою",
-        "en": "Wafer tubes with filling",
-        "et": "Vahvlitorukesed täidisega",
-        "ru": "Вафельные трубочки с начинкой"
-      }
+      "type": { "uk": "Трубочки", "en": "Wafer Tubes", "et": "Vahvlitorukesed", "ru": "Трубочки" },
+      "description": { "uk": "Вафельні трубочки з начинкою", "en": "Wafer tubes with filling", "et": "Vahvlitorukesed täidisega", "ru": "Вафельные трубочки с начинкой" }
     },
     {
       "id": "sweet-18",
       "subcategory": null,
       "image": "img/keks_velykodniy_volodymyrskyi.png",
-      "name": {
-        "uk": "Кекс Великодній 300г",
-        "en": "Easter Cake 300g",
-        "et": "Kuliš 300g",
-        "ru": "Кекс Пасхальный 300г"
-      },
+      "name": { "uk": "Кекс Великодній 300г", "en": "Easter Cake 300g", "et": "Kuliš 300g", "ru": "Кекс Пасхальный 300г" },
       "price": 5.5,
       "weight": "300г",
-      "type": {
-        "uk": "Кекс",
-        "en": "Cake",
-        "et": "Kook",
-        "ru": "Кекс"
-      },
-      "description": {
-        "uk": "Святковий великодній кекс",
-        "en": "Festive Easter cake",
-        "et": "Pidulik lihavõttekook",
-        "ru": "Праздничный пасхальный кекс"
-      }
+      "type": { "uk": "Кекс", "en": "Cake", "et": "Kook", "ru": "Кекс" },
+      "description": { "uk": "Святковий великодній кекс, малий", "en": "Festive Easter cake, small", "et": "Pidulik lihavõttekook, väike", "ru": "Праздничный пасхальный кекс, малый" }
     },
     {
       "id": "sweet-19",
       "subcategory": null,
       "image": "img/keks_velykodniy_volodymyrskyi.png",
-      "name": {
-        "uk": "Кекс Великодній 450г",
-        "en": "Easter Cake 450g",
-        "et": "Kuliš 450g",
-        "ru": "Кекс Пасхальный 450г"
-      },
+      "name": { "uk": "Кекс Великодній 450г", "en": "Easter Cake 450g", "et": "Kuliš 450g", "ru": "Кекс Пасхальный 450г" },
       "price": 7.5,
       "weight": "450г",
-      "type": {
-        "uk": "Кекс",
-        "en": "Cake",
-        "et": "Kook",
-        "ru": "Кекс"
-      },
-      "description": {
-        "uk": "Святковий великодній кекс, середній",
-        "en": "Festive Easter cake, medium",
-        "et": "Pidulik lihavõttekook, keskmine",
-        "ru": "Праздничный пасхальный кекс, средний"
-      }
+      "type": { "uk": "Кекс", "en": "Cake", "et": "Kook", "ru": "Кекс" },
+      "description": { "uk": "Святковий великодній кекс, середній", "en": "Festive Easter cake, medium", "et": "Pidulik lihavõttekook, keskmine", "ru": "Праздничный пасхальный кекс, средний" }
     },
     {
       "id": "sweet-20",
       "subcategory": null,
       "image": "img/keks_velykodniy_volodymyrskyi.png",
-      "name": {
-        "uk": "Кекс Великодній 600г",
-        "en": "Easter Cake 600g",
-        "et": "Kuliš 600g",
-        "ru": "Кекс Пасхальный 600г"
-      },
+      "name": { "uk": "Кекс Великодній 600г", "en": "Easter Cake 600g", "et": "Kuliš 600g", "ru": "Кекс Пасхальный 600г" },
       "price": 11.5,
       "weight": "600г",
-      "type": {
-        "uk": "Кекс",
-        "en": "Cake",
-        "et": "Kook",
-        "ru": "Кекс"
-      },
-      "description": {
-        "uk": "Святковий великодній кекс, великий",
-        "en": "Festive Easter cake, large",
-        "et": "Pidulik lihavõttekook, suur",
-        "ru": "Праздничный пасхальный кекс, большой"
-      }
+      "type": { "uk": "Кекс", "en": "Cake", "et": "Kook", "ru": "Кекс" },
+      "description": { "uk": "Святковий великодній кекс, великий", "en": "Festive Easter cake, large", "et": "Pidulik lihavõttekook, suur", "ru": "Праздничный пасхальный кекс, большой" }
     }
   ],
   "snacks": [
     {
-      "id": "snack-1",
+      "id": "snack-13a",
+      "subcategory": "chips",
+      "image": "img/liuks_krab.png",
+      "name": { "uk": "Люкс Чіпси Краб", "en": "Lux Chips Crab", "et": "Lux Krõpsud Krabi", "ru": "Люкс Чипсы Краб" },
+      "price": 3.5,
+      "weight": "125г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Картопляні чіпси зі смаком краба", "en": "Potato chips with crab flavor", "et": "Kartulikrõpsud krabimaitsega", "ru": "Картофельные чипсы со вкусом краба" }
+    },
+    {
+      "id": "snack-13b",
+      "subcategory": "chips",
+      "image": "img/liuks_bekon.png",
+      "name": { "uk": "Люкс Чіпси Бекон", "en": "Lux Chips Bacon", "et": "Lux Krõpsud Peekon", "ru": "Люкс Чипсы Бекон" },
+      "price": 3.5,
+      "weight": "125г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Картопляні чіпси зі смаком бекону", "en": "Potato chips with bacon flavor", "et": "Kartulikrõpsud peekonmaitsega", "ru": "Картофельные чипсы со вкусом бекона" }
+    },
+    {
+      "id": "snack-13c",
+      "subcategory": "chips",
+      "image": "img/liuks_lysychky.png",
+      "name": { "uk": "Люкс Чіпси Лисички", "en": "Lux Chips Chanterelle", "et": "Lux Krõpsud Kukeseened", "ru": "Люкс Чипсы Лисички" },
+      "price": 3.5,
+      "weight": "125г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Картопляні чіпси зі смаком лисичок", "en": "Potato chips with chanterelle flavor", "et": "Kartulikrõpsud kukeseen maitsega", "ru": "Картофельные чипсы со вкусом лисичек" }
+    },
+    {
+      "id": "snack-13d",
+      "subcategory": "chips",
+      "image": "img/liuks_syr.png",
+      "name": { "uk": "Люкс Чіпси Сир", "en": "Lux Chips Cheese", "et": "Lux Krõpsud Juust", "ru": "Люкс Чипсы Сыр" },
+      "price": 3.5,
+      "weight": "125г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Картопляні чіпси зі смаком сиру", "en": "Potato chips with cheese flavor", "et": "Kartulikrõpsud juustumaitsega", "ru": "Картофельные чипсы со вкусом сыра" }
+    },
+    {
+      "id": "snack-13g",
+      "subcategory": "chips",
+      "image": "img/liuks_losos_vershky.png",
+      "name": { "uk": "Люкс Чіпси Лосось та Вершки", "en": "Lux Chips Salmon Cream", "et": "Lux Krõpsud Lõhe ja Koor", "ru": "Люкс Чипсы Лосось и Сливки" },
+      "price": 3.5,
+      "weight": "125г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Картопляні чіпси зі смаком лосося та вершків", "en": "Potato chips with salmon cream flavor", "et": "Kartulikrõpsud lõhe ja koore maitsega", "ru": "Картофельные чипсы со вкусом лосося и сливок" }
+    },
+    {
+      "id": "snack-16a",
+      "subcategory": "chips",
+      "image": "img/big_panda_xxlong.png",
+      "name": { "uk": "Big Panda XXLong", "en": "Big Panda XXLong", "et": "Big Panda XXLong", "ru": "Big Panda XXLong" },
+      "price": 1.35,
+      "weight": "50г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Довгі чіпси, різні смаки", "en": "Long chips, various flavors", "et": "Pikad krõpsud, erinevad maitsed", "ru": "Длинные чипсы, разные вкусы" }
+    },
+    {
+      "id": "snack-16b",
+      "subcategory": "chips",
+      "image": "img/big_panda_chicken.png",
+      "name": { "uk": "Big Panda Курка", "en": "Big Panda Chicken", "et": "Big Panda Kana", "ru": "Big Panda Курица" },
+      "price": 1.35,
+      "weight": "50г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Чіпси зі смаком курки", "en": "Chips with chicken flavor", "et": "Krõpsud kanamaitsega", "ru": "Чипсы со вкусом курицы" }
+    },
+    {
+      "id": "snack-16c",
+      "subcategory": "chips",
+      "image": "img/big_panda_krab.png",
+      "name": { "uk": "Big Panda Краб", "en": "Big Panda Crab", "et": "Big Panda Krabi", "ru": "Big Panda Краб" },
+      "price": 1.35,
+      "weight": "50г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Чіпси зі смаком краба", "en": "Chips with crab flavor", "et": "Krõpsud krabimaitsega", "ru": "Чипсы со вкусом краба" }
+    },
+    {
+      "id": "snack-13e",
+      "subcategory": "chips",
+      "image": "img/liuks_kuryatyna.png",
+      "name": { "uk": "Big Panda XXLong Курка", "en": "Big Panda XXLong Chicken", "et": "Big Panda XXLong Kana", "ru": "Big Panda XXLong Курица" },
+      "price": 1.35,
+      "weight": "50г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Довгі чіпси зі смаком курки", "en": "Long chips with chicken flavor", "et": "Pikad krõpsud kanamaitsega", "ru": "Длинные чипсы со вкусом курицы" }
+    },
+    {
+      "id": "snack-13f",
+      "subcategory": "chips",
+      "image": "img/liuks_smetana_zelen.png",
+      "name": { "uk": "Big Panda XXLong Сметана та Зелень", "en": "Big Panda XXLong Sour Cream & Herbs", "et": "Big Panda XXLong Hapukoor ja Ürdid", "ru": "Big Panda XXLong Сметана и Зелень" },
+      "price": 1.35,
+      "weight": "50г",
+      "type": { "uk": "Чіпси", "en": "Chips", "et": "Krõpsud", "ru": "Чипсы" },
+      "description": { "uk": "Довгі чіпси зі смаком сметани та зелені", "en": "Long chips with sour cream and herbs flavor", "et": "Pikad krõpsud hapukoore ja ürtide maitsega", "ru": "Длинные чипсы со вкусом сметаны и зелени" }
+    },
+    {
+      "id": "snack-shrips1",
+      "subcategory": "chips",
+      "image": "img/shrips_original.png",
+      "name": { "uk": "Shrips Оригінал", "en": "Shrips Original", "et": "Shrips Originaal", "ru": "Shrips Оригинал" },
+      "price": 2.9,
+      "weight": "50г",
+      "type": { "uk": "Креветкові чіпси", "en": "Shrimp Chips", "et": "Krevetikrõpsud", "ru": "Креветочные чипсы" },
+      "description": { "uk": "Креветкові чіпси, оригінальний смак", "en": "Shrimp chips, original flavor", "et": "Krevetikrõpsud, originaalmaitse", "ru": "Креветочные чипсы, оригинальный вкус" }
+    },
+    {
+      "id": "snack-shrips2",
+      "subcategory": "chips",
+      "image": "img/shrips_garlic.png",
+      "name": { "uk": "Shrips Вершковий Часник", "en": "Shrips Creamy Garlic", "et": "Shrips Kreemjas Küüslauk", "ru": "Shrips Сливочный Чеснок" },
+      "price": 2.9,
+      "weight": "50г",
+      "type": { "uk": "Креветкові чіпси", "en": "Shrimp Chips", "et": "Krevetikrõpsud", "ru": "Креветочные чипсы" },
+      "description": { "uk": "Креветкові чіпси зі смаком вершкового часнику", "en": "Shrimp chips with creamy garlic flavor", "et": "Krevetikrõpsud kreemja küüslaugumaitsega", "ru": "Креветочные чипсы со вкусом сливочного чеснока" }
+    },
+    {
+      "id": "snack-12a",
+      "subcategory": "chips",
+      "image": "img/kuryni_chipsy_vyshnia.png",
+      "name": { "uk": "Курячі чіпси з Вишнею", "en": "Chicken Chips Cherry", "et": "Kanakrõpsud Kirsiga", "ru": "Куриные чипсы с Вишней" },
+      "price": 4.5,
+      "weight": "60г",
+      "type": { "uk": "М'ясні чіпси", "en": "Meat Chips", "et": "Lihakrõpsud", "ru": "Мясные чипсы" },
+      "description": { "uk": "М'ясні чіпси з вишнею", "en": "Meat chips with cherry", "et": "Lihakrõpsud kirsiga", "ru": "Мясные чипсы с вишней" }
+    },
+    {
+      "id": "snack-12b",
+      "subcategory": "chips",
+      "image": "img/kuryni_chipsy_smetana_zelen.png",
+      "name": { "uk": "Курячі чіпси Сметана та Зелень", "en": "Chicken Chips Sour Cream & Herbs", "et": "Kanakrõpsud Hapukoor ja Ürdid", "ru": "Куриные чипсы Сметана и Зелень" },
+      "price": 4.5,
+      "weight": "60г",
+      "type": { "uk": "М'ясні чіпси", "en": "Meat Chips", "et": "Lihakrõpsud", "ru": "Мясные чипсы" },
+      "description": { "uk": "М'ясні чіпси зі сметаною та зеленню", "en": "Meat chips with sour cream and herbs", "et": "Lihakrõpsud hapukoore ja ürtidega", "ru": "Мясные чипсы со сметаной и зеленью" }
+    },
+    {
+      "id": "snack-17a",
+      "subcategory": "crackers",
+      "image": "img/flint_baguette_cream_onion.png",
+      "name": { "uk": "Flint Baguette Вершки та Цибуля", "en": "Flint Baguette Cream & Onion", "et": "Flint Baguette Koor ja Sibul", "ru": "Flint Baguette Сливки и Лук" },
+      "price": 1.3,
+      "weight": "60г",
+      "type": { "uk": "Грінки", "en": "Croutons", "et": "Leivakesed", "ru": "Гренки" },
+      "description": { "uk": "Грінки зі смаком вершків та цибулі", "en": "Croutons with cream and onion flavor", "et": "Leivakesed koore ja sibula maitsega", "ru": "Гренки со вкусом сливок и лука" }
+    },
+    {
+      "id": "snack-17b",
+      "subcategory": "crackers",
+      "image": "img/flint_baguette_mushroom.png",
+      "name": { "uk": "Flint Baguette Гриби у Вершках", "en": "Flint Baguette Mushroom Cream", "et": "Flint Baguette Seene-Koor", "ru": "Flint Baguette Грибы в Сливках" },
+      "price": 1.3,
+      "weight": "60г",
+      "type": { "uk": "Грінки", "en": "Croutons", "et": "Leivakesed", "ru": "Гренки" },
+      "description": { "uk": "Грінки зі смаком грибів у вершковому соусі", "en": "Croutons with mushroom in cream sauce", "et": "Leivakesed seene-kooresoosi maitsega", "ru": "Гренки со вкусом грибов в сливочном соусе" }
+    },
+    {
+      "id": "snack-17c",
+      "subcategory": "crackers",
+      "image": "img/flint_baguette_lobster.png",
+      "name": { "uk": "Flint Baguette Лобстер", "en": "Flint Baguette Lobster", "et": "Flint Baguette Homaar", "ru": "Flint Baguette Лобстер" },
+      "price": 1.3,
+      "weight": "60г",
+      "type": { "uk": "Грінки", "en": "Croutons", "et": "Leivakesed", "ru": "Гренки" },
+      "description": { "uk": "Грінки зі смаком лобстера", "en": "Croutons with lobster flavor", "et": "Leivakesed homaari maitsega", "ru": "Гренки со вкусом лобстера" }
+    },
+    {
+      "id": "snack-18a",
+      "subcategory": "crackers",
+      "image": "img/snekkin_bekon_khrin.png",
+      "name": { "uk": "Snekkin Бекон з Хріном", "en": "Snekkin Bacon Horseradish", "et": "Snekkin Peekon Mädarõikaga", "ru": "Snekkin Бекон с Хреном" },
+      "price": 1.5,
+      "weight": "60г",
+      "type": { "uk": "Сухарики", "en": "Crackers", "et": "Leivakesed", "ru": "Сухарики" },
+      "description": { "uk": "Сухарики зі смаком бекону та хрону", "en": "Crackers with bacon and horseradish flavor", "et": "Leivakesed peekoni ja mädarõika maitsega", "ru": "Сухарики со вкусом бекона и хрена" }
+    },
+    {
+      "id": "snack-18b",
+      "subcategory": "crackers",
+      "image": "img/snekkin_khrin.png",
+      "name": { "uk": "Snekkin Хрін", "en": "Snekkin Horseradish", "et": "Snekkin Mädarõigas", "ru": "Snekkin Хрен" },
+      "price": 1.5,
+      "weight": "60г",
+      "type": { "uk": "Сухарики", "en": "Crackers", "et": "Leivakesed", "ru": "Сухарики" },
+      "description": { "uk": "Сухарики зі смаком хрону", "en": "Crackers with horseradish flavor", "et": "Leivakesed mädarõika maitsega", "ru": "Сухарики со вкусом хрена" }
+    },
+    {
+      "id": "snack-18c",
+      "subcategory": "crackers",
+      "image": "img/snekkin_gryby.png",
+      "name": { "uk": "Snekkin Гриби", "en": "Snekkin Mushroom", "et": "Snekkin Seened", "ru": "Snekkin Грибы" },
+      "price": 1.5,
+      "weight": "60г",
+      "type": { "uk": "Сухарики", "en": "Crackers", "et": "Leivakesed", "ru": "Сухарики" },
+      "description": { "uk": "Сухарики зі смаком грибів", "en": "Crackers with mushroom flavor", "et": "Leivakesed seente maitsega", "ru": "Сухарики со вкусом грибов" }
+    },
+    {
+      "id": "snack-19a",
+      "subcategory": "seeds",
+      "image": "img/san_sanych_nesoloni.png",
+      "name": { "uk": "Сан Саніч Несолоні", "en": "San Sanych Unsalted", "et": "San Sanych Soolamata", "ru": "Сан Саныч Несолёные" },
+      "price": 3.5,
+      "weight": "235г",
+      "type": { "uk": "Насіння", "en": "Sunflower Seeds", "et": "Päevalilleseemned", "ru": "Семечки" },
+      "description": { "uk": "Несолоне насіння соняшника", "en": "Unsalted sunflower seeds", "et": "Soolamata päevalilleseemned", "ru": "Несолёные семечки подсолнуха" }
+    },
+    {
+      "id": "snack-19b",
+      "subcategory": "seeds",
+      "image": "img/san_sanych_soloni.png",
+      "name": { "uk": "Сан Саніч Солоні", "en": "San Sanych Salted", "et": "San Sanych Soolased", "ru": "Сан Саныч Солёные" },
+      "price": 3.5,
+      "weight": "235г",
+      "type": { "uk": "Насіння", "en": "Sunflower Seeds", "et": "Päevalilleseemned", "ru": "Семечки" },
+      "description": { "uk": "Солоне насіння соняшника", "en": "Salted sunflower seeds", "et": "Soolased päevalilleseemned", "ru": "Солёные семечки подсолнуха" }
+    },
+    {
+      "id": "snack-20a",
+      "subcategory": "seeds",
+      "image": "img/homka.png",
+      "name": { "uk": "Хомка Соняшник", "en": "Khomka Sunflower", "et": "Khomka Päevalill", "ru": "Хомка Подсолнух" },
+      "price": 3.5,
+      "weight": "1уп.",
+      "type": { "uk": "Насіння", "en": "Seeds", "et": "Seemned", "ru": "Семечки" },
+      "description": { "uk": "Класичне насіння соняшника", "en": "Classic sunflower seeds", "et": "Klassikalised päevalilleseemned", "ru": "Классические семечки подсолнуха" }
+    },
+    {
+      "id": "snack-20b",
+      "subcategory": "seeds",
+      "image": "img/homka_elitni_soloni.png",
+      "name": { "uk": "Хомка Елітні Солоні", "en": "Khomka Elite Salted", "et": "Khomka Eliit Soolased", "ru": "Хомка Элитные Солёные" },
+      "price": 3.5,
+      "weight": "1уп.",
+      "type": { "uk": "Насіння", "en": "Seeds", "et": "Seemned", "ru": "Семечки" },
+      "description": { "uk": "Елітне солоне насіння соняшника", "en": "Elite salted sunflower seeds", "et": "Eliit soolased päevalilleseemned", "ru": "Элитные солёные семечки подсолнуха" }
+    },
+    {
+      "id": "snack-20c",
+      "subcategory": "seeds",
+      "image": "img/homka_tykveni.png",
+      "name": { "uk": "Хомка Гарбузові", "en": "Khomka Pumpkin", "et": "Khomka Kõrvits", "ru": "Хомка Тыквенные" },
+      "price": 3.5,
+      "weight": "1уп.",
+      "type": { "uk": "Насіння", "en": "Seeds", "et": "Seemned", "ru": "Семечки" },
+      "description": { "uk": "Насіння гарбуза", "en": "Pumpkin seeds", "et": "Kõrvitsaseemned", "ru": "Тыквенные семечки" }
+    },
+    {
+      "id": "snack-3a",
       "subcategory": "seafood",
-      "image": "img/nyty_lososya.png",
-      "name": {
-        "uk": "Нитки Лосося 50г",
-        "en": "Salmon Threads 50g",
-        "et": "Lõhe niit 50g",
-        "ru": "Нити Лосося 50г"
-      },
+      "image": "img/kalmar_classic.png",
+      "name": { "uk": "Кальмар Класичний 50г", "en": "Dried Squid Classic 50g", "et": "Kuivatatud kalmaar Klassikaline 50g", "ru": "Кальмар Классический 50г" },
       "price": 3,
       "weight": "50г",
-      "type": {
-        "uk": "Сушена рибна закуска",
-        "en": "Dried Fish Snack",
-        "et": "Kuivatatud kala suupiste",
-        "ru": "Сушёная рыбная закуска"
-      },
-      "description": {
-        "uk": "Сушені нитки лосося",
-        "en": "Dried salmon threads",
-        "et": "Kuivatatud lõhe niidid",
-        "ru": "Сушёные нити лосося"
-      }
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушений кальмар, класичний смак", "en": "Dried squid, classic flavor", "et": "Kuivatatud kalmaar, klassikaline maitse", "ru": "Сушёный кальмар, классический вкус" }
+    },
+    {
+      "id": "snack-4a",
+      "subcategory": "seafood",
+      "image": "img/kalmar_classic.png",
+      "name": { "uk": "Кальмар Класичний 100г", "en": "Dried Squid Classic 100g", "et": "Kuivatatud kalmaar Klassikaline 100g", "ru": "Кальмар Классический 100г" },
+      "price": 5,
+      "weight": "100г",
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушений кальмар, класичний смак", "en": "Dried squid, classic flavor", "et": "Kuivatatud kalmaar, klassikaline maitse", "ru": "Сушёный кальмар, классический вкус" }
+    },
+    {
+      "id": "snack-3b",
+      "subcategory": "seafood",
+      "image": "img/kalmar_crab.png",
+      "name": { "uk": "Кальмар зі смаком Краба 50г", "en": "Dried Squid Crab 50g", "et": "Kuivatatud kalmaar Krabi 50g", "ru": "Кальмар со вкусом Краба 50г" },
+      "price": 3,
+      "weight": "50г",
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушений кальмар зі смаком краба", "en": "Dried squid with crab flavor", "et": "Kuivatatud kalmaar krabimaitsega", "ru": "Сушёный кальмар со вкусом краба" }
+    },
+    {
+      "id": "snack-4b",
+      "subcategory": "seafood",
+      "image": "img/kalmar_crab.png",
+      "name": { "uk": "Кальмар зі смаком Краба 100г", "en": "Dried Squid Crab 100g", "et": "Kuivatatud kalmaar Krabi 100g", "ru": "Кальмар со вкусом Краба 100г" },
+      "price": 5,
+      "weight": "100г",
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушений кальмар зі смаком краба", "en": "Dried squid with crab flavor", "et": "Kuivatatud kalmaar krabimaitsega", "ru": "Сушёный кальмар со вкусом краба" }
+    },
+    {
+      "id": "snack-3c",
+      "subcategory": "seafood",
+      "image": "img/kalmar_chili_sesame.png",
+      "name": { "uk": "Кальмар з Чілі та Кунжутом 50г", "en": "Dried Squid Chili & Sesame 50g", "et": "Kuivatatud kalmaar Tšilli ja Seesam 50g", "ru": "Кальмар с Чили и Кунжутом 50г" },
+      "price": 3,
+      "weight": "50г",
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушений кальмар з чілі та кунжутом", "en": "Dried squid with chili and sesame", "et": "Kuivatatud kalmaar tšilli ja seesamiga", "ru": "Сушёный кальмар с чили и кунжутом" }
+    },
+    {
+      "id": "snack-4c",
+      "subcategory": "seafood",
+      "image": "img/kalmar_chili_sesame.png",
+      "name": { "uk": "Кальмар з Чілі та Кунжутом 100г", "en": "Dried Squid Chili & Sesame 100g", "et": "Kuivatatud kalmaar Tšilli ja Seesam 100g", "ru": "Кальмар с Чили и Кунжутом 100г" },
+      "price": 5,
+      "weight": "100г",
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушений кальмар з чілі та кунжутом", "en": "Dried squid with chili and sesame", "et": "Kuivatatud kalmaar tšilli ja seesamiga", "ru": "Сушёный кальмар с чили и кунжутом" }
+    },
+    {
+      "id": "snack-3d",
+      "subcategory": "seafood",
+      "image": "img/kalmar_fillet_crab.png",
+      "name": { "uk": "Філе Кальмара з Крабом 50г", "en": "Squid Fillet with Crab 50g", "et": "Kalmaarifilee Krabiga 50g", "ru": "Филе Кальмара с Крабом 50г" },
+      "price": 3,
+      "weight": "50г",
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушене філе кальмара зі смаком краба", "en": "Dried squid fillet with crab flavor", "et": "Kuivatatud kalmaarifilee krabimaitsega", "ru": "Сушёное филе кальмара со вкусом краба" }
+    },
+    {
+      "id": "snack-4d",
+      "subcategory": "seafood",
+      "image": "img/kalmar_fillet_crab.png",
+      "name": { "uk": "Філе Кальмара з Крабом 100г", "en": "Squid Fillet with Crab 100g", "et": "Kalmaarifilee Krabiga 100g", "ru": "Филе Кальмара с Крабом 100г" },
+      "price": 5,
+      "weight": "100г",
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушене філе кальмара зі смаком краба", "en": "Dried squid fillet with crab flavor", "et": "Kuivatatud kalmaarifilee krabimaitsega", "ru": "Сушёное филе кальмара со вкусом краба" }
+    },
+    {
+      "id": "snack-3e",
+      "subcategory": "seafood",
+      "image": "img/kalmar_peru.png",
+      "name": { "uk": "Перуанський Кальмар 50г", "en": "Peruvian Squid 50g", "et": "Peruu kalmaar 50g", "ru": "Перуанский Кальмар 50г" },
+      "price": 3,
+      "weight": "50г",
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушений перуанський кальмар", "en": "Dried Peruvian squid", "et": "Kuivatatud Peruu kalmaar", "ru": "Сушёный перуанский кальмар" }
+    },
+    {
+      "id": "snack-4e",
+      "subcategory": "seafood",
+      "image": "img/kalmar_peru.png",
+      "name": { "uk": "Перуанський Кальмар 100г", "en": "Peruvian Squid 100g", "et": "Peruu kalmaar 100g", "ru": "Перуанский Кальмар 100г" },
+      "price": 5,
+      "weight": "100г",
+      "type": { "uk": "Сушений кальмар", "en": "Dried Squid", "et": "Kuivatatud kalmaar", "ru": "Сушёный кальмар" },
+      "description": { "uk": "Сушений перуанський кальмар", "en": "Dried Peruvian squid", "et": "Kuivatatud Peruu kalmaar", "ru": "Сушёный перуанский кальмар" }
+    },
+    {
+      "id": "snack-1",
+      "subcategory": "seafood",
+      "image": "img/nyty_lososya_new.png",
+      "name": { "uk": "Нитки Лосося 50г", "en": "Salmon Threads 50g", "et": "Lõhe niit 50g", "ru": "Нити Лосося 50г" },
+      "price": 3,
+      "weight": "50г",
+      "type": { "uk": "Сушена рибна закуска", "en": "Dried Fish Snack", "et": "Kuivatatud kala suupiste", "ru": "Сушёная рыбная закуска" },
+      "description": { "uk": "Сушені нитки лосося, мала порція", "en": "Dried salmon threads, small portion", "et": "Kuivatatud lõhe niidid, väike portsjon", "ru": "Сушёные нити лосося, маленькая порция" }
     },
     {
       "id": "snack-2",
       "subcategory": "seafood",
-      "image": "img/nyty_lososya.png",
-      "name": {
-        "uk": "Нитки Лосося 100г",
-        "en": "Salmon Threads 100g",
-        "et": "Lõhe niit 100g",
-        "ru": "Нити Лосося 100г"
-      },
+      "image": "img/nyty_lososya_new.png",
+      "name": { "uk": "Нитки Лосося 100г", "en": "Salmon Threads 100g", "et": "Lõhe niit 100g", "ru": "Нити Лосося 100г" },
       "price": 5,
       "weight": "100г",
-      "type": {
-        "uk": "Сушена рибна закуска",
-        "en": "Dried Fish Snack",
-        "et": "Kuivatatud kala suupiste",
-        "ru": "Сушёная рыбная закуска"
-      },
-      "description": {
-        "uk": "Сушені нитки лосося, велика порція",
-        "en": "Dried salmon threads, large portion",
-        "et": "Kuivatatud lõhe niidid, suur portsjon",
-        "ru": "Сушёные нити лосося, большая порция"
-      }
+      "type": { "uk": "Сушена рибна закуска", "en": "Dried Fish Snack", "et": "Kuivatatud kala suupiste", "ru": "Сушёная рыбная закуска" },
+      "description": { "uk": "Сушені нитки лосося, велика порція", "en": "Dried salmon threads, large portion", "et": "Kuivatatud lõhe niidid, suur portsjon", "ru": "Сушёные нити лосося, большая порция" }
     },
     {
-      "id": "snack-3",
+      "id": "snack-11",
       "subcategory": "seafood",
-      "image": "img/kalmar.png",
-      "name": {
-        "uk": "Кальмар 50г",
-        "en": "Dried Squid 50g",
-        "et": "Kuivatatud kalmaar 50g",
-        "ru": "Кальмар 50г"
-      },
-      "price": 3,
-      "weight": "50г",
-      "type": {
-        "uk": "Сушений кальмар",
-        "en": "Dried Squid",
-        "et": "Kuivatatud kalmaar",
-        "ru": "Сушёный кальмар"
-      },
-      "description": {
-        "uk": "Сушений кальмар (класика, краб, чилі)",
-        "en": "Dried squid (classic, crab, chili)",
-        "et": "Kuivatatud kalmaar (klassikaline, krabi, tšilli)",
-        "ru": "Сушёный кальмар (классика, краб, чили)"
-      }
-    },
-    {
-      "id": "snack-4",
-      "subcategory": "seafood",
-      "image": "img/kalmar.png",
-      "name": {
-        "uk": "Кальмар 100г",
-        "en": "Dried Squid 100g",
-        "et": "Kuivatatud kalmaar 100g",
-        "ru": "Кальмар 100г"
-      },
+      "image": "img/rebra_lososya_new.png",
+      "name": { "uk": "Ребра лосося", "en": "Salmon Ribs", "et": "Lõhe ribad", "ru": "Рёбра лосося" },
       "price": 5,
       "weight": "100г",
-      "type": {
-        "uk": "Сушений кальмар",
-        "en": "Dried Squid",
-        "et": "Kuivatatud kalmaar",
-        "ru": "Сушёный кальмар"
-      },
-      "description": {
-        "uk": "Сушений кальмар, велика порція",
-        "en": "Dried squid, large portion",
-        "et": "Kuivatatud kalmaar, suur portsjon",
-        "ru": "Сушёный кальмар, большая порция"
-      }
+      "type": { "uk": "Сушена риба", "en": "Dried Fish", "et": "Kuivatatud kala", "ru": "Сушёная рыба" },
+      "description": { "uk": "Сушені ребра лосося", "en": "Dried salmon ribs", "et": "Kuivatatud lõhe ribad", "ru": "Сушёные рёбра лосося" }
+    },
+    {
+      "id": "snack-6a",
+      "subcategory": "seafood",
+      "image": "img/putassu_classic.png",
+      "name": { "uk": "Путасу Класична 100г", "en": "Blue Whiting Classic 100g", "et": "Putassuu Klassikaline 100g", "ru": "Путассу Классическая 100г" },
+      "price": 5,
+      "weight": "100г",
+      "type": { "uk": "Сушена риба", "en": "Dried Fish", "et": "Kuivatatud kala", "ru": "Сушёная рыба" },
+      "description": { "uk": "Сушена путасу, класична", "en": "Dried blue whiting, classic", "et": "Kuivatatud putassuu, klassikaline", "ru": "Сушёная путассу, классическая" }
+    },
+    {
+      "id": "snack-6b",
+      "subcategory": "seafood",
+      "image": "img/putassu_chili.png",
+      "name": { "uk": "Путасу з Чілі 100г", "en": "Blue Whiting Chili 100g", "et": "Putassuu Tšilliga 100g", "ru": "Путассу с Чили 100г" },
+      "price": 5,
+      "weight": "100г",
+      "type": { "uk": "Сушена риба", "en": "Dried Fish", "et": "Kuivatatud kala", "ru": "Сушёная рыба" },
+      "description": { "uk": "Сушена путасу з чілі", "en": "Dried blue whiting with chili", "et": "Kuivatatud putassuu tšilliga", "ru": "Сушёная путассу с чили" }
+    },
+    {
+      "id": "snack-7",
+      "subcategory": "seafood",
+      "image": "img/putassu_classic.png",
+      "name": { "uk": "Путасу 150г", "en": "Blue Whiting 150g", "et": "Putassuu 150g", "ru": "Путассу 150г" },
+      "price": 6,
+      "weight": "150г",
+      "type": { "uk": "Сушена риба", "en": "Dried Fish", "et": "Kuivatatud kala", "ru": "Сушёная рыба" },
+      "description": { "uk": "Сушена путасу, велика порція", "en": "Dried blue whiting, large portion", "et": "Kuivatatud putassuu, suur portsjon", "ru": "Сушёная путассу, большая порция" }
     },
     {
       "id": "snack-5",
       "subcategory": "seafood",
       "image": "img/file_tuntsa.png",
-      "name": {
-        "uk": "Філе тунця",
-        "en": "Tuna Fillet",
-        "et": "Tuunikala filee",
-        "ru": "Филе тунца"
-      },
+      "name": { "uk": "Філе тунця", "en": "Tuna Fillet", "et": "Tuunikala filee", "ru": "Филе тунца" },
       "price": 5,
       "weight": "100г",
-      "type": {
-        "uk": "Сушена риба",
-        "en": "Dried Fish",
-        "et": "Kuivatatud kala",
-        "ru": "Сушёная рыба"
-      },
-      "description": {
-        "uk": "Сушене філе тунця",
-        "en": "Dried tuna fillet",
-        "et": "Kuivatatud tuunikala filee",
-        "ru": "Сушёное филе тунца"
-      }
+      "type": { "uk": "Сушена риба", "en": "Dried Fish", "et": "Kuivatatud kala", "ru": "Сушёная рыба" },
+      "description": { "uk": "Сушене філе тунця", "en": "Dried tuna fillet", "et": "Kuivatatud tuunikala filee", "ru": "Сушёное филе тунца" }
     },
     {
-      "id": "snack-6",
+      "id": "snack-10",
       "subcategory": "seafood",
-      "image": "img/putassu.png",
-      "name": {
-        "uk": "Путасу 100г",
-        "en": "Blue Whiting 100g",
-        "et": "Putassuu 100g",
-        "ru": "Путассу 100г"
-      },
+      "image": "img/file_tresky_new.png",
+      "name": { "uk": "Філе тріски", "en": "Cod Fillet", "et": "Tursa seljafilee", "ru": "Филе трески" },
       "price": 5,
       "weight": "100г",
-      "type": {
-        "uk": "Сушена риба",
-        "en": "Dried Fish",
-        "et": "Kuivatatud kala",
-        "ru": "Сушёная рыба"
-      },
-      "description": {
-        "uk": "Сушена путасу (також з чилі)",
-        "en": "Dried blue whiting (also with chili)",
-        "et": "Kuivatatud putassuu (ka tšillipipraga)",
-        "ru": "Сушёная путассу (также с чили)"
-      }
-    },
-    {
-      "id": "snack-7",
-      "subcategory": "seafood",
-      "image": "img/putassu.png",
-      "name": {
-        "uk": "Путасу 150г",
-        "en": "Blue Whiting 150g",
-        "et": "Putassuu 150g",
-        "ru": "Путассу 150г"
-      },
-      "price": 6,
-      "weight": "150г",
-      "type": {
-        "uk": "Сушена риба",
-        "en": "Dried Fish",
-        "et": "Kuivatatud kala",
-        "ru": "Сушёная рыба"
-      },
-      "description": {
-        "uk": "Сушена путасу, велика порція",
-        "en": "Dried blue whiting, large portion",
-        "et": "Kuivatatud putassuu, suur portsjon",
-        "ru": "Сушёная путассу, большая порция"
-      }
+      "type": { "uk": "Сушена риба", "en": "Dried Fish", "et": "Kuivatatud kala", "ru": "Сушёная рыба" },
+      "description": { "uk": "Сушене філе спинки тріски", "en": "Dried cod back fillet", "et": "Kuivatatud tursa seljafilee", "ru": "Сушёное филе спинки трески" }
     },
     {
       "id": "snack-8",
       "subcategory": "seafood",
       "image": "img/ikra_leshcha.png",
-      "name": {
-        "uk": "Ікра ляща",
-        "en": "Bream Roe",
-        "et": "Latikas kaviaar",
-        "ru": "Икра леща"
-      },
+      "name": { "uk": "Ікра ляща", "en": "Bream Roe", "et": "Latikas kaviaar", "ru": "Икра леща" },
       "price": 6,
       "weight": "100г",
-      "type": {
-        "uk": "Сушена ікра",
-        "en": "Dried Roe",
-        "et": "Kuivatatud kaviaar",
-        "ru": "Сушёная икра"
-      },
-      "description": {
-        "uk": "Сушена ікра ляща",
-        "en": "Dried bream roe",
-        "et": "Kuivatatud latika kaviaar",
-        "ru": "Сушёная икра леща"
-      }
+      "type": { "uk": "Сушена ікра", "en": "Dried Roe", "et": "Kuivatatud kaviaar", "ru": "Сушёная икра" },
+      "description": { "uk": "Сушена ікра ляща", "en": "Dried bream roe", "et": "Kuivatatud latika kaviaar", "ru": "Сушёная икра леща" }
     },
     {
       "id": "snack-9",
       "subcategory": "seafood",
       "image": "img/ikra_plotvy.png",
-      "name": {
-        "uk": "Ікра плітки",
-        "en": "Roach Roe",
-        "et": "Särje kaviaar",
-        "ru": "Икра плотвы"
-      },
+      "name": { "uk": "Ікра плітки", "en": "Roach Roe", "et": "Särje kaviaar", "ru": "Икра плотвы" },
       "price": 6,
       "weight": "100г",
-      "type": {
-        "uk": "Сушена ікра",
-        "en": "Dried Roe",
-        "et": "Kuivatatud kaviaar",
-        "ru": "Сушёная икра"
-      },
-      "description": {
-        "uk": "Сушена ікра плітки",
-        "en": "Dried roach roe",
-        "et": "Kuivatatud särje kaviaar",
-        "ru": "Сушёная икра плотвы"
-      }
+      "type": { "uk": "Сушена ікра", "en": "Dried Roe", "et": "Kuivatatud kaviaar", "ru": "Сушёная икра" },
+      "description": { "uk": "Сушена ікра плітки", "en": "Dried roach roe", "et": "Kuivatatud särje kaviaar", "ru": "Сушёная икра плотвы" }
     },
     {
-      "id": "snack-10",
+      "id": "snack-midii",
       "subcategory": "seafood",
-      "image": "img/file_tresky.png",
-      "name": {
-        "uk": "Філе тріски",
-        "en": "Cod Fillet",
-        "et": "Tursa seljafilee",
-        "ru": "Филе трески"
-      },
+      "image": "img/midii_susheni.png",
+      "name": { "uk": "Сушені Мідії", "en": "Dried Mussels", "et": "Kuivatatud rannakarbi", "ru": "Сушёные Мидии" },
       "price": 5,
       "weight": "100г",
-      "type": {
-        "uk": "Сушена риба",
-        "en": "Dried Fish",
-        "et": "Kuivatatud kala",
-        "ru": "Сушёная рыба"
-      },
-      "description": {
-        "uk": "Сушене філе спинки тріски",
-        "en": "Dried cod back fillet",
-        "et": "Kuivatatud tursa seljafilee",
-        "ru": "Сушёное филе спинки трески"
-      }
+      "type": { "uk": "Сушені морепродукти", "en": "Dried Seafood", "et": "Kuivatatud mereannid", "ru": "Сушёные морепродукты" },
+      "description": { "uk": "Сушені мідії", "en": "Dried mussels", "et": "Kuivatatud rannakarbi", "ru": "Сушёные мидии" }
     },
     {
-      "id": "snack-11",
+      "id": "snack-syr",
       "subcategory": "seafood",
-      "image": "img/rebra_lososya.png",
-      "name": {
-        "uk": "Ребра лосося",
-        "en": "Salmon Ribs",
-        "et": "Lõhe ribad",
-        "ru": "Рёбра лосося"
-      },
-      "price": 5,
+      "image": "img/syr_kopychen_kosychka.png",
+      "name": { "uk": "Сир Копчений Косичка", "en": "Braided Smoked Cheese", "et": "Suitsujuust Patsikmudel", "ru": "Сыр Копчёный Косичка" },
+      "price": 3,
       "weight": "100г",
-      "type": {
-        "uk": "Сушена риба",
-        "en": "Dried Fish",
-        "et": "Kuivatatud kala",
-        "ru": "Сушёная рыба"
-      },
-      "description": {
-        "uk": "Сушені ребра лосося",
-        "en": "Dried salmon ribs",
-        "et": "Kuivatatud lõhe ribad",
-        "ru": "Сушёные рёбра лосося"
-      }
+      "type": { "uk": "Сир", "en": "Cheese", "et": "Juust", "ru": "Сыр" },
+      "description": { "uk": "Копчений сир, косичка", "en": "Braided smoked cheese", "et": "Suitsujuust, patsik", "ru": "Копчёный сыр, косичка" }
     },
     {
-      "id": "snack-12",
-      "subcategory": "chips",
-      "image": "img/kuryni_chipsy.png",
-      "name": {
-        "uk": "Курячі чіпси",
-        "en": "Chicken Chips",
-        "et": "Kanakrõpsud",
-        "ru": "Куриные чипсы"
-      },
-      "price": 4.5,
-      "weight": "60г",
-      "type": {
-        "uk": "М'ясні чіпси",
-        "en": "Meat Chips",
-        "et": "Lihakrõpsud",
-        "ru": "Мясные чипсы"
-      },
-      "description": {
-        "uk": "М'ясні чіпси з вишнею / сметана та зелень",
-        "en": "Meat chips with cherry / sour cream & herbs",
-        "et": "Lihakrõpsud kirsi / hapukoore ja ürtidega",
-        "ru": "Мясные чипсы с вишней / сметана и зелень"
-      }
-    },
-    {
-      "id": "snack-13",
-      "subcategory": "chips",
-      "image": "img/liuks_kartopliani_chipsy.png",
-      "name": {
-        "uk": "Люкс Картопляні Чіпси",
-        "en": "Lux Potato Chips",
-        "et": "Kartulikrõpsud Lux",
-        "ru": "Люкс Картофельные Чипсы"
-      },
-      "price": 3.5,
-      "weight": "125г",
-      "type": {
-        "uk": "Чіпси",
-        "en": "Chips",
-        "et": "Krõpsud",
-        "ru": "Чипсы"
-      },
-      "description": {
-        "uk": "Чіпси (бекон, лисички, сир)",
-        "en": "Chips (bacon, chanterelle, cheese)",
-        "et": "Krõpsud (peekon, kukeseened, juust)",
-        "ru": "Чипсы (бекон, лисички, сыр)"
-      }
-    },
-    {
-      "id": "snack-14",
-      "subcategory": "chips",
-      "image": "img/chipsters_krevetka.png",
-      "name": {
-        "uk": "Chipsters Креветка",
-        "en": "Chipsters Shrimp",
-        "et": "Chipsters Krevetikrõpsud",
-        "ru": "Chipsters Креветка"
-      },
-      "price": 2.9,
-      "weight": "50г",
-      "type": {
-        "uk": "Чіпси",
-        "en": "Chips",
-        "et": "Krõpsud",
-        "ru": "Чипсы"
-      },
-      "description": {
-        "uk": "Чіпси зі смаком креветки",
-        "en": "Chips with shrimp flavor",
-        "et": "Kreveti maitsega krõpsud",
-        "ru": "Чипсы со вкусом креветки"
-      }
-    },
-    {
-      "id": "snack-15",
-      "subcategory": "chips",
-      "image": "img/chipsters.png",
-      "name": {
-        "uk": "Chipsters Класичні",
-        "en": "Chipsters Classic",
-        "et": "Chipsters Klassikalised",
-        "ru": "Chipsters Классика"
-      },
-      "price": 2.8,
-      "weight": "50г",
-      "type": {
-        "uk": "Чіпси",
-        "en": "Chips",
-        "et": "Krõpsud",
-        "ru": "Чипсы"
-      },
-      "description": {
-        "uk": "Класичні картопляні чіпси",
-        "en": "Classic potato chips",
-        "et": "Klassikalised kartulikrõpsud",
-        "ru": "Классические картофельные чипсы"
-      }
-    },
-    {
-      "id": "snack-16",
-      "subcategory": "chips",
-      "image": "img/big_panda_xxlong.png",
-      "name": {
-        "uk": "Big Panda XXLong",
-        "en": "Big Panda XXLong",
-        "et": "Big Panda XXLong",
-        "ru": "Big Panda XXLong"
-      },
-      "price": 1.35,
-      "weight": "50г",
-      "type": {
-        "uk": "Чіпси",
-        "en": "Chips",
-        "et": "Krõpsud",
-        "ru": "Чипсы"
-      },
-      "description": {
-        "uk": "Довгі чіпси (краб, курка, гриби, сметана)",
-        "en": "Long chips (crab, chicken, mushroom, sour cream)",
-        "et": "Pikad krõpsud (krabi, kana, seene, hapukoore)",
-        "ru": "Длинные чипсы (краб, курица, грибы, сметана)"
-      }
-    },
-    {
-      "id": "snack-17",
-      "subcategory": "crackers",
-      "image": "img/flint_baguette.png",
-      "name": {
-        "uk": "Flint Baguette",
-        "en": "Flint Baguette",
-        "et": "Flint Baguette Leivakesed",
-        "ru": "Flint Baguette"
-      },
-      "price": 1.3,
-      "weight": "60г",
-      "type": {
-        "uk": "Грінки",
-        "en": "Croutons",
-        "et": "Leivakesed",
-        "ru": "Гренки"
-      },
-      "description": {
-        "uk": "Грінки (вершки/цибуля, гриби, лобстер)",
-        "en": "Croutons (cream/onion, mushroom, lobster)",
-        "et": "Leivakesed (koor/sibul, seened, homaar)",
-        "ru": "Гренки (сливки/лук, грибы, лобстер)"
-      }
-    },
-    {
-      "id": "snack-18",
-      "subcategory": "crackers",
-      "image": "img/snekkin_suharyky.png",
-      "name": {
-        "uk": "Snekkin Сухарики",
-        "en": "Snekkin Crackers",
-        "et": "Snekkin Leivakesed",
-        "ru": "Snekkin Сухарики"
-      },
-      "price": 1.5,
-      "weight": "60г",
-      "type": {
-        "uk": "Сухарики",
-        "en": "Crackers",
-        "et": "Leivakesed",
-        "ru": "Сухарики"
-      },
-      "description": {
-        "uk": "Сухарики (холодець з хріном, сало, гриби)",
-        "en": "Crackers (aspic with horseradish, lard, mushroom)",
-        "et": "Leivakesed (sült mädarõikaga, pekk, seened)",
-        "ru": "Сухарики (холодец с хреном, сало, грибы)"
-      }
-    },
-    {
-      "id": "snack-19",
-      "subcategory": "seeds",
-      "image": "img/san_sanych_ekspert.png",
-      "name": {
-        "uk": "Сан Саніч Експерт",
-        "en": "San Sanych Expert",
-        "et": "San Sanych seemned",
-        "ru": "Сан Саныч Эксперт"
-      },
-      "price": 3.5,
-      "weight": "235г",
-      "type": {
-        "uk": "Насіння",
-        "en": "Sunflower Seeds",
-        "et": "Päevalilleseemned",
-        "ru": "Семечки"
-      },
-      "description": {
-        "uk": "Смажене насіння соняшника",
-        "en": "Roasted sunflower seeds",
-        "et": "Röstitud päevalilleseemned",
-        "ru": "Жареные семечки подсолнуха"
-      }
-    },
-    {
-      "id": "snack-20",
-      "subcategory": "seeds",
-      "image": "img/homka.png",
-      "name": {
-        "uk": "Хомка",
-        "en": "Khomka",
-        "et": "Khomka",
-        "ru": "Хомка"
-      },
-      "price": 3.5,
-      "weight": "1уп.",
-      "type": {
-        "uk": "Насіння",
-        "en": "Seeds",
-        "et": "Seemned",
-        "ru": "Семечки"
-      },
-      "description": {
-        "uk": "Насіння гарбуза / соняшника",
-        "en": "Pumpkin / sunflower seeds",
-        "et": "Kõrvitsa / päevalille seemned",
-        "ru": "Семечки тыквы / подсолнуха"
-      }
-    },
-    {
-      "id": "snack-21",
+      "id": "snack-21a",
       "subcategory": "nuts",
-      "image": "img/big_bob_arakhis_kranch.png",
-      "name": {
-        "uk": "Big Bob Арахіс / Кранч",
-        "en": "Big Bob Peanuts / Crunch",
-        "et": "Big Bob Maapähklid / Crunch",
-        "ru": "Big Bob Арахис / Кранч"
-      },
+      "image": "img/big_bob_bekon.png",
+      "name": { "uk": "Big Bob Бекон", "en": "Big Bob Bacon", "et": "Big Bob Peekon", "ru": "Big Bob Бекон" },
       "price": 1.39,
       "weight": "60г",
-      "type": {
-        "uk": "Арахіс у глазурі",
-        "en": "Glazed Peanuts",
-        "et": "Glasuuritud maapähklid",
-        "ru": "Арахис в глазури"
-      },
-      "description": {
-        "uk": "Арахіс у глазурі (сир, бастурма, раки, васабі)",
-        "en": "Glazed peanuts (cheese, basturma, crab, wasabi)",
-        "et": "Glasuuritud maapähklid (juust, basturma, krabi, wasabi)",
-        "ru": "Арахис в глазури (сыр, бастурма, раки, васаби)"
-      }
+      "type": { "uk": "Арахіс у глазурі", "en": "Glazed Peanuts", "et": "Glasuuritud maapähklid", "ru": "Арахис в глазури" },
+      "description": { "uk": "Арахіс у глазурі зі смаком бекону", "en": "Glazed peanuts with bacon flavor", "et": "Glasuuritud maapähklid peekonimaitsega", "ru": "Арахис в глазури со вкусом бекона" }
+    },
+    {
+      "id": "snack-21b",
+      "subcategory": "nuts",
+      "image": "img/big_bob_basturma.png",
+      "name": { "uk": "Big Bob Бастурма", "en": "Big Bob Basturma", "et": "Big Bob Basturma", "ru": "Big Bob Бастурма" },
+      "price": 1.39,
+      "weight": "60г",
+      "type": { "uk": "Арахіс у глазурі", "en": "Glazed Peanuts", "et": "Glasuuritud maapähklid", "ru": "Арахис в глазури" },
+      "description": { "uk": "Арахіс у глазурі зі смаком бастурми", "en": "Glazed peanuts with basturma flavor", "et": "Glasuuritud maapähklid basturma maitsega", "ru": "Арахис в глазури со вкусом бастурмы" }
+    },
+    {
+      "id": "snack-21c",
+      "subcategory": "nuts",
+      "image": "img/big_bob_smetana.png",
+      "name": { "uk": "Big Bob Сметана", "en": "Big Bob Sour Cream", "et": "Big Bob Hapukoor", "ru": "Big Bob Сметана" },
+      "price": 1.39,
+      "weight": "60г",
+      "type": { "uk": "Арахіс у глазурі", "en": "Glazed Peanuts", "et": "Glasuuritud maapähklid", "ru": "Арахис в глазури" },
+      "description": { "uk": "Арахіс у глазурі зі смаком сметани", "en": "Glazed peanuts with sour cream flavor", "et": "Glasuuritud maapähklid hapukoore maitsega", "ru": "Арахис в глазури со вкусом сметаны" }
+    },
+    {
+      "id": "snack-21d",
+      "subcategory": "nuts",
+      "image": "img/big_bob_gryby.png",
+      "name": { "uk": "Big Bob Гриби у Вершках", "en": "Big Bob Creamy Mushroom", "et": "Big Bob Kreemised Seened", "ru": "Big Bob Грибы в Сливках" },
+      "price": 1.39,
+      "weight": "60г",
+      "type": { "uk": "Арахіс у глазурі", "en": "Glazed Peanuts", "et": "Glasuuritud maapähklid", "ru": "Арахис в глазури" },
+      "description": { "uk": "Хрусткий арахіс зі смаком грибів у вершках", "en": "Crunchy peanuts with creamy mushroom flavor", "et": "Krõbedad maapähklid kreemise seene maitsega", "ru": "Хрустящий арахис со вкусом грибов в сливках" }
+    },
+    {
+      "id": "snack-21e",
+      "subcategory": "nuts",
+      "image": "img/big_bob_krevetka.png",
+      "name": { "uk": "Big Bob Креветка", "en": "Big Bob Shrimp", "et": "Big Bob Krevett", "ru": "Big Bob Креветка" },
+      "price": 1.39,
+      "weight": "60г",
+      "type": { "uk": "Арахіс у глазурі", "en": "Glazed Peanuts", "et": "Glasuuritud maapähklid", "ru": "Арахис в глазури" },
+      "description": { "uk": "Хрусткий арахіс зі смаком креветки", "en": "Crunchy peanuts with shrimp flavor", "et": "Krõbedad maapähklid krevetimaitsega", "ru": "Хрустящий арахис со вкусом креветки" }
+    },
+    {
+      "id": "snack-21f",
+      "subcategory": "nuts",
+      "image": "img/big_bob_vasabi.png",
+      "name": { "uk": "Big Bob Васабі", "en": "Big Bob Wasabi", "et": "Big Bob Wasabi", "ru": "Big Bob Васаби" },
+      "price": 1.39,
+      "weight": "60г",
+      "type": { "uk": "Арахіс у глазурі", "en": "Glazed Peanuts", "et": "Glasuuritud maapähklid", "ru": "Арахис в глазури" },
+      "description": { "uk": "Хрусткий арахіс зі смаком васабі", "en": "Crunchy peanuts with wasabi flavor", "et": "Krõbedad maapähklid wasabi maitsega", "ru": "Хрустящий арахис со вкусом васаби" }
     }
   ]
 };
