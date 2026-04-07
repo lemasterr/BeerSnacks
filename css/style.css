@@ -763,13 +763,13 @@ body {
 
 @media (max-width: 380px) {
   .product-card__image-wrap {
-    width: 64px;
+    width: 84px;
     padding: 8px;
   }
 
   .product-card__image {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
     padding: 4px;
   }
 
@@ -783,14 +783,18 @@ body {
   align-self: center;
   justify-self: center;
   margin: 10px auto 0 auto;
-  padding: 4px 8px;
+  padding: 4px 6px;
   border-radius: 12px;
   font-size: 9px;
   font-weight: 700;
   text-align: center;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
   text-transform: uppercase;
   letter-spacing: 0.2px;
+  line-height: 1.2;
 }
 
 .product-card__badge.in-stock {
