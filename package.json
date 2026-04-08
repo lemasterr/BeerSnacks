@@ -1,0 +1,12 @@
+{
+  "name": "beersnacks-cloudflare",
+  "version": "1.0.0",
+  "description": "Beer&Snacks Serverless Catalog via Cloudflare",
+  "scripts": {
+    "dev": "wrangler pages dev public --kv DB_KV",
+    "deploy": "wrangler pages deploy public"
+  },
+  "devDependencies": {
+    "wrangler": "^3.40.0"
+  }
+}

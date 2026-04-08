@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <rect width="80" height="80" rx="12" fill="#f5f5f5"/>
+  <g stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Cheese wedge -->
+    <path d="M20 52L40 24l20 28H20z" fill="#e8e8e8" stroke="#333"/>
+    <!-- Side face -->
+    <path d="M40 24l8 4l12 24H60L40 24z" fill="#ddd" stroke="#333"/>
+    <!-- Holes -->
+    <circle cx="34" cy="44" r="2.5" fill="#f5f5f5" stroke="#333"/>
+    <circle cx="44" cy="46" r="2" fill="#f5f5f5" stroke="#333"/>
+    <circle cx="30" cy="38" r="1.5" fill="#f5f5f5" stroke="#333"/>
+    <circle cx="50" cy="42" r="1.5" fill="#f5f5f5" stroke="#333"/>
+  </g>
+</svg>

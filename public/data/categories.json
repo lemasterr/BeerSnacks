@@ -1,0 +1,40 @@
+{
+  "beer": [
+    "all",
+    "ukraine",
+    "poland",
+    "czech",
+    "germany",
+    "estonia"
+  ],
+  "cider": [
+    "all",
+    "fruit_cider",
+    "berry_cider",
+    "non_alc_cider"
+  ],
+  "drinks": [
+    "all",
+    "juices",
+    "sodas",
+    "water",
+    "energy",
+    "tea_coffee"
+  ],
+  "sweets": [
+    "all",
+    "candies",
+    "dragee",
+    "wafers",
+    "desserts",
+    "cakes"
+  ],
+  "snacks": [
+    "all",
+    "chips",
+    "crackers",
+    "seeds",
+    "seafood",
+    "nuts"
+  ]
+}

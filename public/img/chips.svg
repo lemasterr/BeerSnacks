@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <rect width="80" height="80" rx="12" fill="#f5f5f5"/>
+  <g stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Bag -->
+    <path d="M24 30c0 0 2-8 16-8s16 8 16 8v22a4 4 0 01-4 4H28a4 4 0 01-4-4V30z" fill="#e8e8e8"/>
+    <!-- Bag top crimp -->
+    <path d="M28 26c4-4 8-5 12-5s8 1 12 5" stroke="#333"/>
+    <path d="M24 30h32" stroke="#333"/>
+    <!-- Chips inside -->
+    <ellipse cx="34" cy="40" rx="4" ry="3" fill="#ddd" stroke="#333" stroke-width="1"/>
+    <ellipse cx="44" cy="38" rx="3.5" ry="2.5" fill="#ddd" stroke="#333" stroke-width="1" transform="rotate(-15 44 38)"/>
+    <ellipse cx="38" cy="46" rx="4" ry="2.5" fill="#ddd" stroke="#333" stroke-width="1" transform="rotate(10 38 46)"/>
+  </g>
+</svg>
