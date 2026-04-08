@@ -19,14 +19,6 @@ export async function onRequestPost(context) {
   const tr = (msg) => JSON.stringify({ error: msg });
   
   try {
-    // Check authentication
-    const authHeader = context.request.headers.get('authorization') || '';
-    const adminPassword = context.env.ADMIN_PASSWORD || 'admin123';
-    
-    if (authHeader !== `Bearer ${adminPassword}` && authHeader !== adminPassword) {
-      return new Response(tr('Unauthorized'), { status: 401, headers: { 'Content-Type': 'application/json' } });
-    }
-
     const contentType = context.request.headers.get('content-type') || '';
     if (!contentType.includes('multipart/form-data')) {
       return new Response(tr('Expected multipart/form-data'), { status: 400, headers: { 'Content-Type': 'application/json' } });
