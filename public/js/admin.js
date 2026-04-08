@@ -358,17 +358,19 @@ document.addEventListener('DOMContentLoaded', () => {
       );
     }
 
-    // Sort by selected field
-    const field = currentSortField;
+    // Sort: Primary = in_stock (true first), Secondary = selected field
     filtered.sort((a, b) => {
+      const aStock = a.in_stock !== false;
+      const bStock = b.in_stock !== false;
+      if (aStock !== bStock) return aStock ? -1 : 1;
+
+      const field = currentSortField;
       let va, vb;
       if (field === 'id') {
-        // Numeric sort for IDs that contain numbers
         const numA = parseInt((a.id || '').replace(/\D/g, '')) || 0;
         const numB = parseInt((b.id || '').replace(/\D/g, '')) || 0;
         va = numA; vb = numB;
         if (va !== vb) return currentSortDir === 'asc' ? va - vb : vb - va;
-        // Fall back to string if numbers are equal
         va = (a.id || ''); vb = (b.id || '');
       } else if (field === 'price') {
         va = Number(a.price) || 0; vb = Number(b.price) || 0;
@@ -551,6 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="field"><label>Order</label><input type="number" class="detailed-input" data-id="${item.id}" data-field="sort_order" value="${item.sort_order||0}"></div>
           </div>
           <div class="de-actions">
+             <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">Delete Product</button>
              <button class="btn btn--secondary btn--sm" onclick="adminActions.edit('${item.id}')">Full Edit Modal</button>
           </div>
         </div>
