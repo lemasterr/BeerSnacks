@@ -476,107 +476,69 @@ document.addEventListener('DOMContentLoaded', () => {
   function buildDetailedRowHtml(item) {
     const tr = t();
     const categories = ['beer','cider','drinks','sweets','snacks'];
-    const subcats = CATEGORY_SUBS[item.category] || [];
     
     return `
-      <div class="detailed-card">
-        <div class="detailed-card__aside">
-          <div class="detailed-card__img-container">
-            <img src="${item.image}" alt="" class="detailed-card__img" onerror="this.style.opacity=0.3">
-            <button class="detailed-card__img-edit" onclick="adminActions.edit('${item.id}')">Change Image</button>
-          </div>
-          <div class="detailed-card__id">ID: <code>${escHtml(item.id)}</code></div>
-          <div class="detailed-card__actions">
-            <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">View</button>
-            <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">Full Edit</button>
-            <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">Delete</button>
-          </div>
-        </div>
+      <div class="quick-edit-row">
         
-        <div class="detailed-card__main">
-          <!-- Row 1: Names -->
-          <div class="detailed-section">
-            <div class="detailed-section__title">${tr.namesSection}</div>
-            <div class="detailed-grid detailed-grid--names">
-              <div class="field">
-                <label><span class="lang-badge">UK</span></label>
-                <input class="detailed-input" data-id="${item.id}" data-field="name_uk" value="${escHtml(item.name_uk||'')}">
-              </div>
-              <div class="field">
-                <label><span class="lang-badge">EN</span></label>
-                <input class="detailed-input" data-id="${item.id}" data-field="name_en" value="${escHtml(item.name_en||'')}">
-              </div>
-              <div class="field">
-                <label><span class="lang-badge">ET</span></label>
-                <input class="detailed-input" data-id="${item.id}" data-field="name_et" value="${escHtml(item.name_et||'')}">
-              </div>
-              <div class="field">
-                <label><span class="lang-badge">RU</span></label>
-                <input class="detailed-input" data-id="${item.id}" data-field="name_ru" value="${escHtml(item.name_ru||'')}">
-              </div>
+        <!-- Action & Media -->
+        <div class="qe-col qe-media">
+          <img src="${item.image}" alt="" class="qe-img" onerror="this.style.opacity=0.3">
+          <div class="field" style="flex:1;">
+            <label>Image URL</label>
+            <input class="detailed-input qe-input" data-id="${item.id}" data-field="image" value="${escHtml(item.image||'')}">
+          </div>
+          <button class="btn btn--edit btn--xs" onclick="adminActions.edit('${item.id}')" style="margin-top:6px;width:100%;">Full Edit</button>
+        </div>
+
+        <!-- Names Grid -->
+        <div class="qe-col qe-names">
+          <label class="qe-section-label">Names</label>
+          <div class="field-row"><span class="lang-badge">UK</span><input class="detailed-input qe-input" data-id="${item.id}" data-field="name_uk" value="${escHtml(item.name_uk||'')}"></div>
+          <div class="field-row"><span class="lang-badge">EN</span><input class="detailed-input qe-input" data-id="${item.id}" data-field="name_en" value="${escHtml(item.name_en||'')}"></div>
+          <div class="field-row"><span class="lang-badge">ET</span><input class="detailed-input qe-input" data-id="${item.id}" data-field="name_et" value="${escHtml(item.name_et||'')}"></div>
+          <div class="field-row"><span class="lang-badge">RU</span><input class="detailed-input qe-input" data-id="${item.id}" data-field="name_ru" value="${escHtml(item.name_ru||'')}"></div>
+        </div>
+
+        <!-- Basics: Category, Type, Price, Status -->
+        <div class="qe-col qe-basics">
+          <label class="qe-section-label">Classification & Pricing</label>
+          <div class="qe-specs-row">
+            <div class="field" style="flex:1.5;">
+              <select class="detailed-input qe-input" data-id="${item.id}" data-field="category">
+                ${categories.map(c => `<option value="${c}"${item.category===c?' selected':''}>${c}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field" style="flex:1.5;">
+              <input class="detailed-input qe-input" data-id="${item.id}" data-field="type_en" value="${escHtml(item.type_en||'')}" placeholder="Type (EN)">
             </div>
           </div>
-
-          <!-- Row 2: Specs & Basic -->
-          <div class="detailed-row">
-            <div class="detailed-section">
-              <div class="detailed-section__title">${tr.basicInfo}</div>
-              <div class="detailed-grid detailed-grid--basic">
-                <div class="field">
-                  <label>${tr.labelCat}</label>
-                  <select class="detailed-input" data-id="${item.id}" data-field="category">
-                    ${categories.map(c => `<option value="${c}"${item.category===c?' selected':''}>${c}</option>`).join('')}
-                  </select>
-                </div>
-                <div class="field">
-                  <label>${tr.labelSubcat}</label>
-                  <select class="detailed-input" data-id="${item.id}" data-field="subcategory">
-                    ${subcats.map(s => `<option value="${s}"${item.subcategory===s?' selected':''}>${tr.subcats && tr.subcats[s] || s}</option>`).join('')}
-                  </select>
-                </div>
-                <div class="field">
-                  <label>${tr.labelPrice} (€)</label>
-                  <input class="detailed-input" type="number" step="0.01" data-id="${item.id}" data-field="price" value="${Number(item.price||0).toFixed(2)}">
-                </div>
-                <div class="field">
-                  <label>${tr.thStatus}</label>
-                  <select class="detailed-input" data-id="${item.id}" data-field="in_stock">
-                    <option value="true"${item.in_stock!==false?' selected':''}>✅ In Stock</option>
-                    <option value="false"${item.in_stock===false?' selected':''}>❌ Out</option>
-                  </select>
-                </div>
-              </div>
+          <div class="qe-specs-row" style="margin-top:8px;">
+            <div class="field" style="flex:1;">
+              <input class="detailed-input qe-input" type="number" step="0.01" data-id="${item.id}" data-field="price" value="${Number(item.price||0).toFixed(2)}" placeholder="€ Price">
             </div>
-
-            <div class="detailed-section">
-              <div class="detailed-section__title">Specs</div>
-              <div class="detailed-grid detailed-grid--specs">
-                <div class="field">
-                  <label>${tr.labelVol}</label>
-                  <input class="detailed-input" data-id="${item.id}" data-field="volume" value="${escHtml(item.volume||'')}">
-                </div>
-                <div class="field">
-                  <label>${tr.labelAbv}</label>
-                  <input class="detailed-input" data-id="${item.id}" data-field="abv" value="${escHtml(item.abv||'')}">
-                </div>
-                <div class="field">
-                  <label>${tr.labelIbu}</label>
-                  <input class="detailed-input" data-id="${item.id}" data-field="ibu" value="${escHtml(String(item.ibu||''))}">
-                </div>
-                <div class="field">
-                  <label>Order</label>
-                  <input class="detailed-input" type="number" data-id="${item.id}" data-field="sort_order" value="${item.sort_order||0}">
-                </div>
-              </div>
+            <div class="field" style="flex:1;">
+              <select class="detailed-input qe-input" data-id="${item.id}" data-field="in_stock">
+                <option value="true"${item.in_stock!==false?' selected':''}>✅ In Stock</option>
+                <option value="false"${item.in_stock===false?' selected':''}>❌ Out</option>
+              </select>
             </div>
-          </div>
-
-          <!-- Description (compact) -->
-          <div class="detailed-section">
-            <div class="detailed-section__title">${tr.descSection} (EN)</div>
-            <textarea class="detailed-input detailed-textarea" data-id="${item.id}" data-field="description_en">${escHtml(item.description_en||'')}</textarea>
           </div>
         </div>
+
+        <!-- Specs & Description -->
+        <div class="qe-col qe-specs-desc">
+          <label class="qe-section-label">Specs</label>
+          <div class="qe-specs-row">
+            <div class="field"><input class="detailed-input qe-input" data-id="${item.id}" data-field="volume" value="${escHtml(item.volume||'')}" placeholder="Vol (e.g. 0.5L)"></div>
+            <div class="field"><input class="detailed-input qe-input" data-id="${item.id}" data-field="abv" value="${escHtml(item.abv||'')}" placeholder="ABV%"></div>
+            <div class="field"><input class="detailed-input qe-input" data-id="${item.id}" data-field="ibu" value="${escHtml(String(item.ibu||''))}" placeholder="IBU"></div>
+          </div>
+          <div class="field" style="margin-top:8px;">
+            <label class="qe-section-label">Description (EN)</label>
+            <input class="detailed-input qe-input" data-id="${item.id}" data-field="description_en" value="${escHtml(item.description_en||'')}" placeholder="Short description...">
+          </div>
+        </div>
+
       </div>
     `;
   }

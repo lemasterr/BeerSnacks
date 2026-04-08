@@ -71,6 +71,16 @@ export async function onRequestPost(context) {
       });
     }
 
+    // Required: Public URL configuration mapping
+    const publicBaseUrl = context.env.R2_PUBLIC_URL;
+    if (!publicBaseUrl) {
+      return new Response(JSON.stringify({ 
+        error: 'R2_PUBLIC_URL environment variable is not configured. A designated public domain is required.' 
+      }), {
+        status: 500, headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     try {
       const arrayBuffer = await file.arrayBuffer();
       
@@ -89,14 +99,10 @@ export async function onRequestPost(context) {
         }
       });
 
-      const publicBaseUrl = context.env.R2_PUBLIC_URL || '';
-      const finalUrl = publicBaseUrl 
-        ? `${publicBaseUrl.replace(/\/$/, '')}/${safeName}`
-        : `/img/${safeName}`; // Fallback if no public domain configured
+      const finalUrl = `${publicBaseUrl.replace(/\/$/, '')}/${safeName}`;
 
       return new Response(JSON.stringify({
         success: true,
-        path: `img/${safeName}`,
         filename: safeName,
         url: finalUrl
       }), {
