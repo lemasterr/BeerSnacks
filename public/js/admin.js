@@ -358,11 +358,20 @@ document.addEventListener('DOMContentLoaded', () => {
       );
     }
 
-    // Sort: Primary = in_stock (true first), Secondary = selected field
+    // Sort Priority:
+    // 1. in_stock (true first)
+    // 2. Category (if viewing all)
+    // 3. Choice (field)
     filtered.sort((a, b) => {
       const aStock = a.in_stock !== false;
       const bStock = b.in_stock !== false;
       if (aStock !== bStock) return aStock ? -1 : 1;
+
+      if (cat === 'all') {
+        const catA = (a.category || '');
+        const catB = (b.category || '');
+        if (catA !== catB) return catA.localeCompare(catB);
+      }
 
       const field = currentSortField;
       let va, vb;
@@ -420,10 +429,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastCategory = '';
 
     filtered.forEach((item, idx) => {
-      if (currentSortField === 'category' && item.category !== lastCategory) {
+      const isShowingAll = categoryFilter.value === 'all';
+      if ((isShowingAll || currentSortField === 'category') && item.category !== lastCategory) {
         lastCategory = item.category;
         const catRow = document.createElement('tr');
-        catRow.innerHTML = `<td colspan="7">${(lastCategory || 'Uncategorized').toUpperCase()}</td>`;
+        const catName = lastCategory.charAt(0).toUpperCase() + lastCategory.slice(1);
+        catRow.innerHTML = `<td colspan="7"><div class="cat-header-inner"><span>${catName}</span><span class="cat-header-line"></span></div></td>`;
         catRow.className = 'category-header';
         tableBody.appendChild(catRow);
       }
