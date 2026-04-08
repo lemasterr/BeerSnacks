@@ -3,249 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Beer&Snacks Admin Panel">
-  <title>Admin — Beer&Snacks</title>
-  <link rel="icon" type="image/png" href="img/favicon.png">
+  <title>Beer&Snacks Admin Panel</title>
   <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
-  <!-- ── Header ── -->
   <header class="admin-header">
-    <div class="admin-header__inner">
-      <div class="admin-header__logo">Beer<span>&</span>Snacks <span class="subtitle" style="font-size:13px;font-weight:400;color:var(--text-muted);margin-left:4px;" id="header-admin-label">Admin</span></div>
-      <div class="admin-header__actions">
-        <!-- Theme toggle -->
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-          <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-          <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
-        <!-- Language switcher -->
-        <div class="admin-lang-switcher" id="admin-lang-switcher">
-          <button class="admin-lang-switcher__btn" id="admin-lang-btn">
-            <span id="admin-lang-label">EN</span>
-            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 4.5L6 7.5L9 4.5"/>
-            </svg>
-          </button>
-          <div class="admin-lang-switcher__dropdown" id="admin-lang-dropdown"></div>
-        </div>
-        <!-- Logout -->
-        <button class="btn btn--secondary btn--sm" id="btn-logout" style="display:none;">Logout</button>
-      </div>
+    <div class="admin-header__logo">Beer&Snacks Admin</div>
+    <div class="admin-header__actions">
+      <button class="btn btn--danger" id="btn-logout" style="display: none;">Logout</button>
     </div>
   </header>
 
-  <!-- ── Login Overlay ── -->
-  <div class="login-overlay" id="login-overlay">
-    <div class="login-overlay__logo">Beer<span style="color:var(--text-muted);font-weight:400">&</span>Snacks</div>
-    <div class="login-card">
-      <div class="login-card__title" id="login-title">Admin Panel</div>
-      <p class="login-error" id="login-error">Invalid password</p>
-      <form id="login-form">
-        <div class="form-group" style="margin-bottom:16px;">
-          <label for="login-password" id="login-password-label">Password</label>
-          <input type="password" id="login-password" class="input-control" placeholder="Enter password" autocomplete="current-password">
-        </div>
-        <button type="submit" class="btn btn--primary" style="width:100%;" id="btn-login">
-          <span id="btn-login-label">Login</span>
-        </button>
-      </form>
-    </div>
+  <!-- Login Overlay -->
+  <div id="login-overlay" style="display: flex; align-items: center; justify-content: center; height: 80vh; background: #f8f9fa;">
+    <form id="login-form" style="background: #fff; padding: 2rem; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center;">
+      <h2 style="margin-bottom: 1.5rem;">Admin Panel Login</h2>
+      <div class="form-group">
+        <label for="login-password" style="text-align: left; display: block;">Password</label>
+        <input type="password" id="login-password" class="input-control" placeholder="Enter password">
+      </div>
+      <p id="login-error" style="color: red; font-size: 0.85rem; display: none; margin-bottom: 1rem;">Invalid password</p>
+      <button type="submit" id="btn-login" class="btn btn--primary" style="width: 100%;">Login</button>
+    </form>
   </div>
 
-  <!-- ── Admin Content ── -->
-  <main class="admin-main" id="admin-content" style="display:none;">
-
-    <!-- Toolbar -->
+  <main class="admin-main" id="admin-content" style="display: none;">
     <div class="toolbar">
       <div class="toolbar__filters">
-        <input type="text" id="search-input" class="input-control" style="max-width:220px;" placeholder="Search…">
-        <select id="category-filter" class="input-control" style="max-width:160px;">
-          <option value="all" id="opt-all-cats">All Categories</option>
+        <input type="text" id="search-input" placeholder="Search products..." class="input-control">
+        <select id="category-filter" class="input-control">
+          <option value="all">All Categories</option>
           <option value="beer">Beer</option>
           <option value="cider">Cider</option>
           <option value="drinks">Drinks</option>
           <option value="sweets">Sweets</option>
           <option value="snacks">Snacks</option>
         </select>
-        <select id="sort-mode" class="input-control" style="max-width:140px;">
-          <option value="id" id="opt-sort-id">Sort by ID</option>
-          <option value="category" id="opt-sort-cat">Sort by Category</option>
-          <option value="price" id="opt-sort-price">Sort by Price</option>
-        </select>
-        <button id="toggle-view" class="btn btn--secondary btn--sm" id="toggle-view-label">Detailed</button>
+        <button id="toggle-view" class="btn btn--secondary">Switch to Detailed View</button>
       </div>
-      <button class="btn btn--primary btn--sm" id="btn-add" id="btn-add-label">+ Add Product</button>
+      <button class="btn btn--primary" id="btn-add">Add New Product</button>
     </div>
 
-    <!-- Desktop Table -->
     <div class="table-container">
       <table class="admin-table">
         <thead>
           <tr>
-            <th style="width:52px;"></th>
-            <th class="sort-active" data-sort="id" id="th-id"><span class="th-label">ID</span> <span class="sort-arrow">↑</span></th>
-            <th data-sort="name_en" id="th-name"><span class="th-label">Name</span></th>
-            <th id="th-cat"><span class="th-label">Category</span></th>
-            <th data-sort="price" id="th-price"><span class="th-label">Price</span></th>
-            <th id="th-status"><span class="th-label">Status</span></th>
-            <th id="th-actions"><span class="th-label">Actions</span></th>
+            <th>Image</th>
+            <th>ID</th>
+            <th>Details / Info</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="table-body"></tbody>
+        <tbody id="table-body">
+          <!-- Rows injected via JS -->
+        </tbody>
       </table>
     </div>
-
-    <!-- Mobile cards -->
-    <div class="product-cards-grid" id="mobile-cards"></div>
-
   </main>
 
-  <!-- ── Edit/Add Modal ── -->
+  <!-- Edit/Add Modal -->
   <div class="modal" id="edit-modal">
     <div class="modal__content">
       <div class="modal__header">
-        <h2 class="modal__title" id="modal-title">Edit Product</h2>
-        <button class="modal__close" id="btn-close-modal" aria-label="Close">✕</button>
+        <h2 id="modal-title">Edit Product</h2>
+        <button class="modal__close" id="btn-close-modal">&times;</button>
       </div>
       <div class="modal__body">
-        <form id="edit-form">
+        <form id="edit-form" class="edit-form">
           <input type="hidden" id="field-internal-id">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>ID</label>
+              <input type="text" id="field-id" class="input-control" required>
+            </div>
+            <div class="form-group">
+              <label>Sort Order</label>
+              <input type="number" id="field-sort_order" class="input-control">
+            </div>
+          </div>
 
-          <!-- Basic info -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-basic">Basic Info</div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="field-id" id="label-id">ID</label>
-                <input type="text" id="field-id" class="input-control" required>
-              </div>
-              <div class="form-group">
-                <label for="field-sort_order" id="label-sort">Sort Order</label>
-                <input type="number" id="field-sort_order" class="input-control">
-              </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Category</label>
+              <select id="field-category" class="input-control" required>
+                <option value="beer">Beer</option>
+                <option value="cider">Cider</option>
+                <option value="drinks">Drinks</option>
+                <option value="sweets">Sweets</option>
+                <option value="snacks">Snacks</option>
+              </select>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="field-category" id="label-category">Category</label>
-                <select id="field-category" class="input-control" required>
-                  <option value="beer">Beer</option>
-                  <option value="cider">Cider</option>
-                  <option value="drinks">Drinks</option>
-                  <option value="sweets">Sweets</option>
-                  <option value="snacks">Snacks</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label id="label-subcategory">Subcategory</label>
-                <!-- Chip picker generated by JS -->
-                <div class="subcategory-picker" id="subcategory-picker"></div>
-                <input type="hidden" id="field-subcategory">
-              </div>
+            <div class="form-group">
+              <label>Subcategory</label>
+              <input type="text" id="field-subcategory" class="input-control" required>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="field-price" id="label-price">Price (€)</label>
-                <input type="number" step="0.01" id="field-price" class="input-control" required>
-              </div>
-              <div class="form-group">
-                <label for="field-volume" id="label-volume">Volume / Weight</label>
-                <input type="text" id="field-volume" class="input-control">
-              </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Image Path</label>
+              <input type="text" id="field-image" class="input-control" required>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="field-abv" id="label-abv">ABV</label>
-                <input type="text" id="field-abv" class="input-control" placeholder="e.g. 5%">
-              </div>
-              <div class="form-group">
-                <label for="field-ibu" id="label-ibu">IBU</label>
-                <input type="text" id="field-ibu" class="input-control">
+            <div class="form-group">
+              <label>Price (€)</label>
+              <input type="number" step="0.01" id="field-price" class="input-control" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Volume / Weight</label>
+              <input type="text" id="field-volume" class="input-control">
+            </div>
+            <div class="form-group">
+              <label>ABV / IBU</label>
+              <div style="display:flex;gap:10px;">
+                <input type="text" id="field-abv" class="input-control" placeholder="ABV (e.g. 5%)">
+                <input type="text" id="field-ibu" class="input-control" placeholder="IBU">
               </div>
             </div>
           </div>
 
-          <!-- Image -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-image">Image</div>
-            <div class="form-group" style="margin-bottom:10px;">
-              <label for="field-image" id="label-image-path">Image path</label>
-              <input type="text" id="field-image" class="input-control" placeholder="img/example.png">
+          <fieldset class="form-fieldset">
+            <legend>Stock Availability</legend>
+            <div class="form-row">
+              <label class="checkbox-label"><input type="checkbox" id="field-in_stock"> Show as In Stock</label>
+              <label class="checkbox-label"><input type="checkbox" id="field-stock_oismae"> Õismäe</label>
+              <label class="checkbox-label"><input type="checkbox" id="field-stock_mahtra"> Mahtra</label>
             </div>
-            <div class="image-upload-area" id="image-upload-area">
-              <input type="file" id="image-file-input" accept="image/*">
-              <div class="image-upload-area__icon">📁</div>
-              <div class="image-upload-area__text"><strong id="upload-click-label">Click or drag</strong> <span id="upload-drop-label">to upload image</span></div>
-            </div>
-            <div class="image-upload-preview" id="image-preview" style="display:none;">
-              <img id="preview-img" src="" alt="">
-              <div class="image-upload-preview__info">
-                <div class="image-upload-preview__name" id="preview-filename"></div>
-                <div id="preview-status" style="font-size:11px;color:var(--text-muted);margin-top:2px;"></div>
-                <div class="upload-progress"><div class="upload-progress__bar" id="upload-bar"></div></div>
-              </div>
-            </div>
-          </div>
+          </fieldset>
 
-          <!-- Stock -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-stock">Stock</div>
-            <fieldset class="form-fieldset">
-              <legend id="legend-stock">Availability</legend>
-              <div style="display:flex;flex-wrap:wrap;gap:12px;">
-                <label class="checkbox-label"><input type="checkbox" id="field-in_stock"> <span id="check-in-stock">In Stock (global)</span></label>
-                <label class="checkbox-label"><input type="checkbox" id="field-stock_oismae"> Õismäe</label>
-                <label class="checkbox-label"><input type="checkbox" id="field-stock_mahtra"> Mahtra</label>
-              </div>
-            </fieldset>
-          </div>
+          <fieldset class="form-fieldset">
+            <legend>Translations (Name)</legend>
+            <div class="form-row">
+              <div class="form-group"><label>UK</label><input type="text" id="field-name_uk" class="input-control"></div>
+              <div class="form-group"><label>EN</label><input type="text" id="field-name_en" class="input-control"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>ET</label><input type="text" id="field-name_et" class="input-control"></div>
+              <div class="form-group"><label>RU</label><input type="text" id="field-name_ru" class="input-control"></div>
+            </div>
+          </fieldset>
 
-          <!-- Names -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-names">Names</div>
+          <fieldset class="form-fieldset">
+            <legend>Translations (Type)</legend>
             <div class="form-row">
-              <div class="form-group"><label>🇺🇦 UK</label><input type="text" id="field-name_uk" class="input-control"></div>
-              <div class="form-group"><label>🇬🇧 EN</label><input type="text" id="field-name_en" class="input-control"></div>
+              <div class="form-group"><label>UK</label><input type="text" id="field-type_uk" class="input-control"></div>
+              <div class="form-group"><label>EN</label><input type="text" id="field-type_en" class="input-control"></div>
             </div>
             <div class="form-row">
-              <div class="form-group"><label>🇪🇪 ET</label><input type="text" id="field-name_et" class="input-control"></div>
-              <div class="form-group"><label>🇷🇺 RU</label><input type="text" id="field-name_ru" class="input-control"></div>
+              <div class="form-group"><label>ET</label><input type="text" id="field-type_et" class="input-control"></div>
+              <div class="form-group"><label>RU</label><input type="text" id="field-type_ru" class="input-control"></div>
             </div>
-          </div>
+          </fieldset>
 
-          <!-- Types -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-types">Type / Variety</div>
+          <fieldset class="form-fieldset">
+            <legend>Translations (Description)</legend>
             <div class="form-row">
-              <div class="form-group"><label>🇺🇦 UK</label><input type="text" id="field-type_uk" class="input-control"></div>
-              <div class="form-group"><label>🇬🇧 EN</label><input type="text" id="field-type_en" class="input-control"></div>
+              <div class="form-group"><label>UK</label><textarea id="field-description_uk" class="input-control"></textarea></div>
+              <div class="form-group"><label>EN</label><textarea id="field-description_en" class="input-control"></textarea></div>
             </div>
             <div class="form-row">
-              <div class="form-group"><label>🇪🇪 ET</label><input type="text" id="field-type_et" class="input-control"></div>
-              <div class="form-group"><label>🇷🇺 RU</label><input type="text" id="field-type_ru" class="input-control"></div>
+              <div class="form-group"><label>ET</label><textarea id="field-description_et" class="input-control"></textarea></div>
+              <div class="form-group"><label>RU</label><textarea id="field-description_ru" class="input-control"></textarea></div>
             </div>
-          </div>
+          </fieldset>
 
-          <!-- Descriptions -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-desc">Description</div>
-            <div class="form-row">
-              <div class="form-group"><label>🇺🇦 UK</label><textarea id="field-description_uk" class="input-control"></textarea></div>
-              <div class="form-group"><label>🇬🇧 EN</label><textarea id="field-description_en" class="input-control"></textarea></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label>🇪🇪 ET</label><textarea id="field-description_et" class="input-control"></textarea></div>
-              <div class="form-group"><label>🇷🇺 RU</label><textarea id="field-description_ru" class="input-control"></textarea></div>
-            </div>
-          </div>
         </form>
       </div>
       <div class="modal__footer">
@@ -254,9 +182,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Toast notification -->
-  <div class="toast hidden" id="toast"></div>
 
   <script src="js/admin.js"></script>
 </body>
