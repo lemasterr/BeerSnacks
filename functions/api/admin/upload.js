@@ -62,55 +62,56 @@ export async function onRequestPost(context) {
 
     const imagePath = `img/${safeName}`;
 
-    // Try to store in R2 bucket if available
-    if (context.env.IMAGES_BUCKET) {
-      try {
-        const arrayBuffer = await file.arrayBuffer();
-        
-        // Check file size (max 10MB)
-        if (arrayBuffer.byteLength > 10 * 1024 * 1024) {
-          return new Response(JSON.stringify({ error: 'File too large (max 10MB)' }), {
-            status: 400, headers: { 'Content-Type': 'application/json' }
-          });
-        }
-
-        await context.env.IMAGES_BUCKET.put(safeName, arrayBuffer, {
-          httpMetadata: { 
-            contentType: file.type || 'image/png',
-            cacheControl: 'public, max-age=31536000'
-          }
-        });
-
-        return new Response(JSON.stringify({
-          success: true,
-          path: imagePath,
-          filename: safeName,
-          size: arrayBuffer.byteLength,
-          url: `https://025229e3c29465a894106a51f4e549ba.r2.cloudflarestorage.com/${safeName}`
-        }), {
-          headers: { 'Content-Type': 'application/json' }
-        });
-      } catch (r2Err) {
-        console.error('R2 upload error:', r2Err);
-        return new Response(JSON.stringify({ 
-          error: 'R2 upload failed',
-          details: String(r2Err)
-        }), {
-          status: 500, headers: { 'Content-Type': 'application/json' }
-        });
-      }
+    // Required: IMAGES_BUCKET binding
+    if (!context.env.IMAGES_BUCKET) {
+      return new Response(JSON.stringify({ 
+        error: 'R2 bucket not configured (binding IMAGES_BUCKET missing)' 
+      }), {
+        status: 500, headers: { 'Content-Type': 'application/json' }
+      });
     }
 
-    // Fallback: no R2 — return the expected path so the admin can set it
-    // The actual file needs to be placed in the public/img/ folder manually or via CI/CD
-    return new Response(JSON.stringify({
-      success: true,
-      path: imagePath,
-      filename: safeName,
-      note: 'No R2 bucket configured — path set but file not stored server-side. Place the file manually in public/img/'
-    }), {
-      headers: { 'Content-Type': 'application/json' }
-    });
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      
+      // Check file size (max 5MB)
+      if (arrayBuffer.byteLength > 5 * 1024 * 1024) {
+        return new Response(JSON.stringify({ error: 'File too large (max 5MB)' }), {
+          status: 400, headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      // Store in R2
+      await context.env.IMAGES_BUCKET.put(safeName, arrayBuffer, {
+        httpMetadata: { 
+          contentType: file.type || 'image/png',
+          cacheControl: 'public, max-age=31536000'
+        }
+      });
+
+      const publicBaseUrl = context.env.R2_PUBLIC_URL || '';
+      const finalUrl = publicBaseUrl 
+        ? `${publicBaseUrl.replace(/\/$/, '')}/${safeName}`
+        : `/img/${safeName}`; // Fallback if no public domain configured
+
+      return new Response(JSON.stringify({
+        success: true,
+        path: `img/${safeName}`,
+        filename: safeName,
+        url: finalUrl
+      }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+    } catch (r2Err) {
+      console.error('R2 upload error:', r2Err);
+      return new Response(JSON.stringify({ 
+        error: 'R2 storage failed',
+        details: String(r2Err)
+      }), {
+        status: 500, headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
   } catch (err) {
     console.error('Upload error:', err);

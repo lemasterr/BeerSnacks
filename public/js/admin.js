@@ -421,91 +421,176 @@ document.addEventListener('DOMContentLoaded', () => {
       if (currentSortField === 'category' && item.category !== lastCategory) {
         lastCategory = item.category;
         const catRow = document.createElement('tr');
-        catRow.innerHTML = `<td colspan="7" class="">${(lastCategory || 'Uncategorized').toUpperCase()}</td>`;
-        catRow.querySelector('td').className = '';
+        catRow.innerHTML = `<td colspan="7">${(lastCategory || 'Uncategorized').toUpperCase()}</td>`;
         catRow.className = 'category-header';
         tableBody.appendChild(catRow);
       }
 
-      const infoHtml = isDetailedView ? buildDetailedInfo(item) : buildCompactInfo(item);
-      const row = document.createElement('tr');
-      row.style.animationDelay = `${idx * 0.01}s`;
-      row.innerHTML = `
-        <td><img src="${item.image}" alt="" class="table-img" loading="lazy" onerror="this.style.opacity=0.3"></td>
-        <td><span style="font-size:12px;font-weight:600;font-family:monospace;color:var(--text-muted)">${escHtml(item.id || '')}</span></td>
-        <td style="min-width:180px">${infoHtml}</td>
-        <td>
-          <select class="quick-select" data-id="${item.id}" data-field="category" aria-label="Category">
-            ${['beer','cider','drinks','sweets','snacks'].map(c => `<option value="${c}"${item.category===c?' selected':''}>${c}</option>`).join('')}
-          </select>
-        </td>
-        <td>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:11px;color:var(--text-muted)">€</span>
-            <input class="quick-input" type="number" step="0.01" data-id="${item.id}" data-field="price" value="${Number(item.price||0).toFixed(2)}" min="0" aria-label="Price">
-          </div>
-        </td>
-        <td>
-          <select class="quick-select" data-id="${item.id}" data-field="in_stock" aria-label="Status">
-            <option value="1"${item.in_stock!==false?' selected':''}>✅ In Stock</option>
-            <option value="0"${item.in_stock===false?' selected':''}>❌ Out</option>
-          </select>
-        </td>
-        <td>
-          <div class="table-actions">
-            <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">View</button>
-            <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">Edit</button>
-            <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">✕</button>
-          </div>
-        </td>
-      `;
-      tableBody.appendChild(row);
-    });
-
-    // Quick-edit listeners
-    tableBody.querySelectorAll('.quick-select, .quick-input').forEach(el => {
-      el.addEventListener('change', handleQuickEdit);
-      if (el.tagName === 'INPUT') {
-        el.addEventListener('blur', handleQuickEdit);
+      if (isDetailedView) {
+        const detailedRow = document.createElement('tr');
+        detailedRow.className = 'detailed-row-container';
+        detailedRow.innerHTML = `<td colspan="7">${buildDetailedRowHtml(item)}</td>`;
+        tableBody.appendChild(detailedRow);
+      } else {
+        const row = document.createElement('tr');
+        row.style.animationDelay = `${idx * 0.01}s`;
+        row.innerHTML = `
+          <td><img src="${item.image}" alt="" class="table-img" loading="lazy" onerror="this.style.opacity=0.3"></td>
+          <td><span class="id-badge">${escHtml(item.id || '')}</span></td>
+          <td style="min-width:180px">${buildCompactInfo(item)}</td>
+          <td>
+            <select class="quick-select" data-id="${item.id}" data-field="category">
+              ${['beer','cider','drinks','sweets','snacks'].map(c => `<option value="${c}"${item.category===c?' selected':''}>${c}</option>`).join('')}
+            </select>
+          </td>
+          <td>
+            <div class="quick-price">
+              <span>€</span>
+              <input class="quick-input" type="number" step="0.01" data-id="${item.id}" data-field="price" value="${Number(item.price||0).toFixed(2)}">
+            </div>
+          </td>
+          <td>
+            <select class="quick-select" data-id="${item.id}" data-field="in_stock">
+              <option value="1"${item.in_stock!==false?' selected':''}>✅ In Stock</option>
+              <option value="0"${item.in_stock===false?' selected':''}>❌ Out</option>
+            </select>
+          </td>
+          <td>
+            <div class="table-actions">
+              <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">View</button>
+              <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">Edit</button>
+              <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">✕</button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(row);
       }
     });
+
+    // Re-bind change listeners for quick edits
+    tableBody.querySelectorAll('.quick-select, .quick-input, .detailed-input').forEach(el => {
+      el.addEventListener('change', handleQuickEdit);
+    });
+  }
+
+  function buildDetailedRowHtml(item) {
+    const tr = t();
+    const categories = ['beer','cider','drinks','sweets','snacks'];
+    const subcats = CATEGORY_SUBS[item.category] || [];
+    
+    return `
+      <div class="detailed-card">
+        <div class="detailed-card__aside">
+          <div class="detailed-card__img-container">
+            <img src="${item.image}" alt="" class="detailed-card__img" onerror="this.style.opacity=0.3">
+            <button class="detailed-card__img-edit" onclick="adminActions.edit('${item.id}')">Change Image</button>
+          </div>
+          <div class="detailed-card__id">ID: <code>${escHtml(item.id)}</code></div>
+          <div class="detailed-card__actions">
+            <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">View</button>
+            <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">Full Edit</button>
+            <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">Delete</button>
+          </div>
+        </div>
+        
+        <div class="detailed-card__main">
+          <!-- Row 1: Names -->
+          <div class="detailed-section">
+            <div class="detailed-section__title">${tr.namesSection}</div>
+            <div class="detailed-grid detailed-grid--names">
+              <div class="field">
+                <label><span class="lang-badge">UK</span></label>
+                <input class="detailed-input" data-id="${item.id}" data-field="name_uk" value="${escHtml(item.name_uk||'')}">
+              </div>
+              <div class="field">
+                <label><span class="lang-badge">EN</span></label>
+                <input class="detailed-input" data-id="${item.id}" data-field="name_en" value="${escHtml(item.name_en||'')}">
+              </div>
+              <div class="field">
+                <label><span class="lang-badge">ET</span></label>
+                <input class="detailed-input" data-id="${item.id}" data-field="name_et" value="${escHtml(item.name_et||'')}">
+              </div>
+              <div class="field">
+                <label><span class="lang-badge">RU</span></label>
+                <input class="detailed-input" data-id="${item.id}" data-field="name_ru" value="${escHtml(item.name_ru||'')}">
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Specs & Basic -->
+          <div class="detailed-row">
+            <div class="detailed-section">
+              <div class="detailed-section__title">${tr.basicInfo}</div>
+              <div class="detailed-grid detailed-grid--basic">
+                <div class="field">
+                  <label>${tr.labelCat}</label>
+                  <select class="detailed-input" data-id="${item.id}" data-field="category">
+                    ${categories.map(c => `<option value="${c}"${item.category===c?' selected':''}>${c}</option>`).join('')}
+                  </select>
+                </div>
+                <div class="field">
+                  <label>${tr.labelSubcat}</label>
+                  <select class="detailed-input" data-id="${item.id}" data-field="subcategory">
+                    ${subcats.map(s => `<option value="${s}"${item.subcategory===s?' selected':''}>${tr.subcats && tr.subcats[s] || s}</option>`).join('')}
+                  </select>
+                </div>
+                <div class="field">
+                  <label>${tr.labelPrice} (€)</label>
+                  <input class="detailed-input" type="number" step="0.01" data-id="${item.id}" data-field="price" value="${Number(item.price||0).toFixed(2)}">
+                </div>
+                <div class="field">
+                  <label>${tr.thStatus}</label>
+                  <select class="detailed-input" data-id="${item.id}" data-field="in_stock">
+                    <option value="true"${item.in_stock!==false?' selected':''}>✅ In Stock</option>
+                    <option value="false"${item.in_stock===false?' selected':''}>❌ Out</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="detailed-section">
+              <div class="detailed-section__title">Specs</div>
+              <div class="detailed-grid detailed-grid--specs">
+                <div class="field">
+                  <label>${tr.labelVol}</label>
+                  <input class="detailed-input" data-id="${item.id}" data-field="volume" value="${escHtml(item.volume||'')}">
+                </div>
+                <div class="field">
+                  <label>${tr.labelAbv}</label>
+                  <input class="detailed-input" data-id="${item.id}" data-field="abv" value="${escHtml(item.abv||'')}">
+                </div>
+                <div class="field">
+                  <label>${tr.labelIbu}</label>
+                  <input class="detailed-input" data-id="${item.id}" data-field="ibu" value="${escHtml(String(item.ibu||''))}">
+                </div>
+                <div class="field">
+                  <label>Order</label>
+                  <input class="detailed-input" type="number" data-id="${item.id}" data-field="sort_order" value="${item.sort_order||0}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description (compact) -->
+          <div class="detailed-section">
+            <div class="detailed-section__title">${tr.descSection} (EN)</div>
+            <textarea class="detailed-input detailed-textarea" data-id="${item.id}" data-field="description_en">${escHtml(item.description_en||'')}</textarea>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   function buildCompactInfo(item) {
     return `
-      <div style="font-weight:600;font-size:14px;color:var(--text-primary)">${escHtml(item.name_en || '')}</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:2px">${escHtml(item.name_uk || '')}</div>
-    `;
-  }
-
-  function buildDetailedInfo(item) {
-    return `
-      <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:12px">
-        <div>
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-muted);margin-bottom:4px">Names</div>
-          <dl class="detail-grid">
-            <dt><span class="lang-badge">UK</span></dt><dd><span class="editable" data-id="${item.id}" data-field="name_uk">${escHtml(item.name_uk||'')}</span></dd>
-            <dt><span class="lang-badge">EN</span></dt><dd><span class="editable" data-id="${item.id}" data-field="name_en">${escHtml(item.name_en||'')}</span></dd>
-            <dt><span class="lang-badge">ET</span></dt><dd><span class="editable" data-id="${item.id}" data-field="name_et">${escHtml(item.name_et||'')}</span></dd>
-            <dt><span class="lang-badge">RU</span></dt><dd><span class="editable" data-id="${item.id}" data-field="name_ru">${escHtml(item.name_ru||'')}</span></dd>
-          </dl>
-        </div>
-        <div>
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-muted);margin-bottom:4px">Specs</div>
-          <dl class="detail-grid">
-            <dt>Vol:</dt><dd><span class="editable" data-id="${item.id}" data-field="volume">${escHtml(item.volume||'')}</span></dd>
-            <dt>ABV:</dt><dd><span class="editable" data-id="${item.id}" data-field="abv">${escHtml(item.abv||'')}</span></dd>
-            <dt>IBU:</dt><dd><span class="editable" data-id="${item.id}" data-field="ibu">${escHtml(String(item.ibu||''))}</span></dd>
-          </dl>
-        </div>
-      </div>
+      <div class="compact-name">${escHtml(item.name_en || '')}</div>
+      <div class="compact-sub">${escHtml(item.name_uk || '')}</div>
     `;
   }
 
   // ── Mobile Cards ──
   function renderMobileCards() {
     const filtered = getSortedFiltered();
-    const tr = t();
     mobileCards.innerHTML = '';
     filtered.forEach((item, idx) => {
       const card = document.createElement('div');
@@ -516,12 +601,15 @@ document.addEventListener('DOMContentLoaded', () => {
           <img src="${item.image}" alt="" class="product-mobile-card__img" loading="lazy" onerror="this.style.opacity=0.3">
           <div class="product-mobile-card__meta">
             <div class="product-mobile-card__name">${escHtml(item.name_en || item.id)}</div>
-            <div class="product-mobile-card__sub">${escHtml(item.name_uk || '')} · <span style="font-family:monospace;font-size:11px">${escHtml(item.id)}</span></div>
+            <div class="product-mobile-card__sub">${escHtml(item.name_uk || '')} · <span class="id-badge">${escHtml(item.id)}</span></div>
           </div>
         </div>
         <div class="product-mobile-card__row">
           <span class="badge badge--cat">${escHtml(item.category || '')}</span>
-          <span class="${item.in_stock !== false ? 'badge badge--in-stock' : 'badge badge--out-stock'}">${item.in_stock !== false ? '✅ In Stock' : '❌ Out'}</span>
+          <button class="mobile-stock-btn ${item.in_stock !== false ? 'in-stock' : 'out-stock'}" 
+                  data-id="${item.id}" data-field="in_stock" data-value="${item.in_stock !== false ? '0' : '1'}">
+            ${item.in_stock !== false ? '✅ In Stock' : '❌ Out'}
+          </button>
           <strong style="font-size:15px">€${Number(item.price||0).toFixed(2)}</strong>
         </div>
         <div class="product-mobile-card__actions">
@@ -531,6 +619,14 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
       mobileCards.appendChild(card);
+    });
+
+    mobileCards.querySelectorAll('.mobile-stock-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = btn.dataset.id;
+        const val = btn.dataset.value === '1';
+        handleQuickEdit({ target: { dataset: { id, field: 'in_stock' }, value: val ? '1' : '0' } });
+      });
     });
   }
 
@@ -542,8 +638,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!id || !field) return;
 
     let value = el.value;
-    if (field === 'price') value = Number(value) || 0;
-    else if (field === 'in_stock') value = value === '1';
+    if (field === 'price' || field === 'sort_order') value = Number(value) || 0;
+    else if (field === 'in_stock') value = (value === '1' || value === 'true');
 
     const payload = { [field]: value };
     try {
@@ -788,16 +884,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (res.ok) {
         const json = await res.json();
-        const finalPath = (json && json.path) ? json.path : imagePath;
-        fieldImage.value = finalPath;
+        const finalUrl = json.url || (json.path ? json.path : imagePath);
+        fieldImage.value = finalUrl;
         previewStatus.textContent = t().uploadDone;
         previewStatus.style.color = 'var(--green)';
         showToast(t().uploadDone);
-      } else {
-        // Fallback: just set the path to what we'd expect
-        fieldImage.value = imagePath;
-        previewStatus.textContent = t().uploadErr + ' — path set manually';
-        previewStatus.style.color = 'var(--amber)';
+        // Also update the preview immediately
+        if (previewImg) previewImg.src = finalUrl;
       }
     } catch (err) {
       uploadBar.style.width = '0%';
