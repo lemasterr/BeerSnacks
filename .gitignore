@@ -1,3 +1,12 @@
 .DS_Store
 .vscode/
 node_modules/
+.wrangler/
+.dev.vars
+node_modules/
+.wrangler/
+.devvars
+.env
+.env.*
+.DS_Store
+.vscode/

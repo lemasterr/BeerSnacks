@@ -1,0 +1,8 @@
+name = "beersnacks-catalog"
+compatibility_date = "2024-04-05"
+pages_build_output_dir = "public"
+
+[[kv_namespaces]]
+binding = "DB_KV"
+id = "prod_db_id"
+preview_id = "dev_db_id"
