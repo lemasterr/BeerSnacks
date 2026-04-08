@@ -293,7 +293,7 @@
       const [transRes, catsRes, catRes] = await Promise.all([
         fetch('data/translations.json'),
         fetch('data/categories.json'),
-        fetch('/api/catalog')
+        fetch('/api/catalog.json')
       ]);
       
       translations = await transRes.json();
