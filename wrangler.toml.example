@@ -5,3 +5,16 @@ pages_build_output_dir = "public"
 [[r2_buckets]]
 binding = "IMAGES_BUCKET"
 bucket_name = "beersnacks-images"
+account_id = "025229e3c29465a894106a51f4e549ba"
+jurisdiction = "eu"
+
+[env.production]
+r2_buckets = [{ binding = "IMAGES_BUCKET", bucket_name = "beersnacks-images", account_id = "025229e3c29465a894106a51f4e549ba", jurisdiction = "eu" }]
+
+# R2 Configuration
+# Account ID: 025229e3c29465a894106a51f4e549ba
+# S3 API Endpoint: https://025229e3c29465a894106a51f4e549ba.r2.cloudflarestorage.com
+# Note: API Token and Access Key ID should be set as environment variables:
+# - CLOUDFLARE_API_TOKEN
+# - R2_ACCESS_KEY_ID
+# - R2_SECRET_ACCESS_KEY
