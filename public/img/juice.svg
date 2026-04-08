@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <rect width="80" height="80" rx="12" fill="#f5f5f5"/>
+  <g stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Juice box -->
+    <rect x="26" y="22" width="28" height="36" rx="3" fill="#ebebeb" stroke="#333"/>
+    <!-- Top fold -->
+    <path d="M26 28h28"/>
+    <!-- Straw -->
+    <line x1="48" y1="16" x2="48" y2="34" stroke="#333" stroke-width="1.5"/>
+    <circle cx="48" cy="34" r="1.5" fill="#d0d0d0" stroke="#333"/>
+    <!-- Fruit circle -->
+    <circle cx="40" cy="42" r="6" fill="#e0e0e0" stroke="#333"/>
+    <path d="M37 42h6M40 39v6" stroke="#333" stroke-width="1"/>
+  </g>
+</svg>
