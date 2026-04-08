@@ -290,15 +290,25 @@
   // ── Init Data ──
   async function loadData() {
     try {
+      console.log('Fetching catalog data...');
       const [transRes, catsRes, catRes] = await Promise.all([
         fetch('data/translations.json'),
         fetch('data/categories.json'),
-        fetch('/api/catalog.json')
+        fetch('/api/catalog')
       ]);
       
+      if (!transRes.ok) throw new Error('Failed to load translations');
+      if (!catsRes.ok) throw new Error('Failed to load categories');
+      if (!catRes.ok) throw new Error('Failed to load products API');
+
       translations = await transRes.json();
       categorySubcategories = await catsRes.json();
       catalog = await catRes.json();
+
+      console.log('Data loaded successfully:', {
+        catalogEntries: catalog.length,
+        lang: currentLang
+      });
 
       if (currentLang) {
         overlay.classList.add('hidden');
@@ -308,8 +318,11 @@
         mainContent.style.display = 'none';
       }
     } catch (e) {
-      console.error('Failed to load JSON data:', e);
-      alert('Error loading catalog data. Please use a local web server (e.g., npx serve) to view the application locally.');
+      console.error('CRITICAL ERROR loading catalog:', e);
+      // Only show alert if basic UI data failed to load
+      if (!translations || Object.keys(translations).length === 0) {
+        alert('Error loading application data: ' + e.message);
+      }
     }
   }
 
