@@ -453,6 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </td>
         <td>
           <div class="table-actions">
+            <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">View</button>
             <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">Edit</button>
             <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">✕</button>
           </div>
@@ -524,6 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <strong style="font-size:15px">€${Number(item.price||0).toFixed(2)}</strong>
         </div>
         <div class="product-mobile-card__actions">
+          <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">View</button>
           <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">Edit</button>
           <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">Delete</button>
         </div>
@@ -580,13 +582,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Actions ──
   window.adminActions = {
+    view: (id) => {
+      const item = catalog.find(p => p.id === id);
+      if (!item) return;
+      showDetailView(item);
+    },
     edit: (id) => {
       const item = catalog.find(p => p.id === id);
       if (!item) return;
       editingId = id;
-      
-      // Show detailed view instead of modal
-      showDetailView(item);
+      const fields = ['id', 'sort_order', 'category', 'subcategory', 'image', 'price', 'volume', 'abv', 'ibu',
+        'name_uk', 'name_en', 'name_et', 'name_ru',
+        'type_uk', 'type_en', 'type_et', 'type_ru',
+        'description_uk', 'description_en', 'description_et', 'description_ru'];
+      fields.forEach(f => {
+        const el = document.getElementById('field-' + f);
+        if (el) el.value = item[f] !== undefined ? item[f] : '';
+      });
+      document.getElementById('field-in_stock').checked = item.in_stock !== false;
+      document.getElementById('field-stock_oismae').checked = item.stock_oismae !== false;
+      document.getElementById('field-stock_mahtra').checked = item.stock_mahtra !== false;
+      document.getElementById('modal-title').textContent = `${t().editProduct}: ${item.name_en || item.id}`;
+      resetImagePreview();
+      buildSubcategoryPicker(item.category, item.subcategory);
+      modal.classList.add('open');
     },
     del: async (id) => {
       if (!confirm(t().confirmDelete)) return;
