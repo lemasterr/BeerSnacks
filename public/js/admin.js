@@ -154,6 +154,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const previewStatus = document.getElementById('preview-status');
   const uploadBar = document.getElementById('upload-bar');
   const fieldImage = document.getElementById('field-image');
+  const detailView = document.getElementById('detail-view');
+  const detailContainer = document.getElementById('detail-container');
+  const btnBackDetail = document.getElementById('btn-back-detail');
 
   // ── Theme ──
   const themeToggle = document.getElementById('theme-toggle');
@@ -581,21 +584,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const item = catalog.find(p => p.id === id);
       if (!item) return;
       editingId = id;
-      const fields = ['id', 'sort_order', 'category', 'subcategory', 'image', 'price', 'volume', 'abv', 'ibu',
-        'name_uk', 'name_en', 'name_et', 'name_ru',
-        'type_uk', 'type_en', 'type_et', 'type_ru',
-        'description_uk', 'description_en', 'description_et', 'description_ru'];
-      fields.forEach(f => {
-        const el = document.getElementById('field-' + f);
-        if (el) el.value = item[f] !== undefined ? item[f] : '';
-      });
-      document.getElementById('field-in_stock').checked = item.in_stock !== false;
-      document.getElementById('field-stock_oismae').checked = item.stock_oismae !== false;
-      document.getElementById('field-stock_mahtra').checked = item.stock_mahtra !== false;
-      document.getElementById('modal-title').textContent = `${t().editProduct}: ${item.name_en || item.id}`;
-      resetImagePreview();
-      buildSubcategoryPicker(item.category, item.subcategory);
-      modal.classList.add('open');
+      
+      // Show detailed view instead of modal
+      showDetailView(item);
     },
     del: async (id) => {
       if (!confirm(t().confirmDelete)) return;
@@ -860,7 +851,243 @@ document.addEventListener('DOMContentLoaded', () => {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  // ── Detail View ──
+  function showDetailView(item) {
+    tableBody.parentElement.parentElement.style.display = 'none';
+    mobileCards.style.display = 'none';
+    detailView.style.display = 'block';
+    editingId = item.id;
+
+    const tr = t();
+    
+    // Build category subcategory options
+    const categories = ['beer', 'cider', 'drinks', 'sweets', 'snacks'];
+    const categoryOptions = categories.map(c => `<option value="${c}"${item.category === c ? ' selected' : ''}>${c}</option>`).join('');
+    
+    const subCats = CATEGORY_SUBS[item.category] || [];
+    const subCatOptions = subCats.map(s => `<option value="${s}"${item.subcategory === s ? ' selected' : ''}>${tr.subcats && tr.subcats[s] || s}</option>`).join('');
+
+    const html = `
+      <div class="detail-header">
+        <img src="${escHtml(item.image)}" alt="" class="detail-img" onerror="this.style.opacity=0.3">
+        <div class="detail-title">
+          <h1>${escHtml(item.name_en || item.id)}</h1>
+          <div class="detail-id">${escHtml(item.id)}</div>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <!-- Left column -->
+        <div class="detail-section">
+          <h3>${tr.basicInfo}</h3>
+          
+          <div class="detail-field">
+            <label>${tr.labelCat}</label>
+            <select class="detail-input" id="detail-field-category">
+              ${categoryOptions}
+            </select>
+          </div>
+
+          <div class="detail-field">
+            <label>${tr.labelSubcat}</label>
+            <select class="detail-input" id="detail-field-subcategory">
+              ${subCatOptions}
+            </select>
+          </div>
+
+          <div class="detail-field">
+            <label>${tr.labelSort}</label>
+            <input type="number" class="detail-input" id="detail-field-sort_order" value="${item.sort_order || 0}">
+          </div>
+
+          <div class="detail-field">
+            <label>${tr.labelPrice}</label>
+            <input type="number" step="0.01" class="detail-input" id="detail-field-price" value="${Number(item.price || 0).toFixed(2)}">
+          </div>
+
+          <div class="detail-field">
+            <label>${tr.labelVol}</label>
+            <input type="text" class="detail-input" id="detail-field-volume" value="${escHtml(item.volume || '')}">
+          </div>
+
+          <div class="detail-field">
+            <label>${tr.labelAbv}</label>
+            <input type="text" class="detail-input" id="detail-field-abv" value="${escHtml(item.abv || '')}">
+          </div>
+
+          <div class="detail-field">
+            <label>${tr.labelIbu}</label>
+            <input type="text" class="detail-input" id="detail-field-ibu" value="${escHtml(item.ibu || '')}">
+          </div>
+
+          <div class="detail-field">
+            <label>${tr.labelImgPath}</label>
+            <input type="text" class="detail-input" id="detail-field-image" value="${escHtml(item.image || '')}">
+          </div>
+
+          <div class="detail-section" style="margin-top: 20px;">
+            <h3>${tr.availability}</h3>
+            <div class="detail-checkboxes">
+              <div class="detail-field-checkbox">
+                <input type="checkbox" id="detail-field-in_stock" ${item.in_stock !== false ? 'checked' : ''}>
+                <label for="detail-field-in_stock">${tr.inStock}</label>
+              </div>
+              <div class="detail-field-checkbox">
+                <input type="checkbox" id="detail-field-stock_oismae" ${item.stock_oismae !== false ? 'checked' : ''}>
+                <label for="detail-field-stock_oismae">Õismäe</label>
+              </div>
+              <div class="detail-field-checkbox">
+                <input type="checkbox" id="detail-field-stock_mahtra" ${item.stock_mahtra !== false ? 'checked' : ''}>
+                <label for="detail-field-stock_mahtra">Mahtra</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div class="detail-section">
+          <h3>${tr.namesSection}</h3>
+          
+          <div class="detail-field">
+            <label>🇺🇦 ${tr.labelId}</label>
+            <input type="text" class="detail-input" id="detail-field-name_uk" value="${escHtml(item.name_uk || '')}">
+          </div>
+
+          <div class="detail-field">
+            <label>🇬🇧 EN</label>
+            <input type="text" class="detail-input" id="detail-field-name_en" value="${escHtml(item.name_en || '')}">
+          </div>
+
+          <div class="detail-field">
+            <label>🇪🇪 ET</label>
+            <input type="text" class="detail-input" id="detail-field-name_et" value="${escHtml(item.name_et || '')}">
+          </div>
+
+          <div class="detail-field">
+            <label>🇷🇺 RU</label>
+            <input type="text" class="detail-input" id="detail-field-name_ru" value="${escHtml(item.name_ru || '')}">
+          </div>
+
+          <h3 style="margin-top: 20px;">${tr.typesSection}</h3>
+
+          <div class="detail-field">
+            <label>🇺🇦 UK</label>
+            <input type="text" class="detail-input" id="detail-field-type_uk" value="${escHtml(item.type_uk || '')}">
+          </div>
+
+          <div class="detail-field">
+            <label>🇬🇧 EN</label>
+            <input type="text" class="detail-input" id="detail-field-type_en" value="${escHtml(item.type_en || '')}">
+          </div>
+
+          <div class="detail-field">
+            <label>🇪🇪 ET</label>
+            <input type="text" class="detail-input" id="detail-field-type_et" value="${escHtml(item.type_et || '')}">
+          </div>
+
+          <div class="detail-field">
+            <label>🇷🇺 RU</label>
+            <input type="text" class="detail-input" id="detail-field-type_ru" value="${escHtml(item.type_ru || '')}">
+          </div>
+
+          <h3 style="margin-top: 20px;">${tr.descSection}</h3>
+
+          <div class="detail-field">
+            <label>🇺🇦 UK</label>
+            <textarea class="detail-input" id="detail-field-description_uk">${escHtml(item.description_uk || '')}</textarea>
+          </div>
+
+          <div class="detail-field">
+            <label>🇬🇧 EN</label>
+            <textarea class="detail-input" id="detail-field-description_en">${escHtml(item.description_en || '')}</textarea>
+          </div>
+
+          <div class="detail-field">
+            <label>🇪🇪 ET</label>
+            <textarea class="detail-input" id="detail-field-description_et">${escHtml(item.description_et || '')}</textarea>
+          </div>
+
+          <div class="detail-field">
+            <label>🇷🇺 RU</label>
+            <textarea class="detail-input" id="detail-field-description_ru">${escHtml(item.description_ru || '')}</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-footer">
+        <button type="button" class="btn btn--danger" id="detail-btn-delete">🗑 ${tr.cancel}</button>
+        <button type="button" class="btn btn--secondary" id="detail-btn-cancel">${tr.cancel}</button>
+        <button type="button" class="btn btn--primary" id="detail-btn-save">${tr.saveChanges}</button>
+      </div>
+    `;
+
+    detailContainer.innerHTML = html;
+
+    // Bind events
+    document.getElementById('detail-btn-cancel').addEventListener('click', hideDetailView);
+    document.getElementById('detail-btn-save').addEventListener('click', saveDetailView);
+    document.getElementById('detail-btn-delete').addEventListener('click', () => {
+      adminActions.del(item.id);
+      hideDetailView();
+    });
+
+    // Update subcategory options when category changes
+    document.getElementById('detail-field-category').addEventListener('change', (e) => {
+      const newCategory = e.target.value;
+      const newSubs = CATEGORY_SUBS[newCategory] || [];
+      const subSelect = document.getElementById('detail-field-subcategory');
+      subSelect.innerHTML = newSubs.map(s => `<option value="${s}">${tr.subcats && tr.subcats[s] || s}</option>`).join('');
+    });
+  }
+
+  function hideDetailView() {
+    detailView.style.display = 'none';
+    tableBody.parentElement.parentElement.style.display = '';
+    mobileCards.style.display = '';
+    editingId = null;
+  }
+
+  async function saveDetailView() {
+    const tr = t();
+    const fields = ['id', 'sort_order', 'category', 'subcategory', 'image', 'price', 'volume', 'abv', 'ibu',
+      'name_uk', 'name_en', 'name_et', 'name_ru',
+      'type_uk', 'type_en', 'type_et', 'type_ru',
+      'description_uk', 'description_en', 'description_et', 'description_ru'];
+    
+    const payload = {};
+    fields.forEach(f => {
+      const el = document.getElementById(`detail-field-${f}`);
+      if (el) {
+        let val = el.value;
+        if (f === 'price') val = Number(val) || 0;
+        if (f === 'sort_order') val = Number(val) || 0;
+        payload[f] = val;
+      }
+    });
+
+    payload.in_stock = document.getElementById('detail-field-in_stock').checked;
+    payload.stock_oismae = document.getElementById('detail-field-stock_oismae').checked;
+    payload.stock_mahtra = document.getElementById('detail-field-stock_mahtra').checked;
+
+    try {
+      const res = await fetch(`/api/admin/product/${editingId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.status === 401) return showLogin();
+      if (res.ok) {
+        const idx = catalog.findIndex(p => p.id === editingId);
+        if (idx > -1) Object.assign(catalog[idx], payload);
+        showToast(tr.saved);
+        hideDetailView();
+        renderAll();
+      } else showToast(tr.failSave, 'error');
+    } catch { showToast(tr.failSave, 'error'); }
+  }
+
   // ── Init ──
   buildLangDropdown();
+  btnBackDetail.addEventListener('click', hideDetailView);
   checkAuth();
 });
