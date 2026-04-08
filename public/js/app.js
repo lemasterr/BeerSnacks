@@ -172,8 +172,13 @@
       items = items.filter(p => p.subcategory === sub);
     }
 
-    // Sort items by sort_order
-    items.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+    // Sort: Primary = in_stock (true first), Secondary = sort_order
+    items.sort((a, b) => {
+      const aStock = a.in_stock !== false;
+      const bStock = b.in_stock !== false;
+      if (aStock !== bStock) return aStock ? -1 : 1;
+      return (a.sort_order || 0) - (b.sort_order || 0);
+    });
 
     productItems.innerHTML = '';
 
