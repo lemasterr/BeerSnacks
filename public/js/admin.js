@@ -474,71 +474,86 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buildDetailedRowHtml(item) {
-    const tr = t();
     const categories = ['beer','cider','drinks','sweets','snacks'];
+    const currentSubcats = CATEGORY_SUBS[item.category] || [];
     
     return `
-      <div class="quick-edit-row">
-        
-        <!-- Action & Media -->
-        <div class="qe-col qe-media">
-          <img src="${item.image}" alt="" class="qe-img" onerror="this.style.opacity=0.3">
-          <div class="field" style="flex:1;">
-            <label>Image URL</label>
-            <input class="detailed-input qe-input" data-id="${item.id}" data-field="image" value="${escHtml(item.image||'')}">
+      <div class="detailed-edit-grid">
+        <!-- Section: Media & Identity -->
+        <div class="de-col de-media">
+          <div class="de-img-container">
+            <img src="${item.image}" alt="" class="de-preview-img" onerror="this.style.opacity=0.3">
+            <div class="de-img-overlay" onclick="adminActions.edit('${item.id}')">Edit</div>
           </div>
-          <button class="btn btn--edit btn--xs" onclick="adminActions.edit('${item.id}')" style="margin-top:6px;width:100%;">Full Edit</button>
+          <div class="field">
+            <label>Image URL</label>
+            <input class="detailed-input de-input-sm" data-id="${item.id}" data-field="image" value="${escHtml(item.image||'')}">
+          </div>
+          <div class="de-id-tag">ID: ${item.id}</div>
         </div>
 
-        <!-- Names Grid -->
-        <div class="qe-col qe-names">
-          <label class="qe-section-label">Names</label>
-          <div class="field-row"><span class="lang-badge">UK</span><input class="detailed-input qe-input" data-id="${item.id}" data-field="name_uk" value="${escHtml(item.name_uk||'')}"></div>
-          <div class="field-row"><span class="lang-badge">EN</span><input class="detailed-input qe-input" data-id="${item.id}" data-field="name_en" value="${escHtml(item.name_en||'')}"></div>
-          <div class="field-row"><span class="lang-badge">ET</span><input class="detailed-input qe-input" data-id="${item.id}" data-field="name_et" value="${escHtml(item.name_et||'')}"></div>
-          <div class="field-row"><span class="lang-badge">RU</span><input class="detailed-input qe-input" data-id="${item.id}" data-field="name_ru" value="${escHtml(item.name_ru||'')}"></div>
+        <!-- Section: Multilingual Names -->
+        <div class="de-col de-multiline">
+          <label class="de-section-label">Names</label>
+          <div class="de-field-group">
+            <div class="field-row"><span class="de-lang">UK</span><input class="detailed-input" data-id="${item.id}" data-field="name_uk" value="${escHtml(item.name_uk||'')}"></div>
+            <div class="field-row"><span class="de-lang">EN</span><input class="detailed-input" data-id="${item.id}" data-field="name_en" value="${escHtml(item.name_en||'')}"></div>
+            <div class="field-row"><span class="de-lang">ET</span><input class="detailed-input" data-id="${item.id}" data-field="name_et" value="${escHtml(item.name_et||'')}"></div>
+            <div class="field-row"><span class="de-lang">RU</span><input class="detailed-input" data-id="${item.id}" data-field="name_ru" value="${escHtml(item.name_ru||'')}"></div>
+          </div>
         </div>
 
-        <!-- Basics: Category, Type, Price, Status -->
-        <div class="qe-col qe-basics">
-          <label class="qe-section-label">Classification & Pricing</label>
-          <div class="qe-specs-row">
-            <div class="field" style="flex:1.5;">
-              <select class="detailed-input qe-input" data-id="${item.id}" data-field="category">
+        <!-- Section: Multilingual Types -->
+        <div class="de-col de-multiline">
+          <label class="de-section-label">Types / Varieties</label>
+          <div class="de-field-group">
+            <div class="field-row"><span class="de-lang">UK</span><input class="detailed-input" data-id="${item.id}" data-field="type_uk" value="${escHtml(item.type_uk||'')}"></div>
+            <div class="field-row"><span class="de-lang">EN</span><input class="detailed-input" data-id="${item.id}" data-field="type_en" value="${escHtml(item.type_en||'')}"></div>
+            <div class="field-row"><span class="de-lang">ET</span><input class="detailed-input" data-id="${item.id}" data-field="type_et" value="${escHtml(item.type_et||'')}"></div>
+            <div class="field-row"><span class="de-lang">RU</span><input class="detailed-input" data-id="${item.id}" data-field="type_ru" value="${escHtml(item.type_ru||'')}"></div>
+          </div>
+        </div>
+
+        <!-- Section: Multilingual Descriptions -->
+        <div class="de-col de-multiline de-desc">
+          <label class="de-section-label">Descriptions</label>
+          <div class="de-field-group">
+            <textarea class="detailed-input de-textarea" data-id="${item.id}" data-field="description_uk" placeholder="UK">${escHtml(item.description_uk||'')}</textarea>
+            <textarea class="detailed-input de-textarea" data-id="${item.id}" data-field="description_en" placeholder="EN">${escHtml(item.description_en||'')}</textarea>
+            <textarea class="detailed-input de-textarea" data-id="${item.id}" data-field="description_et" placeholder="ET">${escHtml(item.description_et||'')}</textarea>
+            <textarea class="detailed-input de-textarea" data-id="${item.id}" data-field="description_ru" placeholder="RU">${escHtml(item.description_ru||'')}</textarea>
+          </div>
+        </div>
+
+        <!-- Section: Specs & Pricing (Row) -->
+        <div class="de-footer-row">
+          <div class="de-specs-grid">
+            <div class="field">
+              <label>Category</label>
+              <select class="detailed-input" data-id="${item.id}" data-field="category">
                 ${categories.map(c => `<option value="${c}"${item.category===c?' selected':''}>${c}</option>`).join('')}
               </select>
             </div>
-            <div class="field" style="flex:1.5;">
-              <input class="detailed-input qe-input" data-id="${item.id}" data-field="type_en" value="${escHtml(item.type_en||'')}" placeholder="Type (EN)">
+            <div class="field">
+              <label>Price (€)</label>
+              <input type="number" step="0.01" class="detailed-input" data-id="${item.id}" data-field="price" value="${Number(item.price||0).toFixed(2)}">
             </div>
-          </div>
-          <div class="qe-specs-row" style="margin-top:8px;">
-            <div class="field" style="flex:1;">
-              <input class="detailed-input qe-input" type="number" step="0.01" data-id="${item.id}" data-field="price" value="${Number(item.price||0).toFixed(2)}" placeholder="€ Price">
-            </div>
-            <div class="field" style="flex:1;">
-              <select class="detailed-input qe-input" data-id="${item.id}" data-field="in_stock">
+            <div class="field">
+              <label>Status</label>
+              <select class="detailed-input" data-id="${item.id}" data-field="in_stock">
                 <option value="true"${item.in_stock!==false?' selected':''}>✅ In Stock</option>
-                <option value="false"${item.in_stock===false?' selected':''}>❌ Out</option>
+                <option value="false"${item.in_stock===false?' selected':''}>❌ Out of Stock</option>
               </select>
             </div>
+            <div class="field"><label>Vol</label><input class="detailed-input" data-id="${item.id}" data-field="volume" value="${escHtml(item.volume||'')}"></div>
+            <div class="field"><label>ABV%</label><input class="detailed-input" data-id="${item.id}" data-field="abv" value="${escHtml(item.abv||'')}"></div>
+            <div class="field"><label>IBU</label><input class="detailed-input" data-id="${item.id}" data-field="ibu" value="${escHtml(String(item.ibu||''))}"></div>
+            <div class="field"><label>Order</label><input type="number" class="detailed-input" data-id="${item.id}" data-field="sort_order" value="${item.sort_order||0}"></div>
+          </div>
+          <div class="de-actions">
+             <button class="btn btn--secondary btn--sm" onclick="adminActions.edit('${item.id}')">Full Edit Modal</button>
           </div>
         </div>
-
-        <!-- Specs & Description -->
-        <div class="qe-col qe-specs-desc">
-          <label class="qe-section-label">Specs</label>
-          <div class="qe-specs-row">
-            <div class="field"><input class="detailed-input qe-input" data-id="${item.id}" data-field="volume" value="${escHtml(item.volume||'')}" placeholder="Vol (e.g. 0.5L)"></div>
-            <div class="field"><input class="detailed-input qe-input" data-id="${item.id}" data-field="abv" value="${escHtml(item.abv||'')}" placeholder="ABV%"></div>
-            <div class="field"><input class="detailed-input qe-input" data-id="${item.id}" data-field="ibu" value="${escHtml(String(item.ibu||''))}" placeholder="IBU"></div>
-          </div>
-          <div class="field" style="margin-top:8px;">
-            <label class="qe-section-label">Description (EN)</label>
-            <input class="detailed-input qe-input" data-id="${item.id}" data-field="description_en" value="${escHtml(item.description_en||'')}" placeholder="Short description...">
-          </div>
-        </div>
-
       </div>
     `;
   }
@@ -815,50 +830,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show local preview immediately
     const localUrl = URL.createObjectURL(file);
     previewImg.src = localUrl;
+    previewImg.style.opacity = '0.5';
     previewFilename.textContent = file.name;
     previewStatus.textContent = t().uploading;
+    previewStatus.style.color = 'var(--text-muted)';
     uploadBar.style.width = '30%';
     imagePreview.style.display = 'flex';
 
-    // Generate safe filename
+    // Generate safe filename for local display fallback
     const safeName = file.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9._-]/g, '');
-    const imagePath = `img/${safeName}`;
 
     try {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('filename', safeName);
 
-      // Progress simulation
-      let progress = 30;
-      const progressInterval = setInterval(() => {
-        progress = Math.min(progress + 15, 85);
-        uploadBar.style.width = `${progress}%`;
-      }, 200);
-
       const res = await fetch('/api/admin/upload', {
         method: 'POST',
         body: formData
       });
 
-      clearInterval(progressInterval);
-      uploadBar.style.width = '100%';
+      const json = await res.json();
 
-      if (res.ok) {
-        const json = await res.json();
-        const finalUrl = json.url || (json.path ? json.path : imagePath);
-        fieldImage.value = finalUrl;
+      if (res.ok && json.url) {
+        fieldImage.value = json.url;
+        previewImg.src = json.url;
+        previewImg.style.opacity = '1';
         previewStatus.textContent = t().uploadDone;
         previewStatus.style.color = 'var(--green)';
+        uploadBar.style.width = '100%';
         showToast(t().uploadDone);
-        // Also update the preview immediately
-        if (previewImg) previewImg.src = finalUrl;
+      } else {
+        throw new Error(json.error || 'Server error during upload');
       }
     } catch (err) {
+      console.error('Upload error:', err);
       uploadBar.style.width = '0%';
-      fieldImage.value = `img/${safeName}`;
-      previewStatus.textContent = t().uploadErr + ' (offline)';
+      previewImg.style.opacity = '0.3';
+      previewStatus.textContent = t().uploadErr + ': ' + err.message;
       previewStatus.style.color = 'var(--red)';
+      showToast(t().uploadErr, 'error');
     }
   }
 

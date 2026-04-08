@@ -16,26 +16,20 @@
  */
 
 export async function onRequestPost(context) {
+  const tr = (msg) => JSON.stringify({ error: msg });
+  
   try {
-    // Check authentication first
+    // Check authentication
     const authHeader = context.request.headers.get('authorization') || '';
     const adminPassword = context.env.ADMIN_PASSWORD || 'admin123';
     
     if (authHeader !== `Bearer ${adminPassword}` && authHeader !== adminPassword) {
-      // Allow if password matches in request body
-      const contentType = context.request.headers.get('content-type') || '';
-      if (!contentType.includes('multipart/form-data')) {
-        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-          status: 401, headers: { 'Content-Type': 'application/json' }
-        });
-      }
+      return new Response(tr('Unauthorized'), { status: 401, headers: { 'Content-Type': 'application/json' } });
     }
 
     const contentType = context.request.headers.get('content-type') || '';
     if (!contentType.includes('multipart/form-data')) {
-      return new Response(JSON.stringify({ error: 'Expected multipart/form-data' }), {
-        status: 400, headers: { 'Content-Type': 'application/json' }
-      });
+      return new Response(tr('Expected multipart/form-data'), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
     const formData = await context.request.formData();
@@ -43,90 +37,36 @@ export async function onRequestPost(context) {
     const filename = formData.get('filename') || (file && file.name ? file.name : 'upload.png');
 
     if (!file || typeof file === 'string') {
-      return new Response(JSON.stringify({ error: 'No file provided' }), {
-        status: 400, headers: { 'Content-Type': 'application/json' }
-      });
+      return new Response(tr('No file provided'), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // Sanitize filename
-    const safeName = filename.toLowerCase()
-      .replace(/\s+/g, '_')
-      .replace(/[^a-z0-9._-]/g, '')
-      .substring(0, 200); // Limit length
+    const safeName = filename.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9._-]/g, '').substring(0, 200);
+    if (!safeName) return new Response(tr('Invalid filename'), { status: 400, headers: { 'Content-Type': 'application/json' } });
 
-    if (!safeName) {
-      return new Response(JSON.stringify({ error: 'Invalid filename' }), {
-        status: 400, headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    const imagePath = `img/${safeName}`;
-
-    // Required: IMAGES_BUCKET binding
     if (!context.env.IMAGES_BUCKET) {
-      return new Response(JSON.stringify({ 
-        error: 'R2 bucket not configured (binding IMAGES_BUCKET missing)' 
-      }), {
-        status: 500, headers: { 'Content-Type': 'application/json' }
-      });
+      return new Response(tr('IMAGES_BUCKET binding missing'), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // Required: Public URL configuration mapping
-    const publicBaseUrl = context.env.R2_PUBLIC_URL;
+    const publicBaseUrl = context.env.PUBLIC_IMAGE_BASE_URL || context.env.R2_PUBLIC_URL;
     if (!publicBaseUrl) {
-      return new Response(JSON.stringify({ 
-        error: 'R2_PUBLIC_URL environment variable is not configured. A designated public domain is required.' 
-      }), {
-        status: 500, headers: { 'Content-Type': 'application/json' }
-      });
+      return new Response(tr('PUBLIC_IMAGE_BASE_URL or R2_PUBLIC_URL environment variable not configured'), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
 
-    try {
-      const arrayBuffer = await file.arrayBuffer();
-      
-      // Check file size (max 5MB)
-      if (arrayBuffer.byteLength > 5 * 1024 * 1024) {
-        return new Response(JSON.stringify({ error: 'File too large (max 5MB)' }), {
-          status: 400, headers: { 'Content-Type': 'application/json' }
-        });
-      }
-
-      // Store in R2
-      await context.env.IMAGES_BUCKET.put(safeName, arrayBuffer, {
-        httpMetadata: { 
-          contentType: file.type || 'image/png',
-          cacheControl: 'public, max-age=31536000'
-        }
-      });
-
-      const finalUrl = `${publicBaseUrl.replace(/\/$/, '')}/${safeName}`;
-
-      return new Response(JSON.stringify({
-        success: true,
-        filename: safeName,
-        url: finalUrl
-      }), {
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-    } catch (r2Err) {
-      console.error('R2 upload error:', r2Err);
-      return new Response(JSON.stringify({ 
-        error: 'R2 storage failed',
-        details: String(r2Err)
-      }), {
-        status: 500, headers: { 'Content-Type': 'application/json' }
-      });
+    const arrayBuffer = await file.arrayBuffer();
+    if (arrayBuffer.byteLength > 5 * 1024 * 1024) {
+      return new Response(tr('File too large (max 5MB)'), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
+
+    await context.env.IMAGES_BUCKET.put(safeName, arrayBuffer, {
+      httpMetadata: { contentType: file.type || 'image/png', cacheControl: 'public, max-age=31536000' }
+    });
+
+    const finalUrl = `${publicBaseUrl.replace(/\/$/, '')}/${safeName}`;
+    return new Response(JSON.stringify({ success: true, filename: safeName, url: finalUrl }), { headers: { 'Content-Type': 'application/json' } });
 
   } catch (err) {
-    console.error('Upload error:', err);
-    return new Response(JSON.stringify({ 
-      error: String(err),
-      message: 'Upload failed'
-    }), {
-      status: 500, headers: { 'Content-Type': 'application/json' }
-    });
+    console.error('Upload critical error:', err);
+    return new Response(tr('Upload failed: ' + String(err)), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
 
