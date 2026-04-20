@@ -1,5 +1,5 @@
 // ============================================================
-//  Beer&Snacks — Admin Panel JS
+//  Beer&Snacks — Admin Panel JS (v2 — Categories & Settings)
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,16 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSortDir = 'asc';
   let adminLang = localStorage.getItem('bs_admin_lang') || 'en';
 
-  // ── Categories / Subcategories map ──
-  const CATEGORY_SUBS = {
-    beer:   ['ukraine', 'poland', 'czech', 'germany', 'estonia'],
-    cider:  ['fruit_cider', 'berry_cider', 'non_alc_cider'],
-    drinks: ['juices', 'sodas', 'water', 'energy', 'tea_coffee'],
-    sweets: ['candies', 'dragee', 'wafers', 'desserts', 'cakes'],
-    snacks: ['chips', 'crackers', 'seeds', 'seafood', 'nuts']
-  };
+  // Dynamic categories loaded from API
+  let categoriesData = []; // [{slug, sort_order, subcategories:[...]}, ...]
+  let translationsData = null; // {uk:{categories:{},subcategories:{},...}, ...}
+  let settingsData = null;
 
-  // ── Translations ──
+  // Build CATEGORY_SUBS from dynamic data
+  function getCategorySubs() {
+    const map = {};
+    categoriesData.forEach(c => {
+      map[c.slug] = (c.subcategories || []).filter(s => s !== 'all');
+    });
+    return map;
+  }
+
+  function getCategorySlugs() {
+    return categoriesData.map(c => c.slug);
+  }
+
+  // ── Translations (admin UI) ──
   const T = {
     en: {
       admin: 'Admin', login: 'Admin Panel', password: 'Password', loginBtn: 'Login',
@@ -40,6 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
       deleted: 'Deleted!', saved: 'Saved!', failDelete: 'Delete failed', failSave: 'Save failed',
       confirmDelete: 'Delete this product?', uploading: 'Uploading…', uploadDone: 'Uploaded ✓',
       uploadErr: 'Upload failed',
+      tabProducts: 'Products', tabCategories: 'Categories', tabSettings: 'Settings',
+      addCategory: 'Add Category', addSubcategory: 'Add Subcategory', deleteCategory: 'Delete category?',
+      deleteSubcategory: 'Delete subcategory?', catManager: 'Categories & Subcategories',
+      siteSettings: 'Site Settings', saveSettings: 'Save Settings',
       subcats: {
         ukraine:'Ukraine', poland:'Poland', czech:'Czech', germany:'Germany', estonia:'Estonia',
         fruit_cider:'Fruit', berry_cider:'Berry', non_alc_cider:'Non-alc',
@@ -64,6 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
       deleted: 'Видалено!', saved: 'Збережено!', failDelete: 'Помилка видалення', failSave: 'Помилка збереження',
       confirmDelete: 'Видалити цей товар?', uploading: 'Завантаження…', uploadDone: 'Завантажено ✓',
       uploadErr: 'Помилка завантаження',
+      tabProducts: 'Товари', tabCategories: 'Категорії', tabSettings: 'Налаштування',
+      addCategory: 'Додати категорію', addSubcategory: 'Додати підкатегорію',
+      deleteCategory: 'Видалити категорію?', deleteSubcategory: 'Видалити підкатегорію?',
+      catManager: 'Категорії та підкатегорії', siteSettings: 'Налаштування сайту',
+      saveSettings: 'Зберегти налаштування',
       subcats: {
         ukraine:'Україна', poland:'Польща', czech:'Чехія', germany:'Німеччина', estonia:'Естонія',
         fruit_cider:'Фруктовий', berry_cider:'Ягідний', non_alc_cider:'Безалк.',
@@ -88,6 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
       deleted: 'Kustutatud!', saved: 'Salvestatud!', failDelete: 'Kustutamine ebaõnnestus', failSave: 'Salvestamine ebaõnnestus',
       confirmDelete: 'Kustutada see toode?', uploading: 'Laaditakse üles…', uploadDone: 'Üles laaditud ✓',
       uploadErr: 'Üleslaadimine ebaõnnestus',
+      tabProducts: 'Tooted', tabCategories: 'Kategooriad', tabSettings: 'Seaded',
+      addCategory: 'Lisa kategooria', addSubcategory: 'Lisa alakategooria',
+      deleteCategory: 'Kustutada kategooria?', deleteSubcategory: 'Kustutada alakategooria?',
+      catManager: 'Kategooriad ja alakategooriad', siteSettings: 'Saidi seaded',
+      saveSettings: 'Salvesta seaded',
       subcats: {
         ukraine:'Ukraina', poland:'Poola', czech:'Tšehhi', germany:'Saksamaa', estonia:'Eesti',
         fruit_cider:'Puuvilja', berry_cider:'Marja', non_alc_cider:'Alkoholivaba',
@@ -112,6 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
       deleted: 'Удалено!', saved: 'Сохранено!', failDelete: 'Ошибка удаления', failSave: 'Ошибка сохранения',
       confirmDelete: 'Удалить этот товар?', uploading: 'Загрузка…', uploadDone: 'Загружено ✓',
       uploadErr: 'Ошибка загрузки',
+      tabProducts: 'Товары', tabCategories: 'Категории', tabSettings: 'Настройки',
+      addCategory: 'Добавить категорию', addSubcategory: 'Добавить подкатегорию',
+      deleteCategory: 'Удалить категорию?', deleteSubcategory: 'Удалить подкатегорию?',
+      catManager: 'Категории и подкатегории', siteSettings: 'Настройки сайта',
+      saveSettings: 'Сохранить настройки',
       subcats: {
         ukraine:'Украина', poland:'Польша', czech:'Чехия', germany:'Германия', estonia:'Эстония',
         fruit_cider:'Фруктовый', berry_cider:'Ягодный', non_alc_cider:'Безалк.',
@@ -123,6 +151,23 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const t = () => T[adminLang] || T.en;
+
+  // Helper: get translated name of category/subcategory
+  function getTranslatedCatName(slug) {
+    if (translationsData && translationsData[adminLang] && translationsData[adminLang].categories) {
+      return translationsData[adminLang].categories[slug] || slug;
+    }
+    return slug;
+  }
+
+  function getTranslatedSubName(slug) {
+    const tr = t();
+    if (tr.subcats && tr.subcats[slug]) return tr.subcats[slug];
+    if (translationsData && translationsData[adminLang] && translationsData[adminLang].subcategories) {
+      return translationsData[adminLang].subcategories[slug] || slug;
+    }
+    return slug;
+  }
 
   // ── DOM ──
   const loginOverlay = document.getElementById('login-overlay');
@@ -189,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         langSwitcherEl.classList.remove('open');
         applyUITranslations();
         renderAll();
+        renderCategoriesManager();
       });
       langDropdownEl.appendChild(btn);
     });
@@ -206,11 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const tr = t();
     buildLangDropdown();
 
-    // Header
     const headerAdminLabel = document.getElementById('header-admin-label');
     if (headerAdminLabel) headerAdminLabel.textContent = tr.admin;
 
-    // Login
     const loginTitle = document.getElementById('login-title');
     if (loginTitle) loginTitle.textContent = tr.login;
     const loginPwdLabel = document.getElementById('login-password-label');
@@ -218,15 +262,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginPassword) loginPassword.placeholder = tr.password;
     const btnLoginLabel = document.getElementById('btn-login-label');
     if (btnLoginLabel) btnLoginLabel.textContent = tr.loginBtn;
-    // Update error text only if visible
     if (loginError && loginError.style.display !== 'none') loginError.textContent = tr.invalidPwd;
     if (btnLogout) btnLogout.textContent = tr.logout;
 
-    // Toolbar
     if (searchInput) searchInput.placeholder = tr.search;
     const optAllCats = document.getElementById('opt-all-cats');
     if (optAllCats) optAllCats.textContent = tr.allCats;
-    // Update sort mode options
     const sortOptId = document.getElementById('opt-sort-id');
     const sortOptCat = document.getElementById('opt-sort-cat');
     const sortOptPrice = document.getElementById('opt-sort-price');
@@ -236,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnToggleView) btnToggleView.textContent = isDetailedView ? tr.compact : tr.detailed;
     if (btnAdd) btnAdd.textContent = tr.addProduct;
 
-    // Table headers — use data-label span to preserve sort arrow
     const thHeaders = {
       'th-id': 'thId', 'th-name': 'thName', 'th-cat': 'thCat',
       'th-price': 'thPrice', 'th-status': 'thStatus', 'th-actions': 'thActions'
@@ -245,17 +285,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const th = document.getElementById(id);
       if (!th) return;
       const labelSpan = th.querySelector('.th-label');
-      if (labelSpan) {
-        labelSpan.textContent = tr[key];
-      } else {
-        // first text node for th-id (which has a sort arrow child)
-        const firstText = Array.from(th.childNodes).find(n => n.nodeType === Node.TEXT_NODE);
-        if (firstText) firstText.textContent = tr[key] + ' ';
-        else th.prepend(document.createTextNode(tr[key] + ' '));
-      }
+      if (labelSpan) labelSpan.textContent = tr[key];
     });
 
-    // Modal form sections
     const els = {
       'section-basic': 'basicInfo', 'section-image': 'imageSection', 'section-stock': 'stockSection',
       'section-names': 'namesSection', 'section-types': 'typesSection', 'section-desc': 'descSection',
@@ -272,6 +304,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const legendStock = document.getElementById('legend-stock');
     if (legendStock) legendStock.textContent = tr.availability;
+
+    // Tabs
+    const tabLabels = {
+      'tab-products-label': 'tabProducts',
+      'tab-categories-label': 'tabCategories',
+      'tab-settings-label': 'tabSettings'
+    };
+    Object.entries(tabLabels).forEach(([id, key]) => {
+      const el = document.getElementById(id);
+      if (el && tr[key]) el.textContent = tr[key];
+    });
+
+    // Categories manager
+    const catTitle = document.getElementById('cat-manager-title');
+    if (catTitle) catTitle.textContent = tr.catManager;
+    const addCatLabel = document.getElementById('btn-add-cat-label');
+    if (addCatLabel) addCatLabel.textContent = tr.addCategory;
+
+    // Settings
+    const settingsTitle = document.getElementById('settings-title');
+    if (settingsTitle) settingsTitle.textContent = tr.siteSettings;
+    const saveSettingsLabel = document.getElementById('btn-save-settings-label');
+    if (saveSettingsLabel) saveSettingsLabel.textContent = tr.saveSettings;
   }
 
   // ── Toast ──
@@ -282,6 +337,29 @@ document.addEventListener('DOMContentLoaded', () => {
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toast.classList.add('hidden'), 3000);
   }
+
+  // ══════════════════════════════════════════════════
+  //  TAB NAVIGATION
+  // ══════════════════════════════════════════════════
+  let currentTab = 'products';
+
+  document.querySelectorAll('.admin-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.dataset.tab;
+      if (tabName === currentTab) return;
+      currentTab = tabName;
+
+      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      const content = document.getElementById('content-' + tabName);
+      if (content) content.classList.add('active');
+
+      // Load data for tab
+      if (tabName === 'categories') renderCategoriesManager();
+      if (tabName === 'settings') renderSettingsManager();
+    });
+  });
 
   // ── Auth ──
   async function checkAuth() {
@@ -305,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
     adminContent.style.display = 'block';
     btnLogout.style.display = '';
     applyUITranslations();
-    loadData();
+    loadAllData();
   }
 
   loginForm.addEventListener('submit', async (e) => {
@@ -331,16 +409,55 @@ document.addEventListener('DOMContentLoaded', () => {
     showLogin();
   });
 
-  // ── Load Data ──
-  async function loadData() {
+  // ── Load All Data ──
+  async function loadAllData() {
     try {
-      const response = await fetch('/api/admin/products');
-      if (response.status === 401) return showLogin();
-      catalog = await response.json();
+      // Load categories + translations + products in parallel
+      const [catRes, prodRes] = await Promise.all([
+        fetch('/api/admin/categories'),
+        fetch('/api/admin/products')
+      ]);
+      if (catRes.status === 401 || prodRes.status === 401) return showLogin();
+
+      const catData = await catRes.json();
+      categoriesData = catData.categories || [];
+      translationsData = catData.translations || null;
+
+      catalog = await prodRes.json();
+
+      // Build dynamic category filter options
+      buildCategoryFilterOptions();
+      buildProductFormCategories();
       renderAll();
     } catch (e) {
-      console.error('Error fetching products:', e);
+      console.error('Error loading data:', e);
     }
+  }
+
+  // Build category filter dropdown
+  function buildCategoryFilterOptions() {
+    const tr = t();
+    const current = categoryFilter.value;
+    // Keep "all" option at top
+    categoryFilter.innerHTML = `<option value="all" id="opt-all-cats">${tr.allCats}</option>`;
+    categoriesData.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat.slug;
+      opt.textContent = getTranslatedCatName(cat.slug);
+      if (cat.slug === current) opt.selected = true;
+      categoryFilter.appendChild(opt);
+    });
+  }
+
+  // Build product form category dropdown
+  function buildProductFormCategories() {
+    fieldCategory.innerHTML = '';
+    categoriesData.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat.slug;
+      opt.textContent = getTranslatedCatName(cat.slug);
+      fieldCategory.appendChild(opt);
+    });
   }
 
   // ── Sorting ──
@@ -358,10 +475,6 @@ document.addEventListener('DOMContentLoaded', () => {
       );
     }
 
-    // Sort Priority:
-    // 1. in_stock (true first)
-    // 2. Category (if viewing all)
-    // 3. Choice (field)
     filtered.sort((a, b) => {
       const aStock = a.in_stock !== false;
       const bStock = b.in_stock !== false;
@@ -423,8 +536,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Render Table (desktop) ──
   function renderTable() {
+    const CATEGORY_SUBS = getCategorySubs();
     const filtered = getSortedFiltered();
     const tr = t();
+    const slugs = getCategorySlugs();
     tableBody.innerHTML = '';
     let lastCategory = '';
 
@@ -433,7 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if ((isShowingAll || currentSortField === 'category') && item.category !== lastCategory) {
         lastCategory = item.category;
         const catRow = document.createElement('tr');
-        const catName = lastCategory.charAt(0).toUpperCase() + lastCategory.slice(1);
+        const catName = getTranslatedCatName(lastCategory);
         catRow.innerHTML = `<td colspan="7"><div class="cat-header-inner"><span>${catName}</span><span class="cat-header-line"></span></div></td>`;
         catRow.className = 'category-header';
         tableBody.appendChild(catRow);
@@ -442,7 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isDetailedView) {
         const detailedRow = document.createElement('tr');
         detailedRow.className = 'detailed-row-container';
-        detailedRow.innerHTML = `<td colspan="7">${buildDetailedRowHtml(item)}</td>`;
+        detailedRow.innerHTML = `<td colspan="7">${buildDetailedRowHtml(item, slugs, CATEGORY_SUBS)}</td>`;
         tableBody.appendChild(detailedRow);
       } else {
         const row = document.createElement('tr');
@@ -453,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td style="min-width:180px">${buildCompactInfo(item)}</td>
           <td>
             <select class="quick-select" data-id="${item.id}" data-field="category">
-              ${['beer','cider','drinks','sweets','snacks'].map(c => `<option value="${c}"${item.category===c?' selected':''}>${c}</option>`).join('')}
+              ${slugs.map(c => `<option value="${c}"${item.category===c?' selected':''}>${getTranslatedCatName(c)}</option>`).join('')}
             </select>
           </td>
           <td>
@@ -480,19 +595,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Re-bind change listeners for quick edits
     tableBody.querySelectorAll('.quick-select, .quick-input, .detailed-input').forEach(el => {
       el.addEventListener('change', handleQuickEdit);
     });
   }
 
-  function buildDetailedRowHtml(item) {
-    const categories = ['beer','cider','drinks','sweets','snacks'];
+  function buildDetailedRowHtml(item, slugs, CATEGORY_SUBS) {
     const currentSubcats = CATEGORY_SUBS[item.category] || [];
-    
     return `
       <div class="detailed-edit-grid">
-        <!-- Section: Media & Identity -->
         <div class="de-col de-media">
           <div class="de-img-container">
             <img src="${item.image}" alt="" class="de-preview-img" onerror="this.style.opacity=0.3">
@@ -504,8 +615,6 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="de-id-tag">ID: ${item.id}</div>
         </div>
-
-        <!-- Section: Multilingual Names -->
         <div class="de-col de-multiline">
           <label class="de-section-label">Names</label>
           <div class="de-field-group">
@@ -515,8 +624,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="field-row"><span class="de-lang">RU</span><input class="detailed-input" data-id="${item.id}" data-field="name_ru" value="${escHtml(item.name_ru||'')}"></div>
           </div>
         </div>
-
-        <!-- Section: Multilingual Types -->
         <div class="de-col de-multiline">
           <label class="de-section-label">Types / Varieties</label>
           <div class="de-field-group">
@@ -526,8 +633,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="field-row"><span class="de-lang">RU</span><input class="detailed-input" data-id="${item.id}" data-field="type_ru" value="${escHtml(item.type_ru||'')}"></div>
           </div>
         </div>
-
-        <!-- Section: Multilingual Descriptions -->
         <div class="de-col de-multiline de-desc">
           <label class="de-section-label">Descriptions</label>
           <div class="de-field-group">
@@ -537,14 +642,12 @@ document.addEventListener('DOMContentLoaded', () => {
             <textarea class="detailed-input de-textarea" data-id="${item.id}" data-field="description_ru" placeholder="RU">${escHtml(item.description_ru||'')}</textarea>
           </div>
         </div>
-
-        <!-- Section: Specs & Pricing (Row) -->
         <div class="de-footer-row">
           <div class="de-specs-grid">
             <div class="field">
               <label>Category</label>
               <select class="detailed-input" data-id="${item.id}" data-field="category">
-                ${categories.map(c => `<option value="${c}"${item.category===c?' selected':''}>${c}</option>`).join('')}
+                ${slugs.map(c => `<option value="${c}"${item.category===c?' selected':''}>${getTranslatedCatName(c)}</option>`).join('')}
               </select>
             </div>
             <div class="field">
@@ -613,7 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     mobileCards.querySelectorAll('.mobile-stock-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', () => {
         const id = btn.dataset.id;
         const val = btn.dataset.value === '1';
         handleQuickEdit({ target: { dataset: { id, field: 'in_stock' }, value: val ? '1' : '0' } });
@@ -621,7 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Inline quick-edit for price, status, category ──
+  // ── Inline quick-edit ──
   async function handleQuickEdit(e) {
     const el = e.target;
     const id = el.dataset.id;
@@ -714,7 +817,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('field-id').value = 'item-' + Date.now();
     document.getElementById('modal-title').textContent = t().addNew;
     resetImagePreview();
-    buildSubcategoryPicker('beer', '');
+    const firstCat = categoriesData.length > 0 ? categoriesData[0].slug : 'beer';
+    buildSubcategoryPicker(firstCat, '');
     modal.classList.add('open');
   });
 
@@ -726,13 +830,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Subcategory Chip Picker ──
   function buildSubcategoryPicker(category, selectedSub) {
     subcategoryPicker.innerHTML = '';
+    const CATEGORY_SUBS = getCategorySubs();
     const subs = CATEGORY_SUBS[category] || [];
-    const tr = t();
     subs.forEach(sub => {
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'subcategory-chip' + (sub === selectedSub ? ' active' : '');
-      chip.textContent = (tr.subcats && tr.subcats[sub]) || sub;
+      chip.textContent = getTranslatedSubName(sub);
       chip.addEventListener('click', () => {
         subcategoryPicker.querySelectorAll('.subcategory-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
@@ -740,13 +844,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       subcategoryPicker.appendChild(chip);
     });
-    // If the existing subcategory isn't in the list, keep it as hidden value
     if (selectedSub && !subs.includes(selectedSub)) {
       fieldSubcategory.value = selectedSub;
     }
   }
 
-  // Update picker when category changes in modal
   fieldCategory.addEventListener('change', () => {
     buildSubcategoryPicker(fieldCategory.value, '');
     fieldSubcategory.value = '';
@@ -825,7 +927,6 @@ document.addEventListener('DOMContentLoaded', () => {
     await handleFileUpload(file);
   });
 
-  // Drag and drop
   imageUploadArea.addEventListener('dragover', (e) => {
     e.preventDefault();
     imageUploadArea.classList.add('drag-over');
@@ -841,7 +942,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   async function handleFileUpload(file) {
-    // Show local preview immediately
     const localUrl = URL.createObjectURL(file);
     previewImg.src = localUrl;
     previewImg.style.opacity = '0.5';
@@ -851,7 +951,6 @@ document.addEventListener('DOMContentLoaded', () => {
     uploadBar.style.width = '30%';
     imagePreview.style.display = 'flex';
 
-    // Generate safe filename for local display fallback
     const safeName = file.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9._-]/g, '');
 
     try {
@@ -958,13 +1057,12 @@ document.addEventListener('DOMContentLoaded', () => {
     editingId = item.id;
 
     const tr = t();
-    
-    // Build category subcategory options
-    const categories = ['beer', 'cider', 'drinks', 'sweets', 'snacks'];
-    const categoryOptions = categories.map(c => `<option value="${c}"${item.category === c ? ' selected' : ''}>${c}</option>`).join('');
-    
+    const slugs = getCategorySlugs();
+    const CATEGORY_SUBS = getCategorySubs();
+
+    const categoryOptions = slugs.map(c => `<option value="${c}"${item.category === c ? ' selected' : ''}>${getTranslatedCatName(c)}</option>`).join('');
     const subCats = CATEGORY_SUBS[item.category] || [];
-    const subCatOptions = subCats.map(s => `<option value="${s}"${item.subcategory === s ? ' selected' : ''}>${tr.subcats && tr.subcats[s] || s}</option>`).join('');
+    const subCatOptions = subCats.map(s => `<option value="${s}"${item.subcategory === s ? ' selected' : ''}>${getTranslatedSubName(s)}</option>`).join('');
 
     const html = `
       <div class="detail-header">
@@ -976,145 +1074,49 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <div class="detail-grid">
-        <!-- Left column -->
         <div class="detail-section">
           <h3>${tr.basicInfo}</h3>
-          
-          <div class="detail-field">
-            <label>${tr.labelCat}</label>
-            <select class="detail-input" id="detail-field-category">
-              ${categoryOptions}
-            </select>
-          </div>
-
-          <div class="detail-field">
-            <label>${tr.labelSubcat}</label>
-            <select class="detail-input" id="detail-field-subcategory">
-              ${subCatOptions}
-            </select>
-          </div>
-
-          <div class="detail-field">
-            <label>${tr.labelSort}</label>
-            <input type="number" class="detail-input" id="detail-field-sort_order" value="${item.sort_order || 0}">
-          </div>
-
-          <div class="detail-field">
-            <label>${tr.labelPrice}</label>
-            <input type="number" step="0.01" class="detail-input" id="detail-field-price" value="${Number(item.price || 0).toFixed(2)}">
-          </div>
-
-          <div class="detail-field">
-            <label>${tr.labelVol}</label>
-            <input type="text" class="detail-input" id="detail-field-volume" value="${escHtml(item.volume || '')}">
-          </div>
-
-          <div class="detail-field">
-            <label>${tr.labelAbv}</label>
-            <input type="text" class="detail-input" id="detail-field-abv" value="${escHtml(item.abv || '')}">
-          </div>
-
-          <div class="detail-field">
-            <label>${tr.labelIbu}</label>
-            <input type="text" class="detail-input" id="detail-field-ibu" value="${escHtml(item.ibu || '')}">
-          </div>
-
-          <div class="detail-field">
-            <label>${tr.labelImgPath}</label>
-            <input type="text" class="detail-input" id="detail-field-image" value="${escHtml(item.image || '')}">
-          </div>
+          <div class="detail-field"><label>${tr.labelCat}</label><select class="detail-input" id="detail-field-category">${categoryOptions}</select></div>
+          <div class="detail-field"><label>${tr.labelSubcat}</label><select class="detail-input" id="detail-field-subcategory">${subCatOptions}</select></div>
+          <div class="detail-field"><label>${tr.labelSort}</label><input type="number" class="detail-input" id="detail-field-sort_order" value="${item.sort_order || 0}"></div>
+          <div class="detail-field"><label>${tr.labelPrice}</label><input type="number" step="0.01" class="detail-input" id="detail-field-price" value="${Number(item.price || 0).toFixed(2)}"></div>
+          <div class="detail-field"><label>${tr.labelVol}</label><input type="text" class="detail-input" id="detail-field-volume" value="${escHtml(item.volume || '')}"></div>
+          <div class="detail-field"><label>${tr.labelAbv}</label><input type="text" class="detail-input" id="detail-field-abv" value="${escHtml(item.abv || '')}"></div>
+          <div class="detail-field"><label>${tr.labelIbu}</label><input type="text" class="detail-input" id="detail-field-ibu" value="${escHtml(item.ibu || '')}"></div>
+          <div class="detail-field"><label>${tr.labelImgPath}</label><input type="text" class="detail-input" id="detail-field-image" value="${escHtml(item.image || '')}"></div>
 
           <div class="detail-section" style="margin-top: 20px;">
             <h3>${tr.availability}</h3>
             <div class="detail-checkboxes">
-              <div class="detail-field-checkbox">
-                <input type="checkbox" id="detail-field-in_stock" ${item.in_stock !== false ? 'checked' : ''}>
-                <label for="detail-field-in_stock">${tr.inStock}</label>
-              </div>
-              <div class="detail-field-checkbox">
-                <input type="checkbox" id="detail-field-stock_oismae" ${item.stock_oismae !== false ? 'checked' : ''}>
-                <label for="detail-field-stock_oismae">Õismäe</label>
-              </div>
-              <div class="detail-field-checkbox">
-                <input type="checkbox" id="detail-field-stock_mahtra" ${item.stock_mahtra !== false ? 'checked' : ''}>
-                <label for="detail-field-stock_mahtra">Mahtra</label>
-              </div>
+              <div class="detail-field-checkbox"><input type="checkbox" id="detail-field-in_stock" ${item.in_stock !== false ? 'checked' : ''}><label for="detail-field-in_stock">${tr.inStock}</label></div>
+              <div class="detail-field-checkbox"><input type="checkbox" id="detail-field-stock_oismae" ${item.stock_oismae !== false ? 'checked' : ''}><label for="detail-field-stock_oismae">Õismäe</label></div>
+              <div class="detail-field-checkbox"><input type="checkbox" id="detail-field-stock_mahtra" ${item.stock_mahtra !== false ? 'checked' : ''}><label for="detail-field-stock_mahtra">Mahtra</label></div>
             </div>
           </div>
         </div>
-
-        <!-- Right column -->
         <div class="detail-section">
           <h3>${tr.namesSection}</h3>
-          
-          <div class="detail-field">
-            <label>🇺🇦 ${tr.labelId}</label>
-            <input type="text" class="detail-input" id="detail-field-name_uk" value="${escHtml(item.name_uk || '')}">
-          </div>
-
-          <div class="detail-field">
-            <label>🇬🇧 EN</label>
-            <input type="text" class="detail-input" id="detail-field-name_en" value="${escHtml(item.name_en || '')}">
-          </div>
-
-          <div class="detail-field">
-            <label>🇪🇪 ET</label>
-            <input type="text" class="detail-input" id="detail-field-name_et" value="${escHtml(item.name_et || '')}">
-          </div>
-
-          <div class="detail-field">
-            <label>🇷🇺 RU</label>
-            <input type="text" class="detail-input" id="detail-field-name_ru" value="${escHtml(item.name_ru || '')}">
-          </div>
+          <div class="detail-field"><label>🇺🇦 UK</label><input type="text" class="detail-input" id="detail-field-name_uk" value="${escHtml(item.name_uk || '')}"></div>
+          <div class="detail-field"><label>🇬🇧 EN</label><input type="text" class="detail-input" id="detail-field-name_en" value="${escHtml(item.name_en || '')}"></div>
+          <div class="detail-field"><label>🇪🇪 ET</label><input type="text" class="detail-input" id="detail-field-name_et" value="${escHtml(item.name_et || '')}"></div>
+          <div class="detail-field"><label>🇷🇺 RU</label><input type="text" class="detail-input" id="detail-field-name_ru" value="${escHtml(item.name_ru || '')}"></div>
 
           <h3 style="margin-top: 20px;">${tr.typesSection}</h3>
-
-          <div class="detail-field">
-            <label>🇺🇦 UK</label>
-            <input type="text" class="detail-input" id="detail-field-type_uk" value="${escHtml(item.type_uk || '')}">
-          </div>
-
-          <div class="detail-field">
-            <label>🇬🇧 EN</label>
-            <input type="text" class="detail-input" id="detail-field-type_en" value="${escHtml(item.type_en || '')}">
-          </div>
-
-          <div class="detail-field">
-            <label>🇪🇪 ET</label>
-            <input type="text" class="detail-input" id="detail-field-type_et" value="${escHtml(item.type_et || '')}">
-          </div>
-
-          <div class="detail-field">
-            <label>🇷🇺 RU</label>
-            <input type="text" class="detail-input" id="detail-field-type_ru" value="${escHtml(item.type_ru || '')}">
-          </div>
+          <div class="detail-field"><label>🇺🇦 UK</label><input type="text" class="detail-input" id="detail-field-type_uk" value="${escHtml(item.type_uk || '')}"></div>
+          <div class="detail-field"><label>🇬🇧 EN</label><input type="text" class="detail-input" id="detail-field-type_en" value="${escHtml(item.type_en || '')}"></div>
+          <div class="detail-field"><label>🇪🇪 ET</label><input type="text" class="detail-input" id="detail-field-type_et" value="${escHtml(item.type_et || '')}"></div>
+          <div class="detail-field"><label>🇷🇺 RU</label><input type="text" class="detail-input" id="detail-field-type_ru" value="${escHtml(item.type_ru || '')}"></div>
 
           <h3 style="margin-top: 20px;">${tr.descSection}</h3>
-
-          <div class="detail-field">
-            <label>🇺🇦 UK</label>
-            <textarea class="detail-input" id="detail-field-description_uk">${escHtml(item.description_uk || '')}</textarea>
-          </div>
-
-          <div class="detail-field">
-            <label>🇬🇧 EN</label>
-            <textarea class="detail-input" id="detail-field-description_en">${escHtml(item.description_en || '')}</textarea>
-          </div>
-
-          <div class="detail-field">
-            <label>🇪🇪 ET</label>
-            <textarea class="detail-input" id="detail-field-description_et">${escHtml(item.description_et || '')}</textarea>
-          </div>
-
-          <div class="detail-field">
-            <label>🇷🇺 RU</label>
-            <textarea class="detail-input" id="detail-field-description_ru">${escHtml(item.description_ru || '')}</textarea>
-          </div>
+          <div class="detail-field"><label>🇺🇦 UK</label><textarea class="detail-input" id="detail-field-description_uk">${escHtml(item.description_uk || '')}</textarea></div>
+          <div class="detail-field"><label>🇬🇧 EN</label><textarea class="detail-input" id="detail-field-description_en">${escHtml(item.description_en || '')}</textarea></div>
+          <div class="detail-field"><label>🇪🇪 ET</label><textarea class="detail-input" id="detail-field-description_et">${escHtml(item.description_et || '')}</textarea></div>
+          <div class="detail-field"><label>🇷🇺 RU</label><textarea class="detail-input" id="detail-field-description_ru">${escHtml(item.description_ru || '')}</textarea></div>
         </div>
       </div>
 
       <div class="detail-footer">
-        <button type="button" class="btn btn--danger" id="detail-btn-delete">🗑 ${tr.cancel}</button>
+        <button type="button" class="btn btn--danger" id="detail-btn-delete">🗑 Delete</button>
         <button type="button" class="btn btn--secondary" id="detail-btn-cancel">${tr.cancel}</button>
         <button type="button" class="btn btn--primary" id="detail-btn-save">${tr.saveChanges}</button>
       </div>
@@ -1122,7 +1124,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     detailContainer.innerHTML = html;
 
-    // Bind events
     document.getElementById('detail-btn-cancel').addEventListener('click', hideDetailView);
     document.getElementById('detail-btn-save').addEventListener('click', saveDetailView);
     document.getElementById('detail-btn-delete').addEventListener('click', () => {
@@ -1130,12 +1131,11 @@ document.addEventListener('DOMContentLoaded', () => {
       hideDetailView();
     });
 
-    // Update subcategory options when category changes
     document.getElementById('detail-field-category').addEventListener('change', (e) => {
       const newCategory = e.target.value;
-      const newSubs = CATEGORY_SUBS[newCategory] || [];
+      const newSubs = getCategorySubs()[newCategory] || [];
       const subSelect = document.getElementById('detail-field-subcategory');
-      subSelect.innerHTML = newSubs.map(s => `<option value="${s}">${tr.subcats && tr.subcats[s] || s}</option>`).join('');
+      subSelect.innerHTML = newSubs.map(s => `<option value="${s}">${getTranslatedSubName(s)}</option>`).join('');
     });
   }
 
@@ -1184,6 +1184,527 @@ document.addEventListener('DOMContentLoaded', () => {
       } else showToast(tr.failSave, 'error');
     } catch { showToast(tr.failSave, 'error'); }
   }
+
+  // ══════════════════════════════════════════════════
+  //  CATEGORIES MANAGER
+  // ══════════════════════════════════════════════════
+  function renderCategoriesManager() {
+    const grid = document.getElementById('categories-grid');
+    const tr = t();
+    grid.innerHTML = '';
+
+    categoriesData.forEach((cat, catIdx) => {
+      const card = document.createElement('div');
+      card.className = 'cat-manager-card';
+      card.style.animationDelay = `${catIdx * 0.04}s`;
+
+      const subcats = (cat.subcategories || []).filter(s => s !== 'all');
+
+      card.innerHTML = `
+        <div class="cat-manager-card__header">
+          <div class="cat-manager-card__info">
+            <h3 class="cat-manager-card__title">${getTranslatedCatName(cat.slug)}</h3>
+            <span class="cat-manager-card__slug">${cat.slug}</span>
+            <span class="cat-manager-card__count">${subcats.length} subcategories</span>
+          </div>
+          <div class="cat-manager-card__actions">
+            <button class="btn btn--secondary btn--xs cat-move-btn" data-dir="up" data-slug="${cat.slug}" ${catIdx===0?'disabled':''}title="Move Up">↑</button>
+            <button class="btn btn--secondary btn--xs cat-move-btn" data-dir="down" data-slug="${cat.slug}" ${catIdx===categoriesData.length-1?'disabled':''}title="Move Down">↓</button>
+            <button class="btn btn--edit btn--xs cat-edit-btn" data-slug="${cat.slug}" title="Edit">✏️</button>
+            <button class="btn btn--danger btn--xs cat-delete-btn" data-slug="${cat.slug}" title="Delete">✕</button>
+          </div>
+        </div>
+        <div class="cat-manager-card__subcats">
+          ${subcats.map((sub, subIdx) => `
+            <div class="subcat-chip-manager">
+              <span class="subcat-chip-manager__name">${getTranslatedSubName(sub)}</span>
+              <span class="subcat-chip-manager__slug">${sub}</span>
+              <div class="subcat-chip-manager__actions">
+                <button class="subcat-move-btn" data-cat="${cat.slug}" data-sub="${sub}" data-dir="up" ${subIdx===0?'disabled':''} title="↑">↑</button>
+                <button class="subcat-move-btn" data-cat="${cat.slug}" data-sub="${sub}" data-dir="down" ${subIdx===subcats.length-1?'disabled':''} title="↓">↓</button>
+                <button class="subcat-edit-btn" data-cat="${cat.slug}" data-sub="${sub}" title="Edit">✏️</button>
+                <button class="subcat-delete-btn" data-cat="${cat.slug}" data-sub="${sub}" title="Delete">✕</button>
+              </div>
+            </div>
+          `).join('')}
+          <button class="btn btn--secondary btn--xs add-subcat-btn" data-cat="${cat.slug}">+ ${tr.addSubcategory}</button>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+
+    // Bind events
+    grid.querySelectorAll('.cat-move-btn').forEach(btn => {
+      btn.addEventListener('click', () => moveCategoryDir(btn.dataset.slug, btn.dataset.dir));
+    });
+    grid.querySelectorAll('.cat-edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => openEditCategoryModal(btn.dataset.slug));
+    });
+    grid.querySelectorAll('.cat-delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => deleteCategory(btn.dataset.slug));
+    });
+    grid.querySelectorAll('.subcat-move-btn').forEach(btn => {
+      btn.addEventListener('click', () => moveSubcategoryDir(btn.dataset.cat, btn.dataset.sub, btn.dataset.dir));
+    });
+    grid.querySelectorAll('.subcat-edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => openEditSubcatModal(btn.dataset.cat, btn.dataset.sub));
+    });
+    grid.querySelectorAll('.subcat-delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => deleteSubcategory(btn.dataset.cat, btn.dataset.sub));
+    });
+    grid.querySelectorAll('.add-subcat-btn').forEach(btn => {
+      btn.addEventListener('click', () => openAddSubcatModal(btn.dataset.cat));
+    });
+  }
+
+  // Move category up/down
+  async function moveCategoryDir(slug, dir) {
+    const idx = categoriesData.findIndex(c => c.slug === slug);
+    if (idx === -1) return;
+    const newIdx = dir === 'up' ? idx - 1 : idx + 1;
+    if (newIdx < 0 || newIdx >= categoriesData.length) return;
+    [categoriesData[idx], categoriesData[newIdx]] = [categoriesData[newIdx], categoriesData[idx]];
+    categoriesData.forEach((c, i) => c.sort_order = i);
+    await saveCategoriesData();
+    renderCategoriesManager();
+  }
+
+  // Move subcategory up/down
+  async function moveSubcategoryDir(catSlug, subSlug, dir) {
+    const cat = categoriesData.find(c => c.slug === catSlug);
+    if (!cat) return;
+    const subs = cat.subcategories.filter(s => s !== 'all');
+    const idx = subs.indexOf(subSlug);
+    if (idx === -1) return;
+    const newIdx = dir === 'up' ? idx - 1 : idx + 1;
+    if (newIdx < 0 || newIdx >= subs.length) return;
+    [subs[idx], subs[newIdx]] = [subs[newIdx], subs[idx]];
+    cat.subcategories = ['all', ...subs];
+    await saveCategoriesData();
+    renderCategoriesManager();
+  }
+
+  // Save categories to API
+  async function saveCategoriesData() {
+    try {
+      const body = { categories: categoriesData };
+      if (translationsData) body.translations = translationsData;
+      const res = await fetch('/api/admin/categories', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        showToast(t().saved);
+        buildCategoryFilterOptions();
+        buildProductFormCategories();
+      } else {
+        showToast(t().failSave, 'error');
+      }
+    } catch {
+      showToast(t().failSave, 'error');
+    }
+  }
+
+  // Delete category
+  async function deleteCategory(slug) {
+    if (!confirm(t().deleteCategory)) return;
+    try {
+      const res = await fetch(`/api/admin/categories?slug=${slug}`, { method: 'DELETE' });
+      if (res.ok) {
+        const json = await res.json();
+        categoriesData = json.categories || categoriesData.filter(c => c.slug !== slug);
+        showToast(t().deleted);
+        renderCategoriesManager();
+        buildCategoryFilterOptions();
+        buildProductFormCategories();
+      } else showToast(t().failDelete, 'error');
+    } catch { showToast(t().failDelete, 'error'); }
+  }
+
+  // Delete subcategory
+  async function deleteSubcategory(catSlug, subSlug) {
+    if (!confirm(t().deleteSubcategory)) return;
+    try {
+      const res = await fetch(`/api/admin/subcategories?category=${catSlug}&slug=${subSlug}`, { method: 'DELETE' });
+      if (res.ok) {
+        const json = await res.json();
+        categoriesData = json.categories || categoriesData;
+        showToast(t().deleted);
+        renderCategoriesManager();
+      } else showToast(t().failDelete, 'error');
+    } catch { showToast(t().failDelete, 'error'); }
+  }
+
+  // ── Category Modal ──
+  const categoryModal = document.getElementById('category-modal');
+  const catForm = document.getElementById('cat-form');
+  let editingCatSlug = null;
+
+  document.getElementById('btn-add-category').addEventListener('click', () => {
+    editingCatSlug = null;
+    catForm.reset();
+    document.getElementById('cat-modal-title').textContent = t().addCategory;
+    document.getElementById('cat-field-slug').disabled = false;
+    categoryModal.classList.add('open');
+  });
+
+  function openEditCategoryModal(slug) {
+    editingCatSlug = slug;
+    document.getElementById('cat-modal-title').textContent = t().editProduct + ': ' + slug;
+    document.getElementById('cat-field-slug').value = slug;
+    document.getElementById('cat-field-slug').disabled = true;
+    // Fill names from translations
+    ['uk','en','et','ru'].forEach(lang => {
+      const el = document.getElementById(`cat-field-name_${lang}`);
+      if (el && translationsData && translationsData[lang] && translationsData[lang].categories) {
+        el.value = translationsData[lang].categories[slug] || '';
+      }
+    });
+    categoryModal.classList.add('open');
+  }
+
+  const closeCatModal = () => categoryModal.classList.remove('open');
+  document.getElementById('btn-close-cat-modal').addEventListener('click', closeCatModal);
+  document.getElementById('btn-cancel-cat-modal').addEventListener('click', (e) => { e.preventDefault(); closeCatModal(); });
+  categoryModal.addEventListener('click', (e) => { if (e.target === categoryModal) closeCatModal(); });
+
+  catForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const slug = document.getElementById('cat-field-slug').value.trim();
+    const names = {
+      uk: document.getElementById('cat-field-name_uk').value.trim(),
+      en: document.getElementById('cat-field-name_en').value.trim(),
+      et: document.getElementById('cat-field-name_et').value.trim(),
+      ru: document.getElementById('cat-field-name_ru').value.trim()
+    };
+
+    if (editingCatSlug) {
+      // Update translations for existing category
+      if (!translationsData) translationsData = {};
+      for (const lang of Object.keys(names)) {
+        if (!translationsData[lang]) translationsData[lang] = {};
+        if (!translationsData[lang].categories) translationsData[lang].categories = {};
+        translationsData[lang].categories[slug] = names[lang];
+      }
+      await saveCategoriesData();
+    } else {
+      // Create new
+      try {
+        const res = await fetch('/api/admin/categories', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug, names })
+        });
+        if (res.ok) {
+          const json = await res.json();
+          categoriesData = json.categories || categoriesData;
+          // Merge translations
+          if (!translationsData) translationsData = {};
+          for (const lang of Object.keys(names)) {
+            if (!translationsData[lang]) translationsData[lang] = {};
+            if (!translationsData[lang].categories) translationsData[lang].categories = {};
+            translationsData[lang].categories[slug] = names[lang];
+          }
+          showToast(t().saved);
+          buildCategoryFilterOptions();
+          buildProductFormCategories();
+        } else {
+          const json = await res.json();
+          showToast(json.error || t().failSave, 'error');
+        }
+      } catch { showToast(t().failSave, 'error'); }
+    }
+
+    closeCatModal();
+    renderCategoriesManager();
+  });
+
+  // ── Subcategory Modal ──
+  const subcatModal = document.getElementById('subcat-modal');
+  const subcatForm = document.getElementById('subcat-form');
+
+  function openAddSubcatModal(catSlug) {
+    subcatForm.reset();
+    document.getElementById('subcat-field-category').value = catSlug;
+    document.getElementById('subcat-field-old-slug').value = '';
+    document.getElementById('subcat-modal-title').textContent = t().addSubcategory;
+    document.getElementById('subcat-field-slug').disabled = false;
+    subcatModal.classList.add('open');
+  }
+
+  function openEditSubcatModal(catSlug, subSlug) {
+    document.getElementById('subcat-field-category').value = catSlug;
+    document.getElementById('subcat-field-old-slug').value = subSlug;
+    document.getElementById('subcat-field-slug').value = subSlug;
+    document.getElementById('subcat-field-slug').disabled = true;
+    document.getElementById('subcat-modal-title').textContent = 'Edit: ' + subSlug;
+    // Fill names
+    ['uk','en','et','ru'].forEach(lang => {
+      const el = document.getElementById(`subcat-field-name_${lang}`);
+      if (el) {
+        let val = '';
+        if (translationsData && translationsData[lang] && translationsData[lang].subcategories) {
+          val = translationsData[lang].subcategories[subSlug] || '';
+        }
+        el.value = val;
+      }
+    });
+    subcatModal.classList.add('open');
+  }
+
+  const closeSubcatModal = () => subcatModal.classList.remove('open');
+  document.getElementById('btn-close-subcat-modal').addEventListener('click', closeSubcatModal);
+  document.getElementById('btn-cancel-subcat-modal').addEventListener('click', (e) => { e.preventDefault(); closeSubcatModal(); });
+  subcatModal.addEventListener('click', (e) => { if (e.target === subcatModal) closeSubcatModal(); });
+
+  subcatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const catSlug = document.getElementById('subcat-field-category').value;
+    const oldSlug = document.getElementById('subcat-field-old-slug').value;
+    const slug = document.getElementById('subcat-field-slug').value.trim();
+    const names = {
+      uk: document.getElementById('subcat-field-name_uk').value.trim(),
+      en: document.getElementById('subcat-field-name_en').value.trim(),
+      et: document.getElementById('subcat-field-name_et').value.trim(),
+      ru: document.getElementById('subcat-field-name_ru').value.trim()
+    };
+
+    if (oldSlug) {
+      // Edit existing
+      try {
+        const res = await fetch('/api/admin/subcategories', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ category_slug: catSlug, old_slug: oldSlug, new_slug: slug, names })
+        });
+        if (res.ok) {
+          const json = await res.json();
+          categoriesData = json.categories || categoriesData;
+          // Update translations locally
+          if (!translationsData) translationsData = {};
+          for (const lang of Object.keys(names)) {
+            if (!translationsData[lang]) translationsData[lang] = {};
+            if (!translationsData[lang].subcategories) translationsData[lang].subcategories = {};
+            translationsData[lang].subcategories[slug] = names[lang];
+          }
+          showToast(t().saved);
+        } else showToast(t().failSave, 'error');
+      } catch { showToast(t().failSave, 'error'); }
+    } else {
+      // Add new
+      try {
+        const res = await fetch('/api/admin/subcategories', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ category_slug: catSlug, slug, names })
+        });
+        if (res.ok) {
+          const json = await res.json();
+          categoriesData = json.categories || categoriesData;
+          if (!translationsData) translationsData = {};
+          for (const lang of Object.keys(names)) {
+            if (!translationsData[lang]) translationsData[lang] = {};
+            if (!translationsData[lang].subcategories) translationsData[lang].subcategories = {};
+            translationsData[lang].subcategories[slug] = names[lang];
+          }
+          showToast(t().saved);
+        } else {
+          const json = await res.json();
+          showToast(json.error || t().failSave, 'error');
+        }
+      } catch { showToast(t().failSave, 'error'); }
+    }
+
+    closeSubcatModal();
+    renderCategoriesManager();
+  });
+
+  // ══════════════════════════════════════════════════
+  //  SETTINGS MANAGER
+  // ══════════════════════════════════════════════════
+  let settingsLang = 'uk';
+
+  async function loadSettings() {
+    try {
+      const res = await fetch('/api/admin/settings');
+      if (res.status === 401) return;
+      settingsData = await res.json();
+    } catch (e) {
+      console.error('Error loading settings:', e);
+    }
+  }
+
+  function renderSettingsManager() {
+    if (!settingsData) {
+      loadSettings().then(() => renderSettingsManager());
+      return;
+    }
+
+    // Fill social & delivery links
+    document.getElementById('settings-phone').value = settingsData.phone || '';
+    document.getElementById('settings-facebook').value = settingsData.socials?.facebook || '';
+    document.getElementById('settings-instagram').value = settingsData.socials?.instagram || '';
+    document.getElementById('settings-tiktok').value = settingsData.socials?.tiktok || '';
+    document.getElementById('settings-wolt').value = settingsData.delivery?.wolt || '';
+    document.getElementById('settings-bolt').value = settingsData.delivery?.bolt || '';
+
+    // Stores
+    renderStoresList();
+
+    // Language tabs for translations
+    document.querySelectorAll('.settings-lang-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        settingsLang = tab.dataset.lang;
+        document.querySelectorAll('.settings-lang-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        renderTranslationFields();
+      });
+    });
+
+    renderTranslationFields();
+  }
+
+  function renderTranslationFields() {
+    const container = document.getElementById('settings-trans-content');
+    if (!translationsData || !translationsData[settingsLang]) {
+      container.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">No translations data available in KV. Save categories first to seed translations.</p>';
+      return;
+    }
+
+    const langData = translationsData[settingsLang];
+    const footer = langData.footer || {};
+
+    container.innerHTML = `
+      <div class="settings-trans-group">
+        <div class="form-group" style="margin-bottom:10px;">
+          <label>Site Subtitle</label>
+          <input type="text" class="input-control settings-trans-field" data-key="siteSubtitle" value="${escHtml(langData.siteSubtitle || '')}">
+        </div>
+        <div class="form-section__title" style="margin:14px 0 8px;">Footer</div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label>About</label>
+          <textarea class="input-control settings-trans-field" data-key="footer.about" rows="2">${escHtml(footer.about || '')}</textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Phone Label</label><input type="text" class="input-control settings-trans-field" data-key="footer.phone" value="${escHtml(footer.phone || '')}"></div>
+          <div class="form-group"><label>Address Label</label><input type="text" class="input-control settings-trans-field" data-key="footer.address" value="${escHtml(footer.address || '')}"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label>Address Value</label>
+          <input type="text" class="input-control settings-trans-field" data-key="footer.addressValue" value="${escHtml(footer.addressValue || '')}">
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Hours Label</label><input type="text" class="input-control settings-trans-field" data-key="footer.hours" value="${escHtml(footer.hours || '')}"></div>
+          <div class="form-group"><label>Hours Value</label><input type="text" class="input-control settings-trans-field" data-key="footer.hoursValue" value="${escHtml(footer.hoursValue || '')}"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label>Rights</label>
+          <input type="text" class="input-control settings-trans-field" data-key="footer.rights" value="${escHtml(footer.rights || '')}">
+        </div>
+      </div>
+    `;
+  }
+
+  function renderStoresList() {
+    const container = document.getElementById('settings-stores-list');
+    const stores = settingsData.stores || [];
+    container.innerHTML = '';
+    stores.forEach((store, i) => {
+      const div = document.createElement('div');
+      div.className = 'settings-store-item';
+      div.innerHTML = `
+        <div class="form-row" style="margin-bottom:6px;">
+          <div class="form-group"><label>Name</label><input type="text" class="input-control store-field" data-idx="${i}" data-key="name" value="${escHtml(store.name || '')}"></div>
+          <div class="form-group"><label>Address</label><input type="text" class="input-control store-field" data-idx="${i}" data-key="address" value="${escHtml(store.address || '')}"></div>
+          <div class="form-group" style="flex:0.5"><label>KV Field</label><input type="text" class="input-control store-field" data-idx="${i}" data-key="field" value="${escHtml(store.field || '')}"></div>
+          <button class="btn btn--danger btn--xs store-remove-btn" data-idx="${i}" style="align-self:flex-end;margin-bottom:2px;">✕</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+
+    container.querySelectorAll('.store-remove-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        settingsData.stores.splice(Number(btn.dataset.idx), 1);
+        renderStoresList();
+      });
+    });
+  }
+
+  document.getElementById('btn-add-store').addEventListener('click', () => {
+    if (!settingsData) settingsData = {};
+    if (!settingsData.stores) settingsData.stores = [];
+    settingsData.stores.push({ name: '', address: '', field: '' });
+    renderStoresList();
+  });
+
+  // Save settings
+  document.getElementById('btn-save-settings').addEventListener('click', async () => {
+    // Collect settings
+    const phone = document.getElementById('settings-phone').value;
+    const socials = {
+      facebook: document.getElementById('settings-facebook').value,
+      instagram: document.getElementById('settings-instagram').value,
+      tiktok: document.getElementById('settings-tiktok').value
+    };
+    const delivery = {
+      wolt: document.getElementById('settings-wolt').value,
+      bolt: document.getElementById('settings-bolt').value
+    };
+
+    // Collect stores
+    const stores = [];
+    document.querySelectorAll('.settings-store-item').forEach(item => {
+      const name = item.querySelector('[data-key="name"]').value;
+      const address = item.querySelector('[data-key="address"]').value;
+      const field = item.querySelector('[data-key="field"]').value;
+      stores.push({ name, address, field });
+    });
+
+    // Collect translation fields for current lang
+    if (translationsData && translationsData[settingsLang]) {
+      document.querySelectorAll('.settings-trans-field').forEach(field => {
+        const key = field.dataset.key;
+        const val = field.value;
+        const parts = key.split('.');
+        if (parts.length === 2) {
+          if (!translationsData[settingsLang][parts[0]]) translationsData[settingsLang][parts[0]] = {};
+          translationsData[settingsLang][parts[0]][parts[1]] = val;
+        } else {
+          translationsData[settingsLang][key] = val;
+        }
+      });
+    }
+
+    try {
+      // Save settings
+      const settingsRes = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, socials, delivery, stores })
+      });
+
+      // Save translations
+      if (translationsData) {
+        await fetch('/api/admin/categories', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ categories: categoriesData, translations: translationsData })
+        });
+      }
+
+      if (settingsRes.ok) {
+        settingsData = { phone, socials, delivery, stores };
+        showToast(t().saved);
+      } else {
+        showToast(t().failSave, 'error');
+      }
+    } catch {
+      showToast(t().failSave, 'error');
+    }
+  });
 
   // ── Init ──
   buildLangDropdown();

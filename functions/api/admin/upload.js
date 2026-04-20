@@ -4,16 +4,14 @@
  *   - file: the image file
  *   - filename: desired safe filename
  *
- * Stores it in Cloudflare R2 (if configured) or just returns the expected path.
- * In Cloudflare Pages with an R2 binding "IMAGES_BUCKET", the file is stored there.
- * If no R2 is configured this still works - the client sets the path and the image
- * needs to be uploaded separately to the img/ folder.
- * 
- * R2 Configuration:
- * - Account ID: 025229e3c29465a894106a51f4e549ba
- * - S3 Endpoint: https://025229e3c29465a894106a51f4e549ba.r2.cloudflarestorage.com
- * - Bucket: beersnacks-images
+ * Stores it in Cloudflare R2 and returns the public URL.
+ * R2 binding "IMAGES_BUCKET" must be configured in wrangler.toml.
+ * Environment variables: PUBLIC_IMAGE_BASE_URL or R2_PUBLIC_URL
  */
+
+const ALLOWED_IMAGE_TYPES = [
+  'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml', 'image/avif'
+];
 
 export async function onRequestPost(context) {
   const tr = (msg) => JSON.stringify({ error: msg });
@@ -32,8 +30,23 @@ export async function onRequestPost(context) {
       return new Response(tr('No file provided'), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
+    // Validate MIME type — only allow images
+    const mimeType = (file.type || '').toLowerCase();
+    if (!ALLOWED_IMAGE_TYPES.includes(mimeType)) {
+      return new Response(tr('Invalid file type. Only images are allowed (JPEG, PNG, WebP, GIF, SVG, AVIF).'), {
+        status: 400, headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const safeName = filename.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9._-]/g, '').substring(0, 200);
     if (!safeName) return new Response(tr('Invalid filename'), { status: 400, headers: { 'Content-Type': 'application/json' } });
+
+    // Validate file extension matches image types
+    const validExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.avif'];
+    const ext = '.' + safeName.split('.').pop();
+    if (!validExtensions.includes(ext)) {
+      return new Response(tr('Invalid file extension'), { status: 400, headers: { 'Content-Type': 'application/json' } });
+    }
 
     if (!context.env.IMAGES_BUCKET) {
       return new Response(tr('IMAGES_BUCKET binding missing'), { status: 500, headers: { 'Content-Type': 'application/json' } });
@@ -50,15 +63,15 @@ export async function onRequestPost(context) {
     }
 
     await context.env.IMAGES_BUCKET.put(safeName, arrayBuffer, {
-      httpMetadata: { contentType: file.type || 'image/png', cacheControl: 'public, max-age=31536000' }
+      httpMetadata: { contentType: mimeType, cacheControl: 'public, max-age=31536000' }
     });
 
     const finalUrl = `${publicBaseUrl.replace(/\/$/, '')}/${safeName}`;
     return new Response(JSON.stringify({ success: true, filename: safeName, url: finalUrl }), { headers: { 'Content-Type': 'application/json' } });
 
   } catch (err) {
-    console.error('Upload critical error:', err);
-    return new Response(tr('Upload failed: ' + String(err)), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    console.error('Upload error:', err.message);
+    return new Response(tr('Upload failed'), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
 

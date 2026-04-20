@@ -9,6 +9,13 @@ export async function onRequestGet(context) {
 
 // POST: Add a new product
 export async function onRequestPost(context) {
+  const ct = context.request.headers.get('content-type') || '';
+  if (!ct.includes('application/json')) {
+    return new Response(JSON.stringify({ error: 'Expected JSON body' }), {
+      status: 400, headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   const newProduct = await context.request.json();
   
   // Default values

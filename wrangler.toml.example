@@ -5,16 +5,19 @@ pages_build_output_dir = "public"
 [[r2_buckets]]
 binding = "IMAGES_BUCKET"
 bucket_name = "beersnacks-images"
-account_id = "025229e3c29465a894106a51f4e549ba"
+# account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"
 jurisdiction = "eu"
 
 [env.production]
-r2_buckets = [{ binding = "IMAGES_BUCKET", bucket_name = "beersnacks-images", account_id = "025229e3c29465a894106a51f4e549ba", jurisdiction = "eu" }]
+r2_buckets = [{ binding = "IMAGES_BUCKET", bucket_name = "beersnacks-images", jurisdiction = "eu" }]
 
-# R2 Configuration
-# Account ID: 025229e3c29465a894106a51f4e549ba
-# S3 API Endpoint: https://025229e3c29465a894106a51f4e549ba.r2.cloudflarestorage.com
-# Note: API Token and Access Key ID should be set as environment variables:
-# - CLOUDFLARE_API_TOKEN
-# - R2_ACCESS_KEY_ID
-# - R2_SECRET_ACCESS_KEY
+# ── Configuration ──
+# Set the following as environment variables (NOT in this file):
+# - ADMIN_PASSWORD          → Admin panel login password
+# - PUBLIC_IMAGE_BASE_URL   → Public URL for R2 images (e.g. https://images.beersnacks.ee)
+# - CLOUDFLARE_API_TOKEN    → Cloudflare API token (for deployment only)
+# - R2_ACCESS_KEY_ID        → R2 access key (if using S3 API)
+# - R2_SECRET_ACCESS_KEY    → R2 secret key (if using S3 API)
+#
+# Required KV namespace binding:
+# - DB_KV → Cloudflare KV namespace for data storage

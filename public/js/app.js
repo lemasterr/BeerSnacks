@@ -1,5 +1,5 @@
 // ============================================================
-// Beer&Snacks — Application Logic
+// Beer&Snacks — Application Logic (v2 — Dynamic API)
 // ============================================================
 
 (() => {
@@ -11,7 +11,7 @@
   let catalog = [];
 
   let currentLang = localStorage.getItem('bs_lang') || null;
-  let currentCategory = 'beer';
+  let currentCategory = null; // Will be set dynamically from first category
   let currentSubcategory = 'all';
 
   // ── DOM Elements ──
@@ -59,7 +59,8 @@
   const headerLogo = document.querySelector('.header__logo');
   if (headerLogo) {
     headerLogo.addEventListener('click', () => {
-      currentCategory = 'beer';
+      const cats = Object.keys(categorySubcategories);
+      currentCategory = cats.length > 0 ? cats[0] : 'beer';
       currentSubcategory = 'all';
       renderCategories();
       renderSubcategories();
@@ -100,7 +101,7 @@
     langs.forEach(lang => {
       const btn = document.createElement('button');
       btn.className = 'lang-switcher__option' + (lang === currentLang ? ' active' : '');
-      btn.textContent = translations[lang].langName;
+      btn.textContent = translations[lang]?.langName || lang;
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         selectLanguage(lang);
@@ -110,15 +111,18 @@
     });
   }
 
-  // ── Render Categories ──
+  // ── Render Categories (dynamic) ──
   function renderCategories() {
     const t = translations[currentLang];
+    if (!t) return;
     categoriesList.innerHTML = '';
-    const cats = ['beer', 'cider', 'drinks', 'sweets', 'snacks'];
+
+    // Use the order from categorySubcategories
+    const cats = Object.keys(categorySubcategories);
     cats.forEach(cat => {
       const btn = document.createElement('button');
       btn.className = 'category-tab' + (cat === currentCategory ? ' active' : '');
-      btn.textContent = t.categories[cat];
+      btn.textContent = (t.categories && t.categories[cat]) || cat;
       btn.addEventListener('click', () => {
         if (cat === currentCategory) return;
         currentCategory = cat;
@@ -134,6 +138,7 @@
   // ── Render Subcategories ──
   function renderSubcategories() {
     const t = translations[currentLang];
+    if (!t) return;
     const subs = categorySubcategories[currentCategory];
 
     if (!subs || subs.length === 0) {
@@ -147,7 +152,7 @@
     subs.forEach(sub => {
       const btn = document.createElement('button');
       btn.className = 'subcategory-tab' + (sub === currentSubcategory ? ' active' : '');
-      btn.textContent = t.subcategories[sub];
+      btn.textContent = (t.subcategories && t.subcategories[sub]) || sub;
       btn.addEventListener('click', () => {
         if (sub === currentSubcategory) return;
         currentSubcategory = sub;
@@ -164,6 +169,7 @@
     const cat = currentCategory;
     const sub = currentSubcategory;
     const t = translations[lang];
+    if (!t) return;
 
     let items = catalog.filter(p => p.category === cat);
 
@@ -205,7 +211,7 @@
           <div class="product-card__specs">${specsHtml}</div>
           <div class="product-card__divider"></div>
           <div class="product-card__description">${item['description_' + lang] || ''}</div>
-          <div class="product-card__price">${t.currency}${Number(item.price).toFixed(2)}</div>
+          <div class="product-card__price">${t.currency || '€'}${Number(item.price).toFixed(2)}</div>
         </div>
         <div class="product-card__image-wrap">
           <img class="product-card__image" src="${item.image}" alt="${item['name_' + lang] || ''}" loading="lazy" />
@@ -246,24 +252,27 @@
   // ── Render Footer ──
   function renderFooter() {
     const t = translations[currentLang];
-    footerAbout.textContent = t.footer.about;
-    footerPhoneLabel.textContent = t.footer.phone;
-    footerAddressLabel.textContent = t.footer.address;
-    footerAddressValue.textContent = t.footer.addressValue;
-    footerHoursLabel.textContent = t.footer.hours;
-    footerHoursValue.textContent = t.footer.hoursValue;
+    if (!t || !t.footer) return;
+    if (footerAbout) footerAbout.textContent = t.footer.about;
+    if (footerPhoneLabel) footerPhoneLabel.textContent = t.footer.phone;
+    if (footerAddressLabel) footerAddressLabel.textContent = t.footer.address;
+    if (footerAddressValue) footerAddressValue.textContent = t.footer.addressValue;
+    if (footerHoursLabel) footerHoursLabel.textContent = t.footer.hours;
+    if (footerHoursValue) footerHoursValue.textContent = t.footer.hoursValue;
 
     const footerEmailLabel = document.getElementById('footer-email-label');
     if (footerEmailLabel && t.footer.email) {
       footerEmailLabel.textContent = t.footer.email;
     }
-    footerRights.textContent = t.footer.rights;
+    if (footerRights) footerRights.textContent = t.footer.rights;
   }
 
   // ── Render Header ──
   function renderHeader() {
     const t = translations[currentLang];
-    langCurrent.querySelector('.lang-switcher__label').textContent = t.langName;
+    if (!t) return;
+    const label = langCurrent.querySelector('.lang-switcher__label');
+    if (label) label.textContent = t.langName;
   }
 
   // ── Render All ──
@@ -292,26 +301,35 @@
     });
   }
 
-  // ── Init Data ──
+  // ── Init Data (Dynamic) ──
   async function loadData() {
     try {
       console.log('Fetching catalog data...');
+
+      // Try dynamic APIs first, fallback to static files
       const [transRes, catsRes, catRes] = await Promise.all([
-        fetch('data/translations.json'),
-        fetch('data/categories.json'),
+        fetchWithFallback('/api/translations', 'data/translations.json'),
+        fetchWithFallback('/api/categories', 'data/categories.json'),
         fetch('/api/catalog')
       ]);
-      
-      if (!transRes.ok) throw new Error('Failed to load translations');
-      if (!catsRes.ok) throw new Error('Failed to load categories');
-      if (!catRes.ok) throw new Error('Failed to load products API');
 
-      translations = await transRes.json();
-      categorySubcategories = await catsRes.json();
+      translations = transRes;
+      categorySubcategories = catsRes;
+      
+      if (!catRes.ok) throw new Error('Failed to load products API');
       catalog = await catRes.json();
+
+      // Set default category from first available
+      const cats = Object.keys(categorySubcategories);
+      if (!currentCategory && cats.length > 0) {
+        currentCategory = cats[0];
+      } else if (!currentCategory) {
+        currentCategory = 'beer';
+      }
 
       console.log('Data loaded successfully:', {
         catalogEntries: catalog.length,
+        categories: Object.keys(categorySubcategories).length,
         lang: currentLang
       });
 
@@ -324,11 +342,29 @@
       }
     } catch (e) {
       console.error('CRITICAL ERROR loading catalog:', e);
-      // Only show alert if basic UI data failed to load
       if (!translations || Object.keys(translations).length === 0) {
         alert('Error loading application data: ' + e.message);
       }
     }
+  }
+
+  // Fetch from API first, fallback to static file
+  async function fetchWithFallback(apiUrl, staticUrl) {
+    try {
+      const res = await fetch(apiUrl);
+      if (res.ok) {
+        const data = await res.json();
+        // If API returned non-empty data, use it
+        if (data && Object.keys(data).length > 0) {
+          return data;
+        }
+      }
+    } catch { /* ignore API errors, try static fallback */ }
+
+    // Fallback to static file
+    const staticRes = await fetch(staticUrl);
+    if (!staticRes.ok) throw new Error(`Failed to load ${staticUrl}`);
+    return await staticRes.json();
   }
 
   loadData();

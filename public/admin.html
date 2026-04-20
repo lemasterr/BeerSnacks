@@ -64,60 +64,165 @@
   <!-- ── Admin Content ── -->
   <main class="admin-main" id="admin-content" style="display:none;">
 
-    <!-- Toolbar -->
-    <div class="toolbar">
-      <div class="toolbar__filters">
-        <input type="text" id="search-input" class="input-control" style="max-width:220px;" placeholder="Search…">
-        <select id="category-filter" class="input-control" style="max-width:160px;">
-          <option value="all" id="opt-all-cats">All Categories</option>
-          <option value="beer">Beer</option>
-          <option value="cider">Cider</option>
-          <option value="drinks">Drinks</option>
-          <option value="sweets">Sweets</option>
-          <option value="snacks">Snacks</option>
-        </select>
-        <select id="sort-mode" class="input-control" style="max-width:140px;">
-          <option value="id" id="opt-sort-id">Sort by ID</option>
-          <option value="category" id="opt-sort-cat">Sort by Category</option>
-          <option value="price" id="opt-sort-price">Sort by Price</option>
-        </select>
-        <button id="toggle-view" class="btn btn--secondary btn--sm">Quick Edit</button>
+    <!-- ── Navigation Tabs ── -->
+    <nav class="admin-tabs" id="admin-tabs">
+      <button class="admin-tab active" data-tab="products" id="tab-products">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.884l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.116l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"/></svg>
+        <span id="tab-products-label">Products</span>
+      </button>
+      <button class="admin-tab" data-tab="categories" id="tab-categories">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"/></svg>
+        <span id="tab-categories-label">Categories</span>
+      </button>
+      <button class="admin-tab" data-tab="settings" id="tab-settings">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+        <span id="tab-settings-label">Settings</span>
+      </button>
+    </nav>
+
+    <!-- ══════════════ TAB: Products ══════════════ -->
+    <div class="tab-content active" id="content-products">
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar__filters">
+          <input type="text" id="search-input" class="input-control" style="max-width:220px;" placeholder="Search…">
+          <select id="category-filter" class="input-control" style="max-width:160px;">
+            <option value="all" id="opt-all-cats">All Categories</option>
+            <!-- Dynamic options filled by JS -->
+          </select>
+          <select id="sort-mode" class="input-control" style="max-width:140px;">
+            <option value="id" id="opt-sort-id">Sort by ID</option>
+            <option value="category" id="opt-sort-cat">Sort by Category</option>
+            <option value="price" id="opt-sort-price">Sort by Price</option>
+          </select>
+          <button id="toggle-view" class="btn btn--secondary btn--sm">Quick Edit</button>
+        </div>
+        <button class="btn btn--primary btn--sm" id="btn-add">+ Add Product</button>
       </div>
-      <button class="btn btn--primary btn--sm" id="btn-add">+ Add Product</button>
+
+      <!-- Desktop Table -->
+      <div class="table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th style="width:52px;"></th>
+              <th class="sort-active" data-sort="id" id="th-id"><span class="th-label">ID</span> <span class="sort-arrow">↑</span></th>
+              <th data-sort="name_en" id="th-name"><span class="th-label">Name</span></th>
+              <th id="th-cat"><span class="th-label">Category</span></th>
+              <th data-sort="price" id="th-price"><span class="th-label">Price</span></th>
+              <th id="th-status"><span class="th-label">Status</span></th>
+              <th id="th-actions"><span class="th-label">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Mobile cards -->
+      <div class="product-cards-grid" id="mobile-cards"></div>
+
+      <!-- Detail view -->
+      <div class="detail-view" id="detail-view" style="display:none;">
+        <div class="detail-view__back">
+          <button class="btn btn--secondary btn--sm" id="btn-back-detail">← Back</button>
+        </div>
+        <div class="detail-view__container" id="detail-container"></div>
+      </div>
     </div>
 
-    <!-- Desktop Table -->
-    <div class="table-container">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th style="width:52px;"></th>
-            <th class="sort-active" data-sort="id" id="th-id"><span class="th-label">ID</span> <span class="sort-arrow">↑</span></th>
-            <th data-sort="name_en" id="th-name"><span class="th-label">Name</span></th>
-            <th id="th-cat"><span class="th-label">Category</span></th>
-            <th data-sort="price" id="th-price"><span class="th-label">Price</span></th>
-            <th id="th-status"><span class="th-label">Status</span></th>
-            <th id="th-actions"><span class="th-label">Actions</span></th>
-          </tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-      </table>
+    <!-- ══════════════ TAB: Categories ══════════════ -->
+    <div class="tab-content" id="content-categories">
+      <div class="section-header">
+        <h2 class="section-title" id="cat-manager-title">Categories & Subcategories</h2>
+        <button class="btn btn--primary btn--sm" id="btn-add-category">
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 2a.75.75 0 01.75.75v4.5h4.5a.75.75 0 010 1.5h-4.5v4.5a.75.75 0 01-1.5 0v-4.5h-4.5a.75.75 0 010-1.5h4.5v-4.5A.75.75 0 018 2z"/></svg>
+          <span id="btn-add-cat-label">Add Category</span>
+        </button>
+      </div>
+      <div class="categories-grid" id="categories-grid">
+        <!-- Dynamically filled -->
+      </div>
     </div>
 
-    <!-- Mobile cards -->
-    <div class="product-cards-grid" id="mobile-cards"></div>
-
-    <!-- Detail view -->
-    <div class="detail-view" id="detail-view" style="display:none;">
-      <div class="detail-view__back">
-        <button class="btn btn--secondary btn--sm" id="btn-back-detail">← Back</button>
+    <!-- ══════════════ TAB: Settings ══════════════ -->
+    <div class="tab-content" id="content-settings">
+      <div class="section-header">
+        <h2 class="section-title" id="settings-title">Site Settings</h2>
+        <button class="btn btn--primary btn--sm" id="btn-save-settings">
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M10.97 4.97a.75.75 0 011.07 1.05l-3.99 4.99a.75.75 0 01-1.08.02L4.324 8.384a.75.75 0 111.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 01.02-.022z"/></svg>
+          <span id="btn-save-settings-label">Save Settings</span>
+        </button>
       </div>
-      <div class="detail-view__container" id="detail-container"></div>
+
+      <div class="settings-grid">
+        <!-- Translations Section -->
+        <div class="settings-card">
+          <div class="settings-card__header">
+            <h3>Translations (Footer & UI)</h3>
+            <span class="settings-card__badge">4 languages</span>
+          </div>
+          <div class="settings-card__body">
+            <div class="settings-lang-tabs" id="settings-lang-tabs">
+              <button class="settings-lang-tab active" data-lang="uk">🇺🇦 UK</button>
+              <button class="settings-lang-tab" data-lang="en">🇬🇧 EN</button>
+              <button class="settings-lang-tab" data-lang="et">🇪🇪 ET</button>
+              <button class="settings-lang-tab" data-lang="ru">🇷🇺 RU</button>
+            </div>
+            <div class="settings-lang-content" id="settings-trans-content">
+              <!-- Filled dynamically per language -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="settings-card">
+          <div class="settings-card__header">
+            <h3>Social Media & Delivery</h3>
+          </div>
+          <div class="settings-card__body">
+            <div class="form-group">
+              <label>📞 Phone</label>
+              <input type="text" id="settings-phone" class="input-control" placeholder="+372 ...">
+            </div>
+            <div class="form-group" style="margin-top:12px;">
+              <label>Facebook URL</label>
+              <input type="url" id="settings-facebook" class="input-control" placeholder="https://facebook.com/...">
+            </div>
+            <div class="form-group" style="margin-top:12px;">
+              <label>Instagram URL</label>
+              <input type="url" id="settings-instagram" class="input-control" placeholder="https://instagram.com/...">
+            </div>
+            <div class="form-group" style="margin-top:12px;">
+              <label>TikTok URL</label>
+              <input type="url" id="settings-tiktok" class="input-control" placeholder="https://tiktok.com/...">
+            </div>
+            <div class="form-group" style="margin-top:12px;">
+              <label>Wolt URL</label>
+              <input type="url" id="settings-wolt" class="input-control" placeholder="https://wolt.com/...">
+            </div>
+            <div class="form-group" style="margin-top:12px;">
+              <label>Bolt Food URL</label>
+              <input type="url" id="settings-bolt" class="input-control" placeholder="https://food.bolt.eu/...">
+            </div>
+          </div>
+        </div>
+
+        <!-- Stores -->
+        <div class="settings-card">
+          <div class="settings-card__header">
+            <h3>Stores</h3>
+            <button class="btn btn--secondary btn--xs" id="btn-add-store">+ Add Store</button>
+          </div>
+          <div class="settings-card__body" id="settings-stores-list">
+            <!-- Filled dynamically -->
+          </div>
+        </div>
+      </div>
     </div>
 
   </main>
 
-  <!-- ── Edit/Add Modal ── -->
+  <!-- ── Edit/Add Product Modal ── -->
   <div class="modal" id="edit-modal">
     <div class="modal__content">
       <div class="modal__header">
@@ -145,11 +250,7 @@
               <div class="form-group">
                 <label for="field-category" id="label-category">Category</label>
                 <select id="field-category" class="input-control" required>
-                  <option value="beer">Beer</option>
-                  <option value="cider">Cider</option>
-                  <option value="drinks">Drinks</option>
-                  <option value="sweets">Sweets</option>
-                  <option value="snacks">Snacks</option>
+                  <!-- Dynamic options filled by JS -->
                 </select>
               </div>
               <div class="form-group">
@@ -259,6 +360,72 @@
       <div class="modal__footer">
         <button type="button" class="btn btn--secondary" id="btn-cancel-modal">Cancel</button>
         <button type="submit" form="edit-form" class="btn btn--primary" id="btn-save-modal">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Category Modal ── -->
+  <div class="modal" id="category-modal">
+    <div class="modal__content" style="max-width:560px;">
+      <div class="modal__header">
+        <h2 class="modal__title" id="cat-modal-title">Add Category</h2>
+        <button class="modal__close" id="btn-close-cat-modal" aria-label="Close">✕</button>
+      </div>
+      <div class="modal__body">
+        <form id="cat-form">
+          <div class="form-group" style="margin-bottom:14px;">
+            <label for="cat-field-slug">Slug (URL key)</label>
+            <input type="text" id="cat-field-slug" class="input-control" placeholder="e.g. wine" pattern="[a-z0-9_]+" required>
+            <small style="color:var(--text-muted);font-size:11px;">Lowercase, numbers, underscores only</small>
+          </div>
+          <div class="form-section__title" style="margin-bottom:10px;">Names</div>
+          <div class="form-row">
+            <div class="form-group"><label>🇺🇦 UK</label><input type="text" id="cat-field-name_uk" class="input-control" required></div>
+            <div class="form-group"><label>🇬🇧 EN</label><input type="text" id="cat-field-name_en" class="input-control" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>🇪🇪 ET</label><input type="text" id="cat-field-name_et" class="input-control" required></div>
+            <div class="form-group"><label>🇷🇺 RU</label><input type="text" id="cat-field-name_ru" class="input-control" required></div>
+          </div>
+        </form>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" id="btn-cancel-cat-modal">Cancel</button>
+        <button type="submit" form="cat-form" class="btn btn--primary" id="btn-save-cat-modal">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Subcategory Modal ── -->
+  <div class="modal" id="subcat-modal">
+    <div class="modal__content" style="max-width:560px;">
+      <div class="modal__header">
+        <h2 class="modal__title" id="subcat-modal-title">Add Subcategory</h2>
+        <button class="modal__close" id="btn-close-subcat-modal" aria-label="Close">✕</button>
+      </div>
+      <div class="modal__body">
+        <form id="subcat-form">
+          <input type="hidden" id="subcat-field-category">
+          <input type="hidden" id="subcat-field-old-slug">
+          <div class="form-group" style="margin-bottom:14px;">
+            <label for="subcat-field-slug">Slug (URL key)</label>
+            <input type="text" id="subcat-field-slug" class="input-control" placeholder="e.g. lager" pattern="[a-z0-9_]+" required>
+            <small style="color:var(--text-muted);font-size:11px;">Lowercase, numbers, underscores only</small>
+          </div>
+          <div class="form-section__title" style="margin-bottom:10px;">Names</div>
+          <div class="form-row">
+            <div class="form-group"><label>🇺🇦 UK</label><input type="text" id="subcat-field-name_uk" class="input-control" required></div>
+            <div class="form-group"><label>🇬🇧 EN</label><input type="text" id="subcat-field-name_en" class="input-control" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>🇪🇪 ET</label><input type="text" id="subcat-field-name_et" class="input-control" required></div>
+            <div class="form-group"><label>🇷🇺 RU</label><input type="text" id="subcat-field-name_ru" class="input-control" required></div>
+          </div>
+        </form>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" id="btn-cancel-subcat-modal">Cancel</button>
+        <button type="submit" form="subcat-form" class="btn btn--primary" id="btn-save-subcat-modal">Save</button>
       </div>
     </div>
   </div>
