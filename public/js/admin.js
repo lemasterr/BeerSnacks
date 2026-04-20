@@ -1,5 +1,5 @@
 // ============================================================
-//  Beer&Snacks — Admin Panel JS (v2 — Categories & Settings)
+//  Beer&Snacks — Admin Panel JS (v3 — Bug Fixes & Improvements)
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
       admin: 'Admin', login: 'Admin Panel', password: 'Password', loginBtn: 'Login',
       invalidPwd: 'Invalid password', logout: 'Logout', search: 'Search…',
       allCats: 'All Categories', sortById: 'Sort: ID', sortByCat: 'Sort: Category',
-      sortByPrice: 'Sort: Price', detailed: 'Detailed', compact: 'Compact', addProduct: '+ Add Product',
+      sortByPrice: 'Sort: Price', detailed: 'Quick Edit', compact: 'Compact', addProduct: '+ Add Product',
       thId: 'ID', thName: 'Name', thCat: 'Category', thPrice: 'Price', thStatus: 'Status', thActions: 'Actions',
       basicInfo: 'Basic Info', imageSection: 'Image', stockSection: 'Stock',
       namesSection: 'Names', typesSection: 'Type / Variety', descSection: 'Description',
@@ -45,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
       labelPrice: 'Price (€)', labelVol: 'Volume / Weight', labelAbv: 'ABV', labelIbu: 'IBU',
       labelImgPath: 'Image path', uploadClick: 'Click or drag', uploadDrop: 'to upload image',
       availability: 'Availability', inStock: 'In Stock (global)', cancel: 'Cancel',
-      saveChanges: 'Save Changes', editProduct: 'Edit Product', addNew: 'Add New Product',
+      saveChanges: 'Save Changes', editProduct: 'Edit Product', editCat: 'Edit Category', editSubcat: 'Edit Subcategory',
+      addNew: 'Add New Product',
       deleted: 'Deleted!', saved: 'Saved!', failDelete: 'Delete failed', failSave: 'Save failed',
       confirmDelete: 'Delete this product?', uploading: 'Uploading…', uploadDone: 'Uploaded ✓',
       uploadErr: 'Upload failed',
@@ -65,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       admin: 'Адмін', login: 'Панель адміністратора', password: 'Пароль', loginBtn: 'Увійти',
       invalidPwd: 'Невірний пароль', logout: 'Вийти', search: 'Пошук…',
       allCats: 'Усі категорії', sortById: 'Сорт: ID', sortByCat: 'Сорт: Категорія',
-      sortByPrice: 'Сорт: Ціна', detailed: 'Деталі', compact: 'Компакт', addProduct: '+ Додати товар',
+      sortByPrice: 'Сорт: Ціна', detailed: 'Швидк. Редаг.', compact: 'Компакт', addProduct: '+ Додати товар',
       thId: 'ID', thName: 'Назва', thCat: 'Категорія', thPrice: 'Ціна', thStatus: 'Статус', thActions: 'Дії',
       basicInfo: 'Основне', imageSection: 'Зображення', stockSection: 'Наявність',
       namesSection: 'Назви', typesSection: 'Тип / Різновид', descSection: 'Опис',
@@ -73,7 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
       labelPrice: 'Ціна (€)', labelVol: 'Обʼєм / Вага', labelAbv: 'ABV', labelIbu: 'IBU',
       labelImgPath: 'Шлях до зображення', uploadClick: 'Натисни або перетягни', uploadDrop: 'для завантаження',
       availability: 'Наявність', inStock: 'В наявності (глобал)', cancel: 'Скасувати',
-      saveChanges: 'Зберегти', editProduct: 'Редагувати товар', addNew: 'Додати товар',
+      saveChanges: 'Зберегти', editProduct: 'Редагувати товар', editCat: 'Редагувати категорію', editSubcat: 'Редагувати підкатегорію',
+      addNew: 'Додати товар',
       deleted: 'Видалено!', saved: 'Збережено!', failDelete: 'Помилка видалення', failSave: 'Помилка збереження',
       confirmDelete: 'Видалити цей товар?', uploading: 'Завантаження…', uploadDone: 'Завантажено ✓',
       uploadErr: 'Помилка завантаження',
@@ -94,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       admin: 'Admin', login: 'Administraatori paneel', password: 'Parool', loginBtn: 'Logi sisse',
       invalidPwd: 'Vale parool', logout: 'Logi välja', search: 'Otsing…',
       allCats: 'Kõik kategooriad', sortById: 'Sort: ID', sortByCat: 'Sort: kategooria',
-      sortByPrice: 'Sort: hind', detailed: 'Detailne', compact: 'Kompaktne', addProduct: '+ Lisa toode',
+      sortByPrice: 'Sort: hind', detailed: 'Kiire muutmine', compact: 'Kompaktne', addProduct: '+ Lisa toode',
       thId: 'ID', thName: 'Nimi', thCat: 'Kategooria', thPrice: 'Hind', thStatus: 'Olek', thActions: 'Toimingud',
       basicInfo: 'Põhiinfo', imageSection: 'Pilt', stockSection: 'Laoseis',
       namesSection: 'Nimed', typesSection: 'Tüüp', descSection: 'Kirjeldus',
@@ -102,7 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
       labelPrice: 'Hind (€)', labelVol: 'Maht / Kaal', labelAbv: 'ABV', labelIbu: 'IBU',
       labelImgPath: 'Pildi tee', uploadClick: 'Klõpsa või lohista', uploadDrop: 'pildi üleslaadimiseks',
       availability: 'Saadavus', inStock: 'Laos (globaalne)', cancel: 'Tühista',
-      saveChanges: 'Salvesta', editProduct: 'Muuda toodet', addNew: 'Lisa toode',
+      saveChanges: 'Salvesta', editProduct: 'Muuda toodet', editCat: 'Muuda kategooriat', editSubcat: 'Muuda alakategooriat',
+      addNew: 'Lisa toode',
       deleted: 'Kustutatud!', saved: 'Salvestatud!', failDelete: 'Kustutamine ebaõnnestus', failSave: 'Salvestamine ebaõnnestus',
       confirmDelete: 'Kustutada see toode?', uploading: 'Laaditakse üles…', uploadDone: 'Üles laaditud ✓',
       uploadErr: 'Üleslaadimine ebaõnnestus',
@@ -123,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       admin: 'Админ', login: 'Панель администратора', password: 'Пароль', loginBtn: 'Войти',
       invalidPwd: 'Неверный пароль', logout: 'Выйти', search: 'Поиск…',
       allCats: 'Все категории', sortById: 'Сорт: ID', sortByCat: 'Сорт: Категория',
-      sortByPrice: 'Сорт: Цена', detailed: 'Детально', compact: 'Компактно', addProduct: '+ Добавить товар',
+      sortByPrice: 'Сорт: Цена', detailed: 'Быстр. Редакт.', compact: 'Компактно', addProduct: '+ Добавить товар',
       thId: 'ID', thName: 'Название', thCat: 'Категория', thPrice: 'Цена', thStatus: 'Статус', thActions: 'Действия',
       basicInfo: 'Основное', imageSection: 'Изображение', stockSection: 'Наличие',
       namesSection: 'Названия', typesSection: 'Тип / Разновидность', descSection: 'Описание',
@@ -131,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
       labelPrice: 'Цена (€)', labelVol: 'Объём / Вес', labelAbv: 'ABV', labelIbu: 'IBU',
       labelImgPath: 'Путь к изображению', uploadClick: 'Нажми или перетащи', uploadDrop: 'для загрузки фото',
       availability: 'Наличие', inStock: 'В наличии (глобал)', cancel: 'Отмена',
-      saveChanges: 'Сохранить', editProduct: 'Редактировать товар', addNew: 'Добавить товар',
+      saveChanges: 'Сохранить', editProduct: 'Редактировать товар', editCat: 'Редактировать категорию', editSubcat: 'Редактировать подкатегорию',
+      addNew: 'Добавить товар',
       deleted: 'Удалено!', saved: 'Сохранено!', failDelete: 'Ошибка удаления', failSave: 'Ошибка сохранения',
       confirmDelete: 'Удалить этот товар?', uploading: 'Загрузка…', uploadDone: 'Загружено ✓',
       uploadErr: 'Ошибка загрузки',
@@ -234,7 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
         langSwitcherEl.classList.remove('open');
         applyUITranslations();
         renderAll();
-        renderCategoriesManager();
+        if (currentTab === 'categories') renderCategoriesManager();
+        if (currentTab === 'settings') renderSettingsManager();
       });
       langDropdownEl.appendChild(btn);
     });
@@ -421,7 +426,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const catData = await catRes.json();
       categoriesData = catData.categories || [];
-      translationsData = catData.translations || null;
+
+      // FIX: If translations from API is null, try loading from static file
+      if (catData.translations && Object.keys(catData.translations).length > 0) {
+        translationsData = catData.translations;
+      } else {
+        // Try static fallback
+        try {
+          const transRes = await fetch('/data/translations.json');
+          if (transRes.ok) {
+            translationsData = await transRes.json();
+            // Seed translations to KV for future use
+            await fetch('/api/admin/categories', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ categories: categoriesData, translations: translationsData })
+            });
+          }
+        } catch { /* ignore, translationsData stays null */ }
+      }
 
       catalog = await prodRes.json();
 
@@ -438,7 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function buildCategoryFilterOptions() {
     const tr = t();
     const current = categoryFilter.value;
-    // Keep "all" option at top
     categoryFilter.innerHTML = `<option value="all" id="opt-all-cats">${tr.allCats}</option>`;
     categoriesData.forEach(cat => {
       const opt = document.createElement('option');
@@ -579,14 +601,14 @@ document.addEventListener('DOMContentLoaded', () => {
           </td>
           <td>
             <select class="quick-select" data-id="${item.id}" data-field="in_stock">
-              <option value="1"${item.in_stock!==false?' selected':''}>✅ In Stock</option>
-              <option value="0"${item.in_stock===false?' selected':''}>❌ Out</option>
+              <option value="1"${item.in_stock!==false?' selected':''}>✅ ${tr.thStatus === 'Статус' ? 'В наявності' : 'In Stock'}</option>
+              <option value="0"${item.in_stock===false?' selected':''}>❌ ${tr.thStatus === 'Статус' ? 'Немає' : 'Out'}</option>
             </select>
           </td>
           <td>
             <div class="table-actions">
-              <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">View</button>
-              <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">Edit</button>
+              <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">👁</button>
+              <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">✏️</button>
               <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">✕</button>
             </div>
           </td>
@@ -602,12 +624,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function buildDetailedRowHtml(item, slugs, CATEGORY_SUBS) {
     const currentSubcats = CATEGORY_SUBS[item.category] || [];
+    const tr = t();
     return `
       <div class="detailed-edit-grid">
         <div class="de-col de-media">
           <div class="de-img-container">
             <img src="${item.image}" alt="" class="de-preview-img" onerror="this.style.opacity=0.3">
-            <div class="de-img-overlay" onclick="adminActions.edit('${item.id}')">Edit</div>
+            <div class="de-img-overlay" onclick="adminActions.edit('${item.id}')">✏️</div>
           </div>
           <div class="field">
             <label>Image URL</label>
@@ -616,7 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="de-id-tag">ID: ${item.id}</div>
         </div>
         <div class="de-col de-multiline">
-          <label class="de-section-label">Names</label>
+          <label class="de-section-label">${tr.namesSection}</label>
           <div class="de-field-group">
             <div class="field-row"><span class="de-lang">UK</span><input class="detailed-input" data-id="${item.id}" data-field="name_uk" value="${escHtml(item.name_uk||'')}"></div>
             <div class="field-row"><span class="de-lang">EN</span><input class="detailed-input" data-id="${item.id}" data-field="name_en" value="${escHtml(item.name_en||'')}"></div>
@@ -625,7 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
         <div class="de-col de-multiline">
-          <label class="de-section-label">Types / Varieties</label>
+          <label class="de-section-label">${tr.typesSection}</label>
           <div class="de-field-group">
             <div class="field-row"><span class="de-lang">UK</span><input class="detailed-input" data-id="${item.id}" data-field="type_uk" value="${escHtml(item.type_uk||'')}"></div>
             <div class="field-row"><span class="de-lang">EN</span><input class="detailed-input" data-id="${item.id}" data-field="type_en" value="${escHtml(item.type_en||'')}"></div>
@@ -634,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
         <div class="de-col de-multiline de-desc">
-          <label class="de-section-label">Descriptions</label>
+          <label class="de-section-label">${tr.descSection}</label>
           <div class="de-field-group">
             <textarea class="detailed-input de-textarea" data-id="${item.id}" data-field="description_uk" placeholder="UK">${escHtml(item.description_uk||'')}</textarea>
             <textarea class="detailed-input de-textarea" data-id="${item.id}" data-field="description_en" placeholder="EN">${escHtml(item.description_en||'')}</textarea>
@@ -645,30 +668,30 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="de-footer-row">
           <div class="de-specs-grid">
             <div class="field">
-              <label>Category</label>
+              <label>${tr.labelCat}</label>
               <select class="detailed-input" data-id="${item.id}" data-field="category">
                 ${slugs.map(c => `<option value="${c}"${item.category===c?' selected':''}>${getTranslatedCatName(c)}</option>`).join('')}
               </select>
             </div>
             <div class="field">
-              <label>Price (€)</label>
+              <label>${tr.labelPrice}</label>
               <input type="number" step="0.01" class="detailed-input" data-id="${item.id}" data-field="price" value="${Number(item.price||0).toFixed(2)}">
             </div>
             <div class="field">
-              <label>Status</label>
+              <label>${tr.thStatus}</label>
               <select class="detailed-input" data-id="${item.id}" data-field="in_stock">
-                <option value="true"${item.in_stock!==false?' selected':''}>✅ In Stock</option>
-                <option value="false"${item.in_stock===false?' selected':''}>❌ Out of Stock</option>
+                <option value="true"${item.in_stock!==false?' selected':''}>✅</option>
+                <option value="false"${item.in_stock===false?' selected':''}>❌</option>
               </select>
             </div>
-            <div class="field"><label>Vol</label><input class="detailed-input" data-id="${item.id}" data-field="volume" value="${escHtml(item.volume||'')}"></div>
-            <div class="field"><label>ABV%</label><input class="detailed-input" data-id="${item.id}" data-field="abv" value="${escHtml(item.abv||'')}"></div>
-            <div class="field"><label>IBU</label><input class="detailed-input" data-id="${item.id}" data-field="ibu" value="${escHtml(String(item.ibu||''))}"></div>
-            <div class="field"><label>Order</label><input type="number" class="detailed-input" data-id="${item.id}" data-field="sort_order" value="${item.sort_order||0}"></div>
+            <div class="field"><label>${tr.labelVol}</label><input class="detailed-input" data-id="${item.id}" data-field="volume" value="${escHtml(item.volume||'')}"></div>
+            <div class="field"><label>${tr.labelAbv}</label><input class="detailed-input" data-id="${item.id}" data-field="abv" value="${escHtml(item.abv||'')}"></div>
+            <div class="field"><label>${tr.labelIbu}</label><input class="detailed-input" data-id="${item.id}" data-field="ibu" value="${escHtml(String(item.ibu||''))}"></div>
+            <div class="field"><label>${tr.labelSort}</label><input type="number" class="detailed-input" data-id="${item.id}" data-field="sort_order" value="${item.sort_order||0}"></div>
           </div>
           <div class="de-actions">
-             <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">Delete Product</button>
-             <button class="btn btn--secondary btn--sm" onclick="adminActions.edit('${item.id}')">Full Edit Modal</button>
+             <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">🗑</button>
+             <button class="btn btn--edit btn--sm" onclick="adminActions.view('${item.id}')">👁 Full</button>
           </div>
         </div>
       </div>
@@ -685,6 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Mobile Cards ──
   function renderMobileCards() {
     const filtered = getSortedFiltered();
+    const tr = t();
     mobileCards.innerHTML = '';
     filtered.forEach((item, idx) => {
       const card = document.createElement('div');
@@ -699,17 +723,17 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
         <div class="product-mobile-card__row">
-          <span class="badge badge--cat">${escHtml(item.category || '')}</span>
+          <span class="badge badge--cat">${getTranslatedCatName(item.category || '')}</span>
           <button class="mobile-stock-btn ${item.in_stock !== false ? 'in-stock' : 'out-stock'}" 
                   data-id="${item.id}" data-field="in_stock" data-value="${item.in_stock !== false ? '0' : '1'}">
-            ${item.in_stock !== false ? '✅ In Stock' : '❌ Out'}
+            ${item.in_stock !== false ? '✅' : '❌'}
           </button>
           <strong style="font-size:15px">€${Number(item.price||0).toFixed(2)}</strong>
         </div>
         <div class="product-mobile-card__actions">
-          <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">View</button>
-          <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">Edit</button>
-          <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">Delete</button>
+          <button class="btn btn--secondary btn--sm" onclick="adminActions.view('${item.id}')">👁</button>
+          <button class="btn btn--edit btn--sm" onclick="adminActions.edit('${item.id}')">✏️</button>
+          <button class="btn btn--danger btn--sm" onclick="adminActions.del('${item.id}')">🗑</button>
         </div>
       `;
       mobileCards.appendChild(card);
@@ -980,7 +1004,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Upload error:', err);
       uploadBar.style.width = '0%';
       previewImg.style.opacity = '0.3';
-      previewStatus.textContent = t().uploadErr + ': ' + err.message;
+      previewStatus.textContent = t().uploadErr;
       previewStatus.style.color = 'var(--red)';
       showToast(t().uploadErr, 'error');
     }
@@ -1049,7 +1073,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  // ── Detail View ──
+  // ══════════════════════════════════════════════════
+  //  DETAIL VIEW (Full product view)
+  // ══════════════════════════════════════════════════
   function showDetailView(item) {
     tableBody.parentElement.parentElement.style.display = 'none';
     mobileCards.style.display = 'none';
@@ -1186,7 +1212,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ══════════════════════════════════════════════════
-  //  CATEGORIES MANAGER
+  //  CATEGORIES MANAGER (FIXED)
   // ══════════════════════════════════════════════════
   function renderCategoriesManager() {
     const grid = document.getElementById('categories-grid');
@@ -1200,16 +1226,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const subcats = (cat.subcategories || []).filter(s => s !== 'all');
 
+      // Show translated name with slug beneath
+      const catDisplayName = getTranslatedCatName(cat.slug);
+
       card.innerHTML = `
         <div class="cat-manager-card__header">
           <div class="cat-manager-card__info">
-            <h3 class="cat-manager-card__title">${getTranslatedCatName(cat.slug)}</h3>
-            <span class="cat-manager-card__slug">${cat.slug}</span>
-            <span class="cat-manager-card__count">${subcats.length} subcategories</span>
+            <h3 class="cat-manager-card__title">${escHtml(catDisplayName)}</h3>
+            <span class="cat-manager-card__slug">${escHtml(cat.slug)}</span>
+            <span class="cat-manager-card__count">${subcats.length} ${tr.addSubcategory ? tr.addSubcategory.replace('Add ', '').replace('Додати ', '').replace('Lisa ', '').replace('Добавить ', '') : 'subcategories'}${subcats.length !== 1 ? '' : ''}</span>
           </div>
           <div class="cat-manager-card__actions">
-            <button class="btn btn--secondary btn--xs cat-move-btn" data-dir="up" data-slug="${cat.slug}" ${catIdx===0?'disabled':''}title="Move Up">↑</button>
-            <button class="btn btn--secondary btn--xs cat-move-btn" data-dir="down" data-slug="${cat.slug}" ${catIdx===categoriesData.length-1?'disabled':''}title="Move Down">↓</button>
+            <button class="btn btn--secondary btn--xs cat-move-btn" data-dir="up" data-slug="${cat.slug}" ${catIdx===0?'disabled':''} title="↑">↑</button>
+            <button class="btn btn--secondary btn--xs cat-move-btn" data-dir="down" data-slug="${cat.slug}" ${catIdx===categoriesData.length-1?'disabled':''} title="↓">↓</button>
             <button class="btn btn--edit btn--xs cat-edit-btn" data-slug="${cat.slug}" title="Edit">✏️</button>
             <button class="btn btn--danger btn--xs cat-delete-btn" data-slug="${cat.slug}" title="Delete">✕</button>
           </div>
@@ -1217,8 +1246,8 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="cat-manager-card__subcats">
           ${subcats.map((sub, subIdx) => `
             <div class="subcat-chip-manager">
-              <span class="subcat-chip-manager__name">${getTranslatedSubName(sub)}</span>
-              <span class="subcat-chip-manager__slug">${sub}</span>
+              <span class="subcat-chip-manager__name">${escHtml(getTranslatedSubName(sub))}</span>
+              <span class="subcat-chip-manager__slug">${escHtml(sub)}</span>
               <div class="subcat-chip-manager__actions">
                 <button class="subcat-move-btn" data-cat="${cat.slug}" data-sub="${sub}" data-dir="up" ${subIdx===0?'disabled':''} title="↑">↑</button>
                 <button class="subcat-move-btn" data-cat="${cat.slug}" data-sub="${sub}" data-dir="down" ${subIdx===subcats.length-1?'disabled':''} title="↓">↓</button>
@@ -1337,7 +1366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch { showToast(t().failDelete, 'error'); }
   }
 
-  // ── Category Modal ──
+  // ── Category Modal (FIXED) ──
   const categoryModal = document.getElementById('category-modal');
   const catForm = document.getElementById('cat-form');
   let editingCatSlug = null;
@@ -1347,19 +1376,31 @@ document.addEventListener('DOMContentLoaded', () => {
     catForm.reset();
     document.getElementById('cat-modal-title').textContent = t().addCategory;
     document.getElementById('cat-field-slug').disabled = false;
+    document.getElementById('cat-field-slug').value = '';
+    // Clear all name fields explicitly
+    ['uk','en','et','ru'].forEach(lang => {
+      const el = document.getElementById(`cat-field-name_${lang}`);
+      if (el) el.value = '';
+    });
     categoryModal.classList.add('open');
   });
 
   function openEditCategoryModal(slug) {
     editingCatSlug = slug;
-    document.getElementById('cat-modal-title').textContent = t().editProduct + ': ' + slug;
+    const tr = t();
+    document.getElementById('cat-modal-title').textContent = `${tr.editCat}: ${getTranslatedCatName(slug)}`;
     document.getElementById('cat-field-slug').value = slug;
     document.getElementById('cat-field-slug').disabled = true;
-    // Fill names from translations
+
+    // FIX: Fill names from translations for ALL languages
     ['uk','en','et','ru'].forEach(lang => {
       const el = document.getElementById(`cat-field-name_${lang}`);
-      if (el && translationsData && translationsData[lang] && translationsData[lang].categories) {
-        el.value = translationsData[lang].categories[slug] || '';
+      if (el) {
+        let val = '';
+        if (translationsData && translationsData[lang] && translationsData[lang].categories) {
+          val = translationsData[lang].categories[slug] || '';
+        }
+        el.value = val;
       }
     });
     categoryModal.classList.add('open');
@@ -1380,9 +1421,11 @@ document.addEventListener('DOMContentLoaded', () => {
       ru: document.getElementById('cat-field-name_ru').value.trim()
     };
 
+    // FIX: Initialize translationsData if null
+    if (!translationsData) translationsData = {};
+
     if (editingCatSlug) {
       // Update translations for existing category
-      if (!translationsData) translationsData = {};
       for (const lang of Object.keys(names)) {
         if (!translationsData[lang]) translationsData[lang] = {};
         if (!translationsData[lang].categories) translationsData[lang].categories = {};
@@ -1401,15 +1444,13 @@ document.addEventListener('DOMContentLoaded', () => {
           const json = await res.json();
           categoriesData = json.categories || categoriesData;
           // Merge translations
-          if (!translationsData) translationsData = {};
           for (const lang of Object.keys(names)) {
             if (!translationsData[lang]) translationsData[lang] = {};
             if (!translationsData[lang].categories) translationsData[lang].categories = {};
             translationsData[lang].categories[slug] = names[lang];
           }
-          showToast(t().saved);
-          buildCategoryFilterOptions();
-          buildProductFormCategories();
+          // Also save translations to KV
+          await saveCategoriesData();
         } else {
           const json = await res.json();
           showToast(json.error || t().failSave, 'error');
@@ -1421,7 +1462,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCategoriesManager();
   });
 
-  // ── Subcategory Modal ──
+  // ── Subcategory Modal (FIXED) ──
   const subcatModal = document.getElementById('subcat-modal');
   const subcatForm = document.getElementById('subcat-form');
 
@@ -1431,16 +1472,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('subcat-field-old-slug').value = '';
     document.getElementById('subcat-modal-title').textContent = t().addSubcategory;
     document.getElementById('subcat-field-slug').disabled = false;
+    document.getElementById('subcat-field-slug').value = '';
+    // Clear name fields
+    ['uk','en','et','ru'].forEach(lang => {
+      const el = document.getElementById(`subcat-field-name_${lang}`);
+      if (el) el.value = '';
+    });
     subcatModal.classList.add('open');
   }
 
   function openEditSubcatModal(catSlug, subSlug) {
+    const tr = t();
     document.getElementById('subcat-field-category').value = catSlug;
     document.getElementById('subcat-field-old-slug').value = subSlug;
     document.getElementById('subcat-field-slug').value = subSlug;
     document.getElementById('subcat-field-slug').disabled = true;
-    document.getElementById('subcat-modal-title').textContent = 'Edit: ' + subSlug;
-    // Fill names
+    document.getElementById('subcat-modal-title').textContent = `${tr.editSubcat}: ${getTranslatedSubName(subSlug)}`;
+    // FIX: Fill names from translations for ALL languages
     ['uk','en','et','ru'].forEach(lang => {
       const el = document.getElementById(`subcat-field-name_${lang}`);
       if (el) {
@@ -1471,6 +1519,9 @@ document.addEventListener('DOMContentLoaded', () => {
       ru: document.getElementById('subcat-field-name_ru').value.trim()
     };
 
+    // FIX: Initialize translations if null
+    if (!translationsData) translationsData = {};
+
     if (oldSlug) {
       // Edit existing
       try {
@@ -1483,13 +1534,13 @@ document.addEventListener('DOMContentLoaded', () => {
           const json = await res.json();
           categoriesData = json.categories || categoriesData;
           // Update translations locally
-          if (!translationsData) translationsData = {};
           for (const lang of Object.keys(names)) {
             if (!translationsData[lang]) translationsData[lang] = {};
             if (!translationsData[lang].subcategories) translationsData[lang].subcategories = {};
             translationsData[lang].subcategories[slug] = names[lang];
           }
-          showToast(t().saved);
+          // Save translations to KV too
+          await saveCategoriesData();
         } else showToast(t().failSave, 'error');
       } catch { showToast(t().failSave, 'error'); }
     } else {
@@ -1503,13 +1554,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (res.ok) {
           const json = await res.json();
           categoriesData = json.categories || categoriesData;
-          if (!translationsData) translationsData = {};
           for (const lang of Object.keys(names)) {
             if (!translationsData[lang]) translationsData[lang] = {};
             if (!translationsData[lang].subcategories) translationsData[lang].subcategories = {};
             translationsData[lang].subcategories[slug] = names[lang];
           }
-          showToast(t().saved);
+          await saveCategoriesData();
         } else {
           const json = await res.json();
           showToast(json.error || t().failSave, 'error');
@@ -1522,9 +1572,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ══════════════════════════════════════════════════
-  //  SETTINGS MANAGER
+  //  SETTINGS MANAGER (FIXED)
   // ══════════════════════════════════════════════════
   let settingsLang = 'uk';
+  let settingsLangTabsBound = false;
 
   async function loadSettings() {
     try {
@@ -1553,23 +1604,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // Stores
     renderStoresList();
 
-    // Language tabs for translations
-    document.querySelectorAll('.settings-lang-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        settingsLang = tab.dataset.lang;
-        document.querySelectorAll('.settings-lang-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        renderTranslationFields();
+    // FIX: Only bind language tab listeners ONCE to avoid duplicates
+    if (!settingsLangTabsBound) {
+      document.querySelectorAll('.settings-lang-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          // FIX: Save current language translations BEFORE switching
+          saveCurrentTranslationFields();
+
+          settingsLang = tab.dataset.lang;
+          document.querySelectorAll('.settings-lang-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          renderTranslationFields();
+        });
       });
+      settingsLangTabsBound = true;
+    }
+
+    // Ensure correct tab is highlighted
+    document.querySelectorAll('.settings-lang-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.lang === settingsLang);
     });
 
     renderTranslationFields();
   }
 
+  // FIX: Save current translation field values back to translationsData before switching tabs
+  function saveCurrentTranslationFields() {
+    if (!translationsData) return;
+    const currentLang = settingsLang;
+    if (!translationsData[currentLang]) return;
+
+    document.querySelectorAll('.settings-trans-field').forEach(field => {
+      const key = field.dataset.key;
+      const val = field.value;
+      const parts = key.split('.');
+      if (parts.length === 2) {
+        if (!translationsData[currentLang][parts[0]]) translationsData[currentLang][parts[0]] = {};
+        translationsData[currentLang][parts[0]][parts[1]] = val;
+      } else {
+        translationsData[currentLang][key] = val;
+      }
+    });
+  }
+
   function renderTranslationFields() {
     const container = document.getElementById('settings-trans-content');
     if (!translationsData || !translationsData[settingsLang]) {
-      container.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">No translations data available in KV. Save categories first to seed translations.</p>';
+      container.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">No translations data available yet. Save categories first, or ensure translations.json exists.</p>';
       return;
     }
 
@@ -1598,6 +1679,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="form-row">
           <div class="form-group"><label>Hours Label</label><input type="text" class="input-control settings-trans-field" data-key="footer.hours" value="${escHtml(footer.hours || '')}"></div>
           <div class="form-group"><label>Hours Value</label><input type="text" class="input-control settings-trans-field" data-key="footer.hoursValue" value="${escHtml(footer.hoursValue || '')}"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email Label</label><input type="text" class="input-control settings-trans-field" data-key="footer.email" value="${escHtml(footer.email || '')}"></div>
+          <div class="form-group"><label>Email Value</label><input type="text" class="input-control settings-trans-field" data-key="footer.emailValue" value="${escHtml(footer.emailValue || '')}"></div>
         </div>
         <div class="form-group" style="margin-bottom:10px;">
           <label>Rights</label>
@@ -1640,7 +1725,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderStoresList();
   });
 
-  // Save settings
+  // Save settings (FIXED)
   document.getElementById('btn-save-settings').addEventListener('click', async () => {
     // Collect settings
     const phone = document.getElementById('settings-phone').value;
@@ -1663,20 +1748,8 @@ document.addEventListener('DOMContentLoaded', () => {
       stores.push({ name, address, field });
     });
 
-    // Collect translation fields for current lang
-    if (translationsData && translationsData[settingsLang]) {
-      document.querySelectorAll('.settings-trans-field').forEach(field => {
-        const key = field.dataset.key;
-        const val = field.value;
-        const parts = key.split('.');
-        if (parts.length === 2) {
-          if (!translationsData[settingsLang][parts[0]]) translationsData[settingsLang][parts[0]] = {};
-          translationsData[settingsLang][parts[0]][parts[1]] = val;
-        } else {
-          translationsData[settingsLang][key] = val;
-        }
-      });
-    }
+    // FIX: Save current lang's translation fields BEFORE sending
+    saveCurrentTranslationFields();
 
     try {
       // Save settings
