@@ -1,371 +1,359 @@
-// ============================================================
-// Beer&Snacks — Application Logic (v2 — Dynamic API)
-// ============================================================
-
+// Beer&Snacks — public catalog
 (() => {
   'use strict';
 
+  const LANGS = ['uk', 'ru', 'et', 'en'];
+  const TZ = 'Europe/Tallinn';
+  // Opening hours: [weekday 0=Sun..6=Sat] -> [open, close] in minutes.
+  const HOURS = { 0: [600, 1320], 1: [780, 1320], 2: [780, 1320], 3: [780, 1320], 4: [780, 1320], 5: [780, 1320], 6: [600, 1320] };
+
+  // Interface strings (product data and category names come from the admin panel).
+  const UI = {
+    uk: {
+      title: 'Пиво та снеки у Таллінні', search: 'Пошук: пиво, кальмар, сидр…', all: 'Усі',
+      inStock: 'В наявності', outOfStock: 'Немає в наявності', openUntil: 'Відкрито до {t}', closedOpens: 'Зачинено · відкриємо о {t}',
+      found: 'Знайдено: {n}', nothing: 'Нічого не знайшли за запитом «{q}». Спробуйте іншу назву.', empty: 'Тут поки порожньо.',
+      stores: 'Магазини', contacts: 'Контакти', where: 'Є в магазинах', nowhere: 'Зараз немає в магазинах',
+      age: 'Алкоголь продається особам від 18 років.', theme: 'Змінити тему', error: 'Не вдалося завантажити каталог. Оновіть сторінку.',
+      order: 'Замовити в {s}', route: 'Маршрут', phone: 'Телефон',
+    },
+    ru: {
+      title: 'Пиво и снеки в Таллинне', search: 'Поиск: пиво, кальмар, сидр…', all: 'Все',
+      inStock: 'В наличии', outOfStock: 'Нет в наличии', openUntil: 'Открыто до {t}', closedOpens: 'Закрыто · откроемся в {t}',
+      found: 'Найдено: {n}', nothing: 'Ничего не нашли по запросу «{q}». Попробуйте другое название.', empty: 'Здесь пока пусто.',
+      stores: 'Магазины', contacts: 'Контакты', where: 'Есть в магазинах', nowhere: 'Сейчас нет в магазинах',
+      age: 'Алкоголь продаётся лицам старше 18 лет.', theme: 'Сменить тему', error: 'Не удалось загрузить каталог. Обновите страницу.',
+      order: 'Заказать в {s}', route: 'Маршрут', phone: 'Телефон',
+    },
+    et: {
+      title: 'Õlu ja snäkid Tallinnas', search: 'Otsi: õlu, kalmaar, siider…', all: 'Kõik',
+      inStock: 'Laos', outOfStock: 'Otsas', openUntil: 'Avatud kuni {t}', closedOpens: 'Suletud · avame {t}',
+      found: 'Leitud: {n}', nothing: 'Päringule „{q}” ei leitud midagi. Proovi teist nime.', empty: 'Siin pole veel midagi.',
+      stores: 'Poed', contacts: 'Kontakt', where: 'Saadaval poodides', nowhere: 'Hetkel poodides otsas',
+      age: 'Alkoholi müüakse alates 18. eluaastast.', theme: 'Vaheta teemat', error: 'Kataloogi laadimine ebaõnnestus. Värskenda lehte.',
+      order: 'Telli {s} kaudu', route: 'Teekond', phone: 'Telefon',
+    },
+    en: {
+      title: 'Beer and snacks in Tallinn', search: 'Search: beer, squid, cider…', all: 'All',
+      inStock: 'In stock', outOfStock: 'Out of stock', openUntil: 'Open until {t}', closedOpens: 'Closed · opens at {t}',
+      found: 'Found: {n}', nothing: 'Nothing matches “{q}”. Try another name.', empty: 'Nothing here yet.',
+      stores: 'Stores', contacts: 'Contact', where: 'Available at', nowhere: 'Not in stores right now',
+      age: 'Alcohol is sold to persons aged 18 and over.', theme: 'Toggle theme', error: 'Could not load the catalog. Please reload the page.',
+      order: 'Order on {s}', route: 'Directions', phone: 'Phone',
+    },
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const els = {
+    search: $('search'), searchClear: $('search-clear'), cats: $('cats'), subs: $('subs'), products: $('products'),
+    note: $('result-note'), langBtn: $('lang-btn'), langMenu: $('lang-menu'), lang: $('lang'), theme: $('theme-toggle'),
+    sheet: $('sheet'), sheetBody: $('sheet-body'), toTop: $('to-top'),
+  };
+
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmt = (str, vars) => str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+
   // ── State ──
-  let translations = {};
-  let categorySubcategories = {};
-  let catalog = [];
+  const params = new URLSearchParams(location.search);
+  const state = {
+    lang: pickLang(),
+    cat: params.get('c'),
+    sub: params.get('s') || 'all',
+    q: params.get('q') || '',
+    data: { catalog: [], categories: {}, translations: {}, settings: {} },
+  };
 
-  let currentLang = localStorage.getItem('bs_lang') || null;
-  let currentCategory = null; // Will be set dynamically from first category
-  let currentSubcategory = 'all';
-
-  // ── DOM Elements ──
-  const overlay = document.getElementById('lang-overlay');
-  const mainContent = document.getElementById('main-content');
-  const categoriesList = document.getElementById('categories-list');
-  const subcategoriesWrap = document.getElementById('subcategories');
-  const subcategoriesList = document.getElementById('subcategories-list');
-  const productItems = document.getElementById('product-items');
-  const langSwitcher = document.getElementById('lang-switcher');
-  const langCurrent = document.getElementById('lang-current');
-  const langDropdown = document.getElementById('lang-dropdown');
-  const siteTitle = document.getElementById('site-title');
-  const themeToggle = document.getElementById('theme-toggle');
-
-  // Footer
-  const footerAbout = document.getElementById('footer-about');
-  const footerPhoneLabel = document.getElementById('footer-phone-label');
-  const footerAddressLabel = document.getElementById('footer-address-label');
-  const footerAddressValue = document.getElementById('footer-address-value');
-  const footerHoursLabel = document.getElementById('footer-hours-label');
-  const footerHoursValue = document.getElementById('footer-hours-value');
-  const footerRights = document.getElementById('footer-rights');
-
-  // ── Theme Toggle ──
-  function getPreferredTheme() {
-    const saved = localStorage.getItem('bs_theme');
-    if (saved) return saved;
-    return 'light';
+  function pickLang() {
+    const fromUrl = params.get('lang');
+    if (LANGS.includes(fromUrl)) return fromUrl;
+    const saved = localStorage.getItem('bs_lang');
+    if (LANGS.includes(saved)) return saved;
+    for (const l of navigator.languages || [navigator.language || '']) {
+      const code = l.slice(0, 2).toLowerCase();
+      if (LANGS.includes(code)) return code;
+    }
+    return 'ru';
   }
 
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('bs_theme', theme);
+  const ui = () => UI[state.lang];
+  const tr = () => state.data.translations[state.lang] || {};
+  const field = (p, name) => p[`${name}_${state.lang}`] || p[`${name}_en`] || p[`${name}_ru`] || '';
+  const catName = (slug) => tr().categories?.[slug] || slug;
+  const subName = (slug) => slug === 'all' ? ui().all : (tr().subcategories?.[slug] || slug);
+  const price = (n) => {
+    const v = Number(n);
+    if (!Number.isFinite(v)) return '';
+    const [eur, cents] = v.toFixed(2).split('.');
+    return `<span class="tag__eur">${eur}</span><span class="tag__cents">${cents}</span><span class="tag__cur">€</span>`;
+  };
+
+  // ── Search ──
+  const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ё/g, 'е').replace(/[ʼ'’]/g, '');
+  let index = [];
+  function buildIndex() {
+    index = state.data.catalog.map(p => ({
+      p,
+      text: norm(LANGS.flatMap(l => [p[`name_${l}`], p[`type_${l}`]]).join(' ') + ' ' + (p.volume || '')),
+    }));
   }
 
-  applyTheme(getPreferredTheme());
+  // ── Visible products ──
+  function visible() {
+    const q = norm(state.q.trim());
+    let items;
+    if (q) {
+      const words = q.split(/\s+/);
+      items = index.filter(x => words.every(w => x.text.includes(w))).map(x => x.p);
+    } else {
+      items = state.data.catalog.filter(p => p.category === state.cat && (state.sub === 'all' || p.subcategory === state.sub));
+    }
+    return items.slice().sort((a, b) =>
+      (b.in_stock !== false) - (a.in_stock !== false) || (a.sort_order || 0) - (b.sort_order || 0));
+  }
 
-  themeToggle.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    applyTheme(current === 'dark' ? 'light' : 'dark');
+  // ── Render ──
+  function renderStatic() {
+    const t = tr(), u = ui();
+    document.documentElement.lang = state.lang;
+    $('intro-title').textContent = u.title;
+    els.search.placeholder = u.search;
+    els.search.setAttribute('aria-label', u.search);
+    els.theme.setAttribute('aria-label', u.theme);
+    els.langBtn.textContent = state.lang.toUpperCase();
+    els.langMenu.innerHTML = LANGS.map(l =>
+      `<li><button type="button" role="option" data-lang="${l}" aria-selected="${l === state.lang}">${esc(state.data.translations[l]?.langName || l.toUpperCase())}</button></li>`).join('');
+
+    const f = t.footer || {};
+    $('foot-about').textContent = f.about || '';
+    $('foot-hours').textContent = f.hoursValue || '';
+    $('foot-rights').textContent = f.rights || `© ${new Date().getFullYear()} Beer&Snacks`;
+    $('foot-age').textContent = u.age;
+    $('foot-contact-title').textContent = u.contacts;
+
+    const s = state.data.settings || {};
+    const phone = $('foot-phone');
+    if (s.phone) { phone.hidden = false; phone.innerHTML = `<a href="tel:${esc(s.phone.replace(/\s/g, ''))}">${esc(s.phone)}</a>`; }
+
+    const stores = s.stores || [];
+    $('foot-stores').innerHTML = `<h2>${esc(u.stores)}</h2>` + stores.map(st =>
+      `<p><strong>${esc(st.name)}</strong><br><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(st.address)}" target="_blank" rel="noopener">${esc(st.address)}</a></p>`).join('');
+
+    const icons = {
+      instagram: '<path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM17 6a1.1 1.1 0 1 0 0 2.2A1.1 1.1 0 0 0 17 6z"/><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/>',
+      facebook: '<path d="M14 13.5h2.5l1-4H14v-2c0-1 0-2 2-2h1.5V2.1C17.2 2.1 15.9 2 14.6 2 11.9 2 10 3.7 10 6.7v2.8H7v4h3V22h4z"/>',
+      tiktok: '<path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.3V2h-3.4v13.7a2.9 2.9 0 1 1-2-2.8V9.4a6.3 6.3 0 1 0 5.4 6.3V8.2a8.4 8.4 0 0 0 4.2 1.2V5.9a4.9 4.9 0 0 1-.4.8z"/>',
+    };
+    $('socials').innerHTML = Object.entries(s.socials || {}).filter(([, url]) => url).map(([k, url]) =>
+      `<a href="${esc(url)}" target="_blank" rel="noopener" aria-label="${esc(k)}"><svg viewBox="0 0 24 24" fill="currentColor">${icons[k] || ''}</svg></a>`).join('');
+
+    const d = s.delivery || {};
+    $('delivery').innerHTML = [['wolt', 'Wolt'], ['bolt', 'Bolt Food']].filter(([k]) => d[k]).map(([k, label]) =>
+      `<a class="pill pill--${k}" href="${esc(d[k])}" target="_blank" rel="noopener" aria-label="${esc(fmt(u.order, { s: label }))}"><span class="pill__verb">${esc(fmt(u.order, { s: '' }).trim())}&nbsp;</span>${esc(label)}</a>`).join('');
+
+    renderOpenStatus();
+  }
+
+  function renderOpenStatus() {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+      .formatToParts(new Date()).map(p => [p.type, p.value]));
+    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.weekday);
+    const mins = Number(parts.hour) * 60 + Number(parts.minute);
+    const hhmm = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+    const [open, close] = HOURS[day];
+    const el = $('open-status');
+    if (mins >= open && mins < close) {
+      el.textContent = fmt(ui().openUntil, { t: hhmm(close) });
+      el.dataset.open = 'true';
+    } else {
+      const next = mins < open ? open : HOURS[(day + 1) % 7][0];
+      el.textContent = fmt(ui().closedOpens, { t: hhmm(next) });
+      el.dataset.open = 'false';
+    }
+  }
+
+  function renderCats() {
+    const counts = {};
+    state.data.catalog.forEach(p => { if (p.in_stock !== false) counts[p.category] = (counts[p.category] || 0) + 1; });
+    const searching = !!state.q.trim();
+    els.cats.innerHTML = Object.keys(state.data.categories).map(slug =>
+      `<button type="button" role="tab" class="cat" data-cat="${esc(slug)}" aria-selected="${!searching && slug === state.cat}">
+        ${esc(catName(slug))}<sup>${counts[slug] || 0}</sup></button>`).join('');
+
+    const subs = (state.data.categories[state.cat] || []).filter(s =>
+      s === 'all' || state.data.catalog.some(p => p.category === state.cat && p.subcategory === s));
+    els.subs.hidden = searching || subs.length <= 2;
+    els.subs.innerHTML = subs.map(s =>
+      `<button type="button" class="sub" data-sub="${esc(s)}" aria-pressed="${s === state.sub}">${esc(subName(s))}</button>`).join('');
+  }
+
+  function specs(p) {
+    const parts = [p.volume, p.abv, field(p, 'type')];
+    if (p.ibu !== undefined && p.ibu !== '' && p.ibu !== null && p.ibu !== 0) parts.push(`IBU ${p.ibu}`);
+    return parts.filter(Boolean).map(x => `<span>${esc(x)}</span>`).join('');
+  }
+
+  function card(p, i) {
+    const name = field(p, 'name');
+    const out = p.in_stock === false;
+    return `<article class="card${out ? ' card--out' : ''}" style="--i:${Math.min(i, 12)}">
+      <button type="button" class="card__hit" data-id="${esc(p.id)}" aria-label="${esc(name)}"></button>
+      <div class="card__img">
+        <img src="${esc(p.image)}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400" onerror="this.parentNode.classList.add('is-broken')" />
+        ${out ? `<span class="card__out">${esc(ui().outOfStock)}</span>` : ''}
+      </div>
+      <div class="tag">${price(p.price)}</div>
+      <h3 class="card__name">${esc(name)}</h3>
+      <p class="card__specs">${specs(p)}</p>
+    </article>`;
+  }
+
+  function renderProducts({ animate = true } = {}) {
+    const items = visible();
+    const q = state.q.trim();
+    els.note.hidden = !q;
+    if (q) els.note.textContent = items.length ? fmt(ui().found, { n: items.length }) : '';
+    if (!items.length) {
+      els.products.innerHTML = `<p class="grid__empty">${esc(q ? fmt(ui().nothing, { q }) : ui().empty)}</p>`;
+      return;
+    }
+    els.products.classList.toggle('grid--animate', animate);
+    els.products.innerHTML = items.map(card).join('');
+  }
+
+  function renderAll(opts) {
+    renderStatic();
+    renderCats();
+    renderProducts(opts);
+  }
+
+  // Animate filter changes with the View Transitions API when available.
+  function update(fn) {
+    const run = () => { fn(); renderCats(); renderProducts({ animate: false }); syncUrl(); };
+    if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(run);
+    else run();
+  }
+
+  function syncUrl() {
+    const p = new URLSearchParams();
+    if (state.q.trim()) p.set('q', state.q.trim());
+    else {
+      if (state.cat) p.set('c', state.cat);
+      if (state.sub !== 'all') p.set('s', state.sub);
+    }
+    history.replaceState(null, '', p.toString() ? `?${p}` : location.pathname);
+  }
+
+  // ── Product sheet ──
+  function openSheet(id) {
+    const p = state.data.catalog.find(x => x.id === id);
+    if (!p) return;
+    const u = ui();
+    const stores = (state.data.settings.stores || []).filter(s => p[s.field]);
+    const desc = field(p, 'description');
+    els.sheetBody.innerHTML = `
+      <div class="sheet__img"><img src="${esc(p.image)}" alt="" /></div>
+      <div class="sheet__info">
+        <p class="sheet__cat">${esc(catName(p.category))}${p.subcategory && p.subcategory !== 'all' ? ` / ${esc(subName(p.subcategory))}` : ''}</p>
+        <h2 id="sheet-title" class="sheet__title">${esc(field(p, 'name'))}</h2>
+        <p class="card__specs">${specs(p)}</p>
+        ${desc ? `<p class="sheet__desc">${esc(desc)}</p>` : ''}
+        <div class="sheet__row">
+          <div class="tag tag--big">${price(p.price)}</div>
+          <span class="stock ${p.in_stock === false ? 'stock--out' : ''}">${esc(p.in_stock === false ? u.outOfStock : u.inStock)}</span>
+        </div>
+        ${p.in_stock === false || !stores.length ? '' : `<div class="sheet__stores">
+          <p>${esc(u.where)}</p>
+          ${stores.map(s => `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.address)}" target="_blank" rel="noopener"><strong>${esc(s.name)}</strong> ${esc(s.address)}</a>`).join('')}
+        </div>`}
+      </div>`;
+    els.sheet.showModal();
+  }
+
+  // ── Events ──
+  els.cats.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-cat]');
+    if (!b) return;
+    update(() => { state.cat = b.dataset.cat; state.sub = 'all'; state.q = ''; els.search.value = ''; els.searchClear.hidden = true; });
+  });
+  els.subs.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-sub]');
+    if (b) update(() => { state.sub = b.dataset.sub; });
+  });
+  els.products.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-id]');
+    if (b) openSheet(b.dataset.id);
   });
 
-  // ── Logo Navigation ──
-  const headerLogo = document.querySelector('.header__logo');
-  if (headerLogo) {
-    headerLogo.addEventListener('click', () => {
-      const cats = Object.keys(categorySubcategories);
-      currentCategory = cats.length > 0 ? cats[0] : 'beer';
-      currentSubcategory = 'all';
-      renderCategories();
-      renderSubcategories();
-      renderProducts();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  // ── Language Overlay ──
-  document.querySelectorAll('.lang-overlay__btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const lang = btn.dataset.lang;
-      selectLanguage(lang);
-    });
+  let searchTimer;
+  els.search.addEventListener('input', () => {
+    els.searchClear.hidden = !els.search.value;
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { state.q = els.search.value; renderCats(); renderProducts({ animate: false }); syncUrl(); }, 120);
+  });
+  els.searchClear.addEventListener('click', () => {
+    els.search.value = ''; state.q = ''; els.searchClear.hidden = true;
+    renderCats(); renderProducts({ animate: false }); syncUrl(); els.search.focus();
   });
 
-  function selectLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('bs_lang', lang);
-    overlay.classList.add('hidden');
-    mainContent.style.display = '';
-    renderAll();
-  }
+  $('sheet-close').addEventListener('click', () => els.sheet.close());
+  els.sheet.addEventListener('click', (e) => { if (e.target === els.sheet) els.sheet.close(); });
 
-  // ── Language Switcher ──
-  langCurrent.addEventListener('click', (e) => {
+  els.langBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    langSwitcher.classList.toggle('open');
+    const open = els.lang.classList.toggle('open');
+    els.langBtn.setAttribute('aria-expanded', open);
+  });
+  els.langMenu.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-lang]');
+    if (!b) return;
+    state.lang = b.dataset.lang;
+    localStorage.setItem('bs_lang', state.lang);
+    els.lang.classList.remove('open');
+    renderAll({ animate: false });
+  });
+  document.addEventListener('click', () => { els.lang.classList.remove('open'); els.langBtn.setAttribute('aria-expanded', 'false'); });
+
+  els.theme.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('bs_theme', next);
   });
 
-  document.addEventListener('click', () => {
-    langSwitcher.classList.remove('open');
-  });
+  window.addEventListener('scroll', () => els.toTop.classList.toggle('visible', scrollY > 600), { passive: true });
+  els.toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+  setInterval(renderOpenStatus, 60_000);
 
-  function buildLangDropdown() {
-    langDropdown.innerHTML = '';
-    const langs = ['uk', 'en', 'et', 'ru'];
-    langs.forEach(lang => {
-      const btn = document.createElement('button');
-      btn.className = 'lang-switcher__option' + (lang === currentLang ? ' active' : '');
-      btn.textContent = translations[lang]?.langName || lang;
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        selectLanguage(lang);
-        langSwitcher.classList.remove('open');
-      });
-      langDropdown.appendChild(btn);
-    });
-  }
-
-  // ── Render Categories (dynamic) ──
-  function renderCategories() {
-    const t = translations[currentLang];
-    if (!t) return;
-    categoriesList.innerHTML = '';
-
-    // Use the order from categorySubcategories
-    const cats = Object.keys(categorySubcategories);
-    cats.forEach(cat => {
-      const btn = document.createElement('button');
-      btn.className = 'category-tab' + (cat === currentCategory ? ' active' : '');
-      btn.textContent = (t.categories && t.categories[cat]) || cat;
-      btn.addEventListener('click', () => {
-        if (cat === currentCategory) return;
-        currentCategory = cat;
-        currentSubcategory = 'all';
-        renderCategories();
-        renderSubcategories();
-        renderProducts();
-      });
-      categoriesList.appendChild(btn);
-    });
-  }
-
-  // ── Render Subcategories ──
-  function renderSubcategories() {
-    const t = translations[currentLang];
-    if (!t) return;
-    const subs = categorySubcategories[currentCategory];
-
-    if (!subs || subs.length === 0) {
-      subcategoriesWrap.classList.add('hidden');
-      return;
-    }
-
-    subcategoriesWrap.classList.remove('hidden');
-    subcategoriesList.innerHTML = '';
-
-    subs.forEach(sub => {
-      const btn = document.createElement('button');
-      btn.className = 'subcategory-tab' + (sub === currentSubcategory ? ' active' : '');
-      btn.textContent = (t.subcategories && t.subcategories[sub]) || sub;
-      btn.addEventListener('click', () => {
-        if (sub === currentSubcategory) return;
-        currentSubcategory = sub;
-        renderSubcategories();
-        renderProducts();
-      });
-      subcategoriesList.appendChild(btn);
-    });
-  }
-
-  // ── Render Products ──
-  function renderProducts() {
-    const lang = currentLang;
-    const cat = currentCategory;
-    const sub = currentSubcategory;
-    const t = translations[lang];
-    if (!t) return;
-
-    let items = catalog.filter(p => p.category === cat);
-
-    // Filter by subcategory
-    if (sub && sub !== 'all') {
-      items = items.filter(p => p.subcategory === sub);
-    }
-
-    // Sort: Primary = in_stock (true first), Secondary = sort_order
-    items.sort((a, b) => {
-      const aStock = a.in_stock !== false;
-      const bStock = b.in_stock !== false;
-      if (aStock !== bStock) return aStock ? -1 : 1;
-      return (a.sort_order || 0) - (b.sort_order || 0);
-    });
-
-    productItems.innerHTML = '';
-
-    if (items.length === 0) {
-      productItems.innerHTML = '<div class="empty-state">—</div>';
-      return;
-    }
-
-    items.forEach((item, index) => {
-      const card = document.createElement('div');
-      card.className = 'product-card';
-      card.style.animationDelay = `${index * 0.03}s`;
-
-      // Build specs line based on category
-      const specsHtml = buildSpecs(item, cat, lang);
-
-      const stockBadge = item.in_stock !== false
-        ? `<div class="product-card__badge in-stock">${lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : lang === 'et' ? 'Laos' : 'In Stock'}</div>`
-        : `<div class="product-card__badge out-of-stock">${lang === 'uk' ? 'Немає в наявності' : lang === 'ru' ? 'Нет в наличии' : lang === 'et' ? 'Otsas' : 'Out of Stock'}</div>`;
-
-      card.innerHTML = `
-        <div class="product-card__info">
-          <div class="product-card__name">${item['name_' + lang] || ''}</div>
-          <div class="product-card__specs">${specsHtml}</div>
-          <div class="product-card__divider"></div>
-          <div class="product-card__description">${item['description_' + lang] || ''}</div>
-          <div class="product-card__price">${t.currency || '€'}${Number(item.price).toFixed(2)}</div>
-        </div>
-        <div class="product-card__image-wrap">
-          <img class="product-card__image" src="${item.image}" alt="${item['name_' + lang] || ''}" loading="lazy" />
-          ${stockBadge}
-        </div>
-      `;
-
-      productItems.appendChild(card);
-    });
-  }
-
-  function buildSpecs(item, cat, lang) {
-    const parts = [];
-    const typeStr = item['type_' + lang] || '';
-
-    if (cat === 'beer') {
-      if (item.volume) parts.push(item.volume);
-      if (item.abv) parts.push(item.abv);
-      if (typeStr) parts.push(typeStr);
-      if (item.ibu !== undefined && item.ibu !== "") parts.push('IBU ' + item.ibu);
-    } else if (cat === 'cider') {
-      if (item.volume) parts.push(item.volume);
-      if (item.abv) parts.push(item.abv);
-      if (typeStr) parts.push(typeStr);
-    } else if (cat === 'drinks') {
-      if (item.volume) parts.push(item.volume);
-      if (typeStr) parts.push(typeStr);
-    } else if (cat === 'sweets' || cat === 'snacks') {
-      if (item.volume) parts.push(item.volume);
-      if (typeStr) parts.push(typeStr);
-    }
-
-    return parts.map((p, i) =>
-      `<span class="product-card__spec-item">${p}</span>${i < parts.length - 1 ? '<span class="product-card__spec-divider">|</span>' : ''}`
-    ).join('');
-  }
-
-  // ── Render Footer ──
-  function renderFooter() {
-    const t = translations[currentLang];
-    if (!t || !t.footer) return;
-    if (footerAbout) footerAbout.textContent = t.footer.about;
-    if (footerPhoneLabel) footerPhoneLabel.textContent = t.footer.phone;
-    if (footerAddressLabel) footerAddressLabel.textContent = t.footer.address;
-    if (footerAddressValue) footerAddressValue.textContent = t.footer.addressValue;
-    if (footerHoursLabel) footerHoursLabel.textContent = t.footer.hours;
-    if (footerHoursValue) footerHoursValue.textContent = t.footer.hoursValue;
-
-    const footerEmailLabel = document.getElementById('footer-email-label');
-    if (footerEmailLabel && t.footer.email) {
-      footerEmailLabel.textContent = t.footer.email;
-    }
-    if (footerRights) footerRights.textContent = t.footer.rights;
-  }
-
-  // ── Render Header ──
-  function renderHeader() {
-    const t = translations[currentLang];
-    if (!t) return;
-    const label = langCurrent.querySelector('.lang-switcher__label');
-    if (label) label.textContent = t.langName;
-  }
-
-  // ── Render All ──
-  function renderAll() {
-    renderHeader();
-    buildLangDropdown();
-    renderCategories();
-    renderSubcategories();
-    renderProducts();
-    renderFooter();
-  }
-
-  // ── Scroll to Top ──
-  const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-  if (scrollToTopBtn) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        scrollToTopBtn.classList.add('visible');
-      } else {
-        scrollToTopBtn.classList.remove('visible');
-      }
-    });
-
-    scrollToTopBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  // ── Init Data (Dynamic) ──
-  async function loadData() {
+  // ── Load ──
+  async function load() {
     try {
-      console.log('Fetching catalog data...');
-
-      // Try dynamic APIs first, fallback to static files
-      const [transRes, catsRes, catRes] = await Promise.all([
-        fetchWithFallback('/api/translations', 'data/translations.json'),
-        fetchWithFallback('/api/categories', 'data/categories.json'),
-        fetch('/api/catalog')
+      const res = await fetch('/api/site');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      // Static fallbacks if KV is empty (fresh deploy).
+      const fallback = async (key, url) => {
+        if (data[key] && Object.keys(data[key]).length) return;
+        const r = await fetch(url);
+        if (r.ok) data[key] = await r.json();
+      };
+      await Promise.all([
+        fallback('translations', 'data/translations.json'),
+        fallback('categories', 'data/categories.json'),
+        data.catalog.length ? null : fallback('catalog', 'data/catalog.json'),
       ]);
-
-      translations = transRes;
-      categorySubcategories = catsRes;
-      
-      if (!catRes.ok) throw new Error('Failed to load products API');
-      catalog = await catRes.json();
-
-      // Set default category from first available
-      const cats = Object.keys(categorySubcategories);
-      if (!currentCategory && cats.length > 0) {
-        currentCategory = cats[0];
-      } else if (!currentCategory) {
-        currentCategory = 'beer';
-      }
-
-      console.log('Data loaded successfully:', {
-        catalogEntries: catalog.length,
-        categories: Object.keys(categorySubcategories).length,
-        lang: currentLang
-      });
-
-      if (currentLang) {
-        overlay.classList.add('hidden');
-        mainContent.style.display = '';
-        renderAll();
-      } else {
-        mainContent.style.display = 'none';
-      }
-    } catch (e) {
-      console.error('CRITICAL ERROR loading catalog:', e);
-      if (!translations || Object.keys(translations).length === 0) {
-        alert('Error loading application data: ' + e.message);
-      }
+      state.data = { ...state.data, ...data };
+      const cats = Object.keys(state.data.categories);
+      if (!cats.includes(state.cat)) state.cat = cats[0] || null;
+      if (state.q) els.search.value = state.q;
+      els.searchClear.hidden = !state.q;
+      buildIndex();
+      renderAll();
+    } catch (err) {
+      console.error(err);
+      renderStatic();
+      els.products.innerHTML = `<p class="grid__empty">${esc(ui().error)}</p>`;
     }
   }
 
-  // Fetch from API first, fallback to static file
-  async function fetchWithFallback(apiUrl, staticUrl) {
-    try {
-      const res = await fetch(apiUrl);
-      if (res.ok) {
-        const data = await res.json();
-        // If API returned non-empty data, use it
-        if (data && Object.keys(data).length > 0) {
-          return data;
-        }
-      }
-    } catch { /* ignore API errors, try static fallback */ }
-
-    // Fallback to static file
-    const staticRes = await fetch(staticUrl);
-    if (!staticRes.ok) throw new Error(`Failed to load ${staticUrl}`);
-    return await staticRes.json();
-  }
-
-  loadData();
+  renderStatic();
+  load();
 })();

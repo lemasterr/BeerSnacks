@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Beer&Snacks Serverless Catalog via Cloudflare",
   "scripts": {
-    "dev": "wrangler pages dev public --kv DB_KV",
-    "deploy": "wrangler pages deploy public"
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler pages deploy public --project-name beersnacks"
   },
   "devDependencies": {
-    "wrangler": "^3.40.0"
+    "wrangler": "^4.160.0"
   }
 }

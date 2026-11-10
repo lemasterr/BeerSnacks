@@ -965,6 +965,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Resize to max 1000px and re-encode as WebP in the browser, so phone photos
+  // (often 5–10 MB) upload fast and the public site stays light.
+  async function toWebp(file, max = 1000, quality = 0.85) {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, max / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/webp', quality));
+    if (!blob) throw new Error('WebP encoding not supported');
+    return blob;
+  }
+
   async function handleFileUpload(file) {
     const localUrl = URL.createObjectURL(file);
     previewImg.src = localUrl;
@@ -975,11 +989,12 @@ document.addEventListener('DOMContentLoaded', () => {
     uploadBar.style.width = '30%';
     imagePreview.style.display = 'flex';
 
-    const safeName = file.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9._-]/g, '');
+    const safeName = file.name.toLowerCase().replace(/\.[a-z0-9]+$/, '').replace(/\s+/g, '_').replace(/[^a-z0-9_-]/g, '') || 'image';
 
     try {
+      const webp = await toWebp(file);
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', webp, safeName + '.webp');
       formData.append('filename', safeName);
 
       const res = await fetch('/api/admin/upload', {

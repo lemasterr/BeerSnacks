@@ -1,23 +1,18 @@
+# Copy to wrangler.toml for local development (wrangler.toml is gitignored).
+# Production bindings are configured in the Cloudflare Pages project settings.
 name = "beersnacks"
 compatibility_date = "2024-04-05"
 pages_build_output_dir = "public"
 
+[[kv_namespaces]]
+binding = "DB_KV"
+id = "<KV namespace id>"
+
 [[r2_buckets]]
 binding = "IMAGES_BUCKET"
 bucket_name = "beersnacks-images"
-# account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"
-jurisdiction = "eu"
 
-[env.production]
-r2_buckets = [{ binding = "IMAGES_BUCKET", bucket_name = "beersnacks-images", jurisdiction = "eu" }]
-
-# ── Configuration ──
-# Set the following as environment variables (NOT in this file):
-# - ADMIN_PASSWORD          → Admin panel login password
-# - PUBLIC_IMAGE_BASE_URL   → Public URL for R2 images (e.g. https://images.beersnacks.ee)
-# - CLOUDFLARE_API_TOKEN    → Cloudflare API token (for deployment only)
-# - R2_ACCESS_KEY_ID        → R2 access key (if using S3 API)
-# - R2_SECRET_ACCESS_KEY    → R2 secret key (if using S3 API)
-#
-# Required KV namespace binding:
-# - DB_KV → Cloudflare KV namespace for data storage
+# Secrets (put in .dev.vars locally, and in Pages → Settings → Variables for production):
+#   ADMIN_PASSWORD   admin panel password
+# Images: product photos live in public/img/products/*.webp (served free as static files).
+# Admin uploads go to R2 and are served same-origin from /media/<key>.
