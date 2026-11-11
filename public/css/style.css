@@ -12,6 +12,8 @@
   --tag: #ffce1f;
   --tag-ink: #17251d;
   --out: #b4bab3;
+  /* product cutouts: soft contact shadow on light theme */
+  --cutout: drop-shadow(0 0 .6px rgb(23 37 29 / .25)) drop-shadow(0 10px 14px rgb(23 37 29 / .12));
   --display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
   --text: 'Golos Text', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --wrap: 1240px;
@@ -30,6 +32,8 @@
   --line: #26332a;
   --hop: #8fc39d;
   --out: #4a564e;
+  /* dark theme: a thin dark rim swallows the light fringe, then a faint green glow */
+  --cutout: drop-shadow(0 0 .8px rgb(8 16 11 / .95)) drop-shadow(0 0 1.5px rgb(8 16 11 / .7)) drop-shadow(0 0 16px rgb(143 195 157 / .16));
   color-scheme: dark;
 }
 
@@ -188,10 +192,12 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
   position: relative; aspect-ratio: 1; border-radius: var(--r-tile); background: var(--tile);
   display: grid; place-items: center; overflow: hidden; padding: 12%;
 }
+/* The image is absolutely positioned inside the square tile so tall bottles always fit whole
+   (a percentage height on a grid item didn't resolve, and tall images were cropped). */
 .card__img img {
-  width: 100%; height: 100%; object-fit: contain;
+  position: absolute; inset: 9%; width: 82%; height: 82%; object-fit: contain;
   transition: transform .5s var(--ease);
-  filter: drop-shadow(0 10px 14px rgb(23 37 29 / .12));
+  filter: var(--cutout);
 }
 .card__img.is-broken img { opacity: 0; }
 .card__img--none {
@@ -259,7 +265,7 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 @keyframes sheetIn { from { opacity: 0; transform: translateY(24px) scale(.98); } }
 .sheet__body { display: grid; grid-template-columns: 1fr 1fr; }
 .sheet__img { background: var(--tile); display: grid; place-items: center; padding: 10%; min-height: 360px; }
-.sheet__img img { max-height: 420px; object-fit: contain; filter: drop-shadow(0 18px 22px rgb(23 37 29 / .16)); }
+.sheet__img img { max-height: 420px; max-width: 100%; object-fit: contain; filter: var(--cutout); }
 .sheet__info { padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; gap: 14px; }
 .sheet__cat { font-size: 14px; color: var(--muted); }
 .sheet__title { font: 800 clamp(24px, 3.4vw, 32px)/1.08 var(--display); letter-spacing: -.03em; text-wrap: balance; padding-right: 36px; }
