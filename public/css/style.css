@@ -191,30 +191,17 @@ html.gate-open body > :not(.gate) { visibility: hidden; }
 .cat sup { font: 500 11px/1 var(--text); margin-left: 4px; vertical-align: super; opacity: .8; }
 .cat:hover { color: var(--ink); }
 .cat[aria-selected="true"] { background: var(--ink); color: var(--paper); }
-/* Subcategory filters as small shelf tags: same shape and punched hole as the price tag;
-   the selected one turns price-tag yellow. */
-.subs { margin-top: 10px; gap: 8px; padding-top: 2px; padding-bottom: 4px; }
+/* Subcategory filters: a smaller echo of the category tabs above (same ink pill when selected). */
+.subs { margin-top: 4px; gap: 2px; padding-top: 2px; padding-bottom: 2px; }
 .subs[hidden] { display: none; }
 .sub {
-  flex: none; display: inline-flex; align-items: center; gap: 7px;
-  height: 34px; padding: 0 11px 0 9px; border-radius: 4px 10px 10px 4px;
-  background: var(--tile); color: var(--ink-2); font-size: 14px; font-weight: 500;
-  box-shadow: 0 1px 0 rgb(23 37 29 / .06), inset 0 0 0 1px var(--line);
-  transition: background .2s, color .2s, box-shadow .2s, transform .2s var(--ease);
+  flex: none; padding: 8px 13px 8px 14px; border-radius: 999px;
+  font: 600 14px/1 var(--text); color: var(--muted); letter-spacing: -.005em;
+  transition: color .2s, background .2s;
 }
-.sub::before {  /* punched hole */
-  content: ''; width: 5px; height: 5px; border-radius: 50%; flex: none;
-  background: var(--paper); box-shadow: inset 0 0 0 1px var(--line);
-}
-.sub__n { font-size: 11.5px; font-weight: 600; color: var(--muted); }
-.sub:hover { color: var(--ink); box-shadow: 0 1px 0 rgb(23 37 29 / .06), inset 0 0 0 1px var(--muted); }
-.sub:active { transform: translateY(1px); }
-.sub[aria-pressed="true"] {
-  background: var(--tag); color: var(--tag-ink); font-weight: 600;
-  box-shadow: 0 2px 0 rgb(0 0 0 / .1);
-}
-.sub[aria-pressed="true"]::before { background: var(--paper); box-shadow: none; }
-.sub[aria-pressed="true"] .sub__n { color: rgb(23 37 29 / .6); }
+.sub__n { font: 500 10.5px/1 var(--text); margin-left: 3px; vertical-align: super; opacity: .8; }
+.sub:hover { color: var(--ink); }
+.sub[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 
 /* ── Grid ── */
 .result-note { color: var(--muted); font-size: 14px; margin: 4px 0 14px; }
@@ -357,7 +344,7 @@ html.gate-open body > :not(.gate) { visibility: hidden; }
 .socials { display: flex; gap: 4px; margin-top: 10px; margin-left: -10px; }
 .socials a { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; }
 .socials a:hover { background: rgb(255 255 255 / .1); }
-.socials svg { stroke: none; width: 22px; height: 22px; }
+.socials svg { stroke: none; fill: currentColor; width: 22px; height: 22px; }
 .foot__legal {
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;
   margin-top: 40px; padding-top: 20px; border-top: 1px solid rgb(255 255 255 / .12);

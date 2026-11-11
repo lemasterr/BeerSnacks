@@ -278,6 +278,7 @@
     $('#drawer').hidden = false;
     updateSubOptions(p.subcategory);
     toggleDraftField();
+    suggestForNew();
     setTimeout(() => $('#editor').name_ru?.focus(), 60);
   }
   function closeEditor() { $('#drawer').hidden = true; S.editing = null; }
@@ -319,11 +320,29 @@
           <label class="field"><span>Алкоголь</span><input name="abv" value="${esc(p.abv)}" placeholder="5%"></label>
           <label class="field"><span>IBU</span><input name="ibu" value="${esc(p.ibu)}" inputmode="numeric"></label>
         </div>
-        <label class="field" style="max-width:180px"><span>Порядок в списке</span><input name="sort_order" value="${esc(p.sort_order ?? '')}" inputmode="numeric"><small>меньше — выше</small></label>
+        <label class="field" style="max-width:180px"><span>Порядок в списке</span><input name="sort_order" value="${esc(p.sort_order ?? '')}" inputmode="numeric"><small>меньше — выше; для нового товара — в конец подкатегории</small></label>
       </div>
       <div class="sec"><h3>Наличие</h3>
         <div class="row"><label class="check"><input type="checkbox" name="in_stock" ${p.in_stock !== false ? 'checked' : ''}> В наличии</label>${storeChecks}</div>
       </div>`;
+  }
+
+  // New products: ID = "<category>-<next number>", order = end of the chosen subcategory (+10 step)
+  function nextId(cat) {
+    const re = new RegExp('^' + cat.replace(/[^a-z0-9_]/gi, '') + '-([0-9]+)$');
+    const max = S.products.reduce((m, p) => { const k = re.exec(p.id); return k ? Math.max(m, Number(k[1])) : m; }, 0);
+    return `${cat}-${max + 1}`;
+  }
+  function nextOrder(cat, sub) {
+    const same = S.products.filter(p => p.category === cat && (p.subcategory || '') === (sub || ''));
+    return (same.reduce((m, p) => Math.max(m, Number(p.sort_order) || 0), 0)) + 10;
+  }
+  function suggestForNew() {
+    if (S.editing !== 'new') return;
+    const f = $('#editor');
+    S.newId = nextId(f.category.value);
+    $('#ed-id').textContent = `Новый товар · ID: ${S.newId}`;
+    if (!f.sort_order.dataset.touched) f.sort_order.value = nextOrder(f.category.value, f.subcategory.value);
   }
 
   function updateSubOptions(selected) {
@@ -336,8 +355,9 @@
   }
 
   $('#editor').addEventListener('change', (e) => {
-    if (e.target.name === 'category') { updateSubOptions(''); toggleDraftField(); }
-    if (e.target.name === 'subcategory') toggleDraftField();
+    if (e.target.name === 'category') { updateSubOptions(''); toggleDraftField(); suggestForNew(); }
+    if (e.target.name === 'subcategory') { toggleDraftField(); suggestForNew(); }
+    if (e.target.name === 'sort_order') e.target.dataset.touched = '1';
   });
   $('#editor').addEventListener('click', (e) => {
     const tab = e.target.closest('[data-lang-tab]');
@@ -378,7 +398,7 @@
     const btn = $('#ed-save'); btn.disabled = true;
     try {
       if (S.editing === 'new') {
-        const { product } = await api('/api/admin/products', { method: 'POST', body: data });
+        const { product } = await api('/api/admin/products', { method: 'POST', body: { ...data, id: S.newId } });
         patchLocal(product); toast('Товар добавлен');
       } else {
         const { updatedProduct } = await api(`/api/admin/product/${encodeURIComponent(S.editing)}`, { method: 'PUT', body: data });
