@@ -1,0 +1,78 @@
+[
+ {
+  "slug": "beer",
+  "sort_order": 0,
+  "subcategories": [
+   "all",
+   "ukraine",
+   "poland",
+   "czech",
+   "germany",
+   "estonia",
+   "draft"
+  ]
+ },
+ {
+  "slug": "cider",
+  "sort_order": 1,
+  "subcategories": [
+   "all",
+   "fruit_cider",
+   "berry_cider",
+   "non_alc_cider"
+  ]
+ },
+ {
+  "slug": "drinks",
+  "sort_order": 2,
+  "subcategories": [
+   "all",
+   "juices",
+   "sodas",
+   "water",
+   "energy",
+   "tea_coffee",
+   "cocktails"
+  ]
+ },
+ {
+  "slug": "sweets",
+  "sort_order": 3,
+  "subcategories": [
+   "all",
+   "candies",
+   "dragee",
+   "wafers",
+   "desserts",
+   "cakes",
+   "zephyr",
+   "cookies",
+   "chocolate"
+  ]
+ },
+ {
+  "slug": "snacks",
+  "sort_order": 4,
+  "subcategories": [
+   "all",
+   "chips",
+   "crackers",
+   "seeds",
+   "seafood",
+   "nuts",
+   "fish"
+  ]
+ },
+ {
+  "slug": "groceries",
+  "sort_order": 5,
+  "subcategories": [
+   "all",
+   "sauces",
+   "spices",
+   "other",
+   "preserves",
+   "cheese"
+  ]
+ }
+]

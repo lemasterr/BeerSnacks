@@ -266,6 +266,14 @@
                 <input type="number" step="0.01" id="field-price" class="input-control" required>
               </div>
               <div class="form-group">
+                <label for="field-price_unit" id="label-price-unit">Price per</label>
+                <select id="field-price_unit" class="input-control">
+                  <option value="pcs">piece / шт</option>
+                  <option value="kg">kg / кг</option>
+                  <option value="100g">100 g / 100 г</option>
+                </select>
+              </div>
+              <div class="form-group">
                 <label for="field-volume" id="label-volume">Volume / Weight</label>
                 <input type="text" id="field-volume" class="input-control">
               </div>
@@ -278,6 +286,10 @@
               <div class="form-group">
                 <label for="field-ibu" id="label-ibu">IBU</label>
                 <input type="text" id="field-ibu" class="input-control">
+              </div>
+              <div class="form-group">
+                <label for="field-price_05" id="label-price-05">Draft 0.5 L price (€)</label>
+                <input type="number" step="0.01" id="field-price_05" class="input-control" placeholder="only for draft beer">
               </div>
             </div>
           </div>

@@ -15,6 +15,7 @@
       found: 'Знайдено: {n}', nothing: 'Нічого не знайшли за запитом «{q}». Спробуйте іншу назву.', empty: 'Тут поки порожньо.',
       stores: 'Магазини', contacts: 'Контакти', where: 'Є в магазинах', nowhere: 'Зараз немає в магазинах',
       age: 'Алкоголь продається особам від 18 років.', theme: 'Змінити тему', error: 'Не вдалося завантажити каталог. Оновіть сторінку.',
+      kg: 'кг', g100: '100 г', half: '0,5 л', litre: '1 л',
       order: 'Замовити в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     ru: {
@@ -23,6 +24,7 @@
       found: 'Найдено: {n}', nothing: 'Ничего не нашли по запросу «{q}». Попробуйте другое название.', empty: 'Здесь пока пусто.',
       stores: 'Магазины', contacts: 'Контакты', where: 'Есть в магазинах', nowhere: 'Сейчас нет в магазинах',
       age: 'Алкоголь продаётся лицам старше 18 лет.', theme: 'Сменить тему', error: 'Не удалось загрузить каталог. Обновите страницу.',
+      kg: 'кг', g100: '100 г', half: '0,5 л', litre: '1 л',
       order: 'Заказать в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     et: {
@@ -31,6 +33,7 @@
       found: 'Leitud: {n}', nothing: 'Päringule „{q}” ei leitud midagi. Proovi teist nime.', empty: 'Siin pole veel midagi.',
       stores: 'Poed', contacts: 'Kontakt', where: 'Saadaval poodides', nowhere: 'Hetkel poodides otsas',
       age: 'Alkoholi müüakse alates 18. eluaastast.', theme: 'Vaheta teemat', error: 'Kataloogi laadimine ebaõnnestus. Värskenda lehte.',
+      kg: 'kg', g100: '100 g', half: '0,5 l', litre: '1 l',
       order: 'Telli {s} kaudu', route: 'Teekond', phone: 'Telefon',
     },
     en: {
@@ -39,6 +42,7 @@
       found: 'Found: {n}', nothing: 'Nothing matches “{q}”. Try another name.', empty: 'Nothing here yet.',
       stores: 'Stores', contacts: 'Contact', where: 'Available at', nowhere: 'Not in stores right now',
       age: 'Alcohol is sold to persons aged 18 and over.', theme: 'Toggle theme', error: 'Could not load the catalog. Please reload the page.',
+      kg: 'kg', g100: '100 g', half: '0.5 L', litre: '1 L',
       order: 'Order on {s}', route: 'Directions', phone: 'Phone',
     },
   };
@@ -80,11 +84,21 @@
   const field = (p, name) => p[`${name}_${state.lang}`] || p[`${name}_en`] || p[`${name}_ru`] || '';
   const catName = (slug) => tr().categories?.[slug] || slug;
   const subName = (slug) => slug === 'all' ? ui().all : (tr().subcategories?.[slug] || slug);
-  const price = (n) => {
+  const price = (n, unit) => {
     const v = Number(n);
     if (!Number.isFinite(v)) return '';
     const [eur, cents] = v.toFixed(2).split('.');
-    return `<span class="tag__eur">${eur}</span><span class="tag__cents">${cents}</span><span class="tag__cur">€</span>`;
+    const per = unit === 'kg' ? ui().kg : unit === '100g' ? ui().g100 : '';
+    return `<span class="tag__eur">${eur}</span><span class="tag__cents">${cents}</span><span class="tag__cur">€${per ? `<small>/${esc(per)}</small>` : ''}</span>`;
+  };
+  // Price tag(s) for a product: draft beer shows both 0.5 L and 1 L prices.
+  const priceTags = (p, big = false) => {
+    const cls = big ? 'tag tag--big' : 'tag';
+    if (p.price_05) {
+      return `<div class="tags"><div class="${cls}">${price(p.price_05)}<span class="tag__vol">${esc(ui().half)}</span></div>` +
+        `<div class="${cls} tag--alt">${price(p.price)}<span class="tag__vol">${esc(ui().litre)}</span></div></div>`;
+    }
+    return `<div class="${cls}">${price(p.price, p.price_unit)}</div>`;
   };
 
   // ── Search ──
@@ -187,7 +201,7 @@
   }
 
   function specs(p) {
-    const parts = [p.volume, p.abv, field(p, 'type')];
+    const parts = [p.price_05 ? '' : p.volume, p.abv, field(p, 'type')];
     if (p.ibu !== undefined && p.ibu !== '' && p.ibu !== null && p.ibu !== 0) parts.push(`IBU ${p.ibu}`);
     return parts.filter(Boolean).map(x => `<span>${esc(x)}</span>`).join('');
   }
@@ -197,11 +211,12 @@
     const out = p.in_stock === false;
     return `<article class="card${out ? ' card--out' : ''}" style="--i:${Math.min(i, 12)}">
       <button type="button" class="card__hit" data-id="${esc(p.id)}" aria-label="${esc(name)}"></button>
-      <div class="card__img">
-        <img src="${esc(p.image)}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400" onerror="this.parentNode.classList.add('is-broken')" />
+      <div class="card__img${p.image ? '' : ' card__img--none'}">
+        ${p.image ? `<img src="${esc(p.image)}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400" onerror="this.parentNode.classList.add('is-broken')" />`
+          : `<span class="ph-name">${esc(name)}</span>`}
         ${out ? `<span class="card__out">${esc(ui().outOfStock)}</span>` : ''}
       </div>
-      <div class="tag">${price(p.price)}</div>
+      ${priceTags(p)}
       <h3 class="card__name">${esc(name)}</h3>
       <p class="card__specs">${specs(p)}</p>
     </article>`;
@@ -251,14 +266,14 @@
     const stores = (state.data.settings.stores || []).filter(s => p[s.field]);
     const desc = field(p, 'description');
     els.sheetBody.innerHTML = `
-      <div class="sheet__img"><img src="${esc(p.image)}" alt="" /></div>
+      <div class="sheet__img${p.image ? '' : ' card__img--none'}">${p.image ? `<img src="${esc(p.image)}" alt="" />` : `<span class="ph-name">${esc(field(p, 'name'))}</span>`}</div>
       <div class="sheet__info">
         <p class="sheet__cat">${esc(catName(p.category))}${p.subcategory && p.subcategory !== 'all' ? ` / ${esc(subName(p.subcategory))}` : ''}</p>
         <h2 id="sheet-title" class="sheet__title">${esc(field(p, 'name'))}</h2>
         <p class="card__specs">${specs(p)}</p>
         ${desc ? `<p class="sheet__desc">${esc(desc)}</p>` : ''}
         <div class="sheet__row">
-          <div class="tag tag--big">${price(p.price)}</div>
+          ${priceTags(p, true)}
           <span class="stock ${p.in_stock === false ? 'stock--out' : ''}">${esc(p.in_stock === false ? u.outOfStock : u.inStock)}</span>
         </div>
         ${p.in_stock === false || !stores.length ? '' : `<div class="sheet__stores">
@@ -326,9 +341,17 @@
   // ── Load ──
   async function load() {
     try {
-      const res = await fetch('/api/site');
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+      // API first; if it is unavailable (e.g. a preview deployment without the database), use the static data files.
+      let data = { catalog: [], categories: {}, translations: {}, settings: {} };
+      try {
+        const res = await fetch('/api/site');
+        if (res.ok) data = { ...data, ...(await res.json()) };
+      } catch { /* fall back below */ }
+      await (async () => {
+        if (data.settings && Object.keys(data.settings).length) return;
+        const r = await fetch('data/settings.json');
+        if (r.ok) data.settings = await r.json();
+      })();
       // Static fallbacks if KV is empty (fresh deploy).
       const fallback = async (key, url) => {
         if (data[key] && Object.keys(data[key]).length) return;

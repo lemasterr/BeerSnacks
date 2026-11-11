@@ -59,6 +59,11 @@ export function sanitizeProduct(input) {
     const n = Number(input.ibu);
     out.ibu = input.ibu === '' || input.ibu == null || !Number.isFinite(n) ? '' : n;
   }
+  if ('price_unit' in input) out.price_unit = ['pcs', 'kg', '100g'].includes(input.price_unit) ? input.price_unit : 'pcs';
+  if ('price_05' in input) {
+    const n = Number(String(input.price_05 ?? '').replace(',', '.'));
+    out.price_05 = input.price_05 === '' || input.price_05 == null || !Number.isFinite(n) || n <= 0 ? null : n;
+  }
   for (const k of BOOL_FIELDS) {
     if (k in input) out[k] = input[k] === true || input[k] === 'true' || input[k] === 1;
   }

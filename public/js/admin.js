@@ -805,13 +805,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const item = catalog.find(p => p.id === id);
       if (!item) return;
       editingId = id;
-      const fields = ['id', 'sort_order', 'category', 'subcategory', 'image', 'price', 'volume', 'abv', 'ibu',
+      const fields = ['id', 'sort_order', 'category', 'subcategory', 'image', 'price', 'price_unit', 'price_05', 'volume', 'abv', 'ibu',
         'name_uk', 'name_en', 'name_et', 'name_ru',
         'type_uk', 'type_en', 'type_et', 'type_ru',
         'description_uk', 'description_en', 'description_et', 'description_ru'];
       fields.forEach(f => {
         const el = document.getElementById('field-' + f);
-        if (el) el.value = item[f] !== undefined ? item[f] : '';
+        if (el) el.value = item[f] !== undefined && item[f] !== null ? item[f] : (f === 'price_unit' ? 'pcs' : '');
       });
       document.getElementById('field-in_stock').checked = item.in_stock !== false;
       document.getElementById('field-stock_oismae').checked = item.stock_oismae !== false;
@@ -886,7 +886,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.innerHTML = `<span class="spinner"></span>`;
 
     const updatedProduct = {};
-    const fields = ['id', 'sort_order', 'category', 'subcategory', 'image', 'price', 'volume', 'abv', 'ibu',
+    const fields = ['id', 'sort_order', 'category', 'subcategory', 'image', 'price', 'price_unit', 'price_05', 'volume', 'abv', 'ibu',
       'name_uk', 'name_en', 'name_et', 'name_ru',
       'type_uk', 'type_en', 'type_et', 'type_ru',
       'description_uk', 'description_en', 'description_et', 'description_ru'];
@@ -1121,6 +1121,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="detail-field"><label>${tr.labelSubcat}</label><select class="detail-input" id="detail-field-subcategory">${subCatOptions}</select></div>
           <div class="detail-field"><label>${tr.labelSort}</label><input type="number" class="detail-input" id="detail-field-sort_order" value="${item.sort_order || 0}"></div>
           <div class="detail-field"><label>${tr.labelPrice}</label><input type="number" step="0.01" class="detail-input" id="detail-field-price" value="${Number(item.price || 0).toFixed(2)}"></div>
+          <div class="detail-field"><label>Price per</label><select class="detail-input" id="detail-field-price_unit">${['pcs','kg','100g'].map(u => `<option value="${u}"${(item.price_unit||'pcs')===u?' selected':''}>${{pcs:'шт',kg:'кг','100g':'100 г'}[u]}</option>`).join('')}</select></div>
+          <div class="detail-field"><label>0.5 L (draft) €</label><input type="number" step="0.01" class="detail-input" id="detail-field-price_05" value="${item.price_05 ?? ''}"></div>
           <div class="detail-field"><label>${tr.labelVol}</label><input type="text" class="detail-input" id="detail-field-volume" value="${escHtml(item.volume || '')}"></div>
           <div class="detail-field"><label>${tr.labelAbv}</label><input type="text" class="detail-input" id="detail-field-abv" value="${escHtml(item.abv || '')}"></div>
           <div class="detail-field"><label>${tr.labelIbu}</label><input type="text" class="detail-input" id="detail-field-ibu" value="${escHtml(item.ibu || '')}"></div>
@@ -1189,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function saveDetailView() {
     const tr = t();
-    const fields = ['id', 'sort_order', 'category', 'subcategory', 'image', 'price', 'volume', 'abv', 'ibu',
+    const fields = ['id', 'sort_order', 'category', 'subcategory', 'image', 'price', 'price_unit', 'price_05', 'volume', 'abv', 'ibu',
       'name_uk', 'name_en', 'name_et', 'name_ru',
       'type_uk', 'type_en', 'type_et', 'type_ru',
       'description_uk', 'description_en', 'description_et', 'description_ru'];
