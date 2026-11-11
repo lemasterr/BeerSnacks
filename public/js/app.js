@@ -94,9 +94,9 @@
   // Price tag(s) for a product: draft beer shows both 0.5 L and 1 L prices.
   const priceTags = (p, big = false) => {
     const cls = big ? 'tag tag--big' : 'tag';
-    if (p.price_05) {
-      return `<div class="tags"><div class="${cls}">${price(p.price_05)}<span class="tag__vol">${esc(ui().half)}</span></div>` +
-        `<div class="${cls} tag--alt">${price(p.price)}<span class="tag__vol">${esc(ui().litre)}</span></div></div>`;
+    if (p.price_05) {  // draft beer: one tag, two sizes
+      return `<div class="${cls} tag--duo"><span class="tag__part"><span class="tag__vol">${esc(ui().half)}</span>${price(p.price_05)}</span>` +
+        `<span class="tag__part"><span class="tag__vol">${esc(ui().litre)}</span>${price(p.price)}</span></div>`;
     }
     return `<div class="${cls}">${price(p.price, p.price_unit)}</div>`;
   };
@@ -376,6 +376,27 @@
       els.products.innerHTML = `<p class="grid__empty">${esc(ui().error)}</p>`;
     }
   }
+
+  // ── Language gate: asked once per visit (browser session) ──
+  const gate = $('gate');
+  function closeGate() {
+    sessionStorage.setItem('bs_lang_ok', '1');
+    document.documentElement.classList.remove('gate-open');
+    gate.hidden = true;
+  }
+  if (!sessionStorage.getItem('bs_lang_ok')) {
+    gate.hidden = false;
+    const cur = gate.querySelector(`[data-lang="${state.lang}"]`);
+    if (cur) { cur.classList.add('is-last'); setTimeout(() => cur.focus({ preventScroll: true }), 50); }
+  }
+  gate.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-lang]');
+    if (!b) return;
+    state.lang = b.dataset.lang;
+    localStorage.setItem('bs_lang', state.lang);
+    closeGate();
+    renderAll({ animate: true });
+  });
 
   renderStatic();
   load();
