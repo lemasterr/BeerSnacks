@@ -199,7 +199,7 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 }
 .ph-name {
   font: 800 clamp(15px, 1.8vw, 19px)/1.12 var(--display); letter-spacing: -.02em; color: var(--ink-2);
-  text-align: center; text-wrap: balance; overflow-wrap: anywhere;
+  text-align: center; text-wrap: balance; hyphens: auto; overflow-wrap: break-word;
   display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
 }
 .card__img.is-broken::after { content: 'B&S'; position: absolute; font: 800 28px var(--display); color: var(--line); }
