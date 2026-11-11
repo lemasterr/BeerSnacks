@@ -196,8 +196,9 @@
     const subs = (state.data.categories[state.cat] || []).filter(s =>
       s === 'all' || state.data.catalog.some(p => p.category === state.cat && p.subcategory === s));
     els.subs.hidden = searching || subs.length <= 2;
+    const subCount = (s) => state.data.catalog.filter(p => p.category === state.cat && (s === 'all' || p.subcategory === s)).length;
     els.subs.innerHTML = subs.map(s =>
-      `<button type="button" class="sub" data-sub="${esc(s)}" aria-pressed="${s === state.sub}">${esc(subName(s))}</button>`).join('');
+      `<button type="button" class="sub" data-sub="${esc(s)}" aria-pressed="${s === state.sub}">${esc(subName(s))}<span class="sub__n">${subCount(s)}</span></button>`).join('');
   }
 
   function specs(p) {

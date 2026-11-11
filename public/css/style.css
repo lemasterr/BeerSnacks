@@ -191,16 +191,30 @@ html.gate-open body > :not(.gate) { visibility: hidden; }
 .cat sup { font: 500 11px/1 var(--text); margin-left: 4px; vertical-align: super; opacity: .8; }
 .cat:hover { color: var(--ink); }
 .cat[aria-selected="true"] { background: var(--ink); color: var(--paper); }
-.subs { margin-top: 6px; gap: 4px 20px; padding-top: 2px; padding-bottom: 2px; }
+/* Subcategory filters as small shelf tags: same shape and punched hole as the price tag;
+   the selected one turns price-tag yellow. */
+.subs { margin-top: 10px; gap: 8px; padding-top: 2px; padding-bottom: 4px; }
 .subs[hidden] { display: none; }
 .sub {
-  flex: none; padding: 6px 1px 5px; font-size: 15px; font-weight: 500; color: var(--muted);
-  background: linear-gradient(var(--tag), var(--tag)) no-repeat 0 88% / 0 38%;
-  transition: color .2s, background-size .3s var(--ease);
+  flex: none; display: inline-flex; align-items: center; gap: 7px;
+  height: 34px; padding: 0 11px 0 9px; border-radius: 4px 10px 10px 4px;
+  background: var(--tile); color: var(--ink-2); font-size: 14px; font-weight: 500;
+  box-shadow: 0 1px 0 rgb(23 37 29 / .06), inset 0 0 0 1px var(--line);
+  transition: background .2s, color .2s, box-shadow .2s, transform .2s var(--ease);
 }
-.sub:hover { color: var(--ink); }
-.sub[aria-pressed="true"] { color: var(--ink); font-weight: 600; background-size: 100% 38%; }
-[data-theme="dark"] .sub { background-image: linear-gradient(color-mix(in srgb, var(--tag) 55%, transparent), color-mix(in srgb, var(--tag) 55%, transparent)); }
+.sub::before {  /* punched hole */
+  content: ''; width: 5px; height: 5px; border-radius: 50%; flex: none;
+  background: var(--paper); box-shadow: inset 0 0 0 1px var(--line);
+}
+.sub__n { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.sub:hover { color: var(--ink); box-shadow: 0 1px 0 rgb(23 37 29 / .06), inset 0 0 0 1px var(--muted); }
+.sub:active { transform: translateY(1px); }
+.sub[aria-pressed="true"] {
+  background: var(--tag); color: var(--tag-ink); font-weight: 600;
+  box-shadow: 0 2px 0 rgb(0 0 0 / .1);
+}
+.sub[aria-pressed="true"]::before { background: var(--paper); box-shadow: none; }
+.sub[aria-pressed="true"] .sub__n { color: rgb(23 37 29 / .6); }
 
 /* ── Grid ── */
 .result-note { color: var(--muted); font-size: 14px; margin: 4px 0 14px; }

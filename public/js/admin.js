@@ -534,8 +534,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Render All ──
   function renderAll() {
+    renderStats();
     renderTable();
     renderMobileCards();
+  }
+
+  // ── KPI strip (CRM-style summary) ──
+  function renderStats() {
+    const el = document.getElementById('crm-stats');
+    if (!el) return;
+    const total = catalog.length;
+    const inStock = catalog.filter(p => p.in_stock !== false).length;
+    const noPhoto = catalog.filter(p => !p.image).length;
+    const ru = (adminLang === 'ru' || adminLang === 'uk');
+    const L = ru ? ['Всего товаров', 'В наличии', 'Нет в наличии', 'Без фото'] : ['Products', 'In stock', 'Out of stock', 'No photo'];
+    const cell = (n, label, mod) => `<div class="crm-stat ${mod}"><b>${n}</b><span>${label}</span></div>`;
+    el.innerHTML = cell(total, L[0], '') + cell(inStock, L[1], 'crm-stat--ok') + cell(total - inStock, L[2], 'crm-stat--bad') + cell(noPhoto, L[3], 'crm-stat--warn');
   }
 
   // ── Table headers sorting ──
@@ -585,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const row = document.createElement('tr');
         row.style.animationDelay = `${idx * 0.01}s`;
         row.innerHTML = `
-          <td><img src="${item.image}" alt="" class="table-img" loading="lazy" onerror="this.style.opacity=0.3"></td>
+          <td>${item.image ? `<img src="${item.image}" alt="" class="table-img" loading="lazy" onerror="this.style.opacity=0.3">` : '<span class="table-img table-img--none" title="Нет фото"></span>'}</td>
           <td><span class="id-badge">${escHtml(item.id || '')}</span></td>
           <td style="min-width:180px">${buildCompactInfo(item)}</td>
           <td>
