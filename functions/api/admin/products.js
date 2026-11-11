@@ -27,3 +27,32 @@ export async function onRequestPost({ request, env }) {
   await saveCatalog(env.DB_KV, catalog);
   return json({ success: true, product });
 }
+
+// PATCH: bulk update [{ id, ...fields }] in ONE read-modify-write (bulk stock toggles etc.)
+export async function onRequestPatch({ request, env }) {
+  const body = await readJsonBody(request);
+  if (!Array.isArray(body) || !body.length || body.length > 1000) return error('Expected a non-empty array');
+  const catalog = await getCatalog(env.DB_KV);
+  const byId = new Map(catalog.map((p, i) => [p.id, i]));
+  const now = new Date().toISOString();
+  let updated = 0;
+  for (const u of body) {
+    const i = byId.get(u && u.id);
+    if (i === undefined) continue;
+    catalog[i] = { ...catalog[i], ...sanitizeProduct(u), id: catalog[i].id, updated_at: now };
+    updated++;
+  }
+  await saveCatalog(env.DB_KV, catalog);
+  return json({ success: true, updated });
+}
+
+// DELETE: bulk delete { ids: [...] }
+export async function onRequestDelete({ request, env }) {
+  const { ids } = await readJsonBody(request);
+  if (!Array.isArray(ids) || !ids.length) return error('Expected ids');
+  const set = new Set(ids);
+  const catalog = await getCatalog(env.DB_KV);
+  const next = catalog.filter(p => !set.has(p.id));
+  await saveCatalog(env.DB_KV, next);
+  return json({ success: true, deleted: catalog.length - next.length });
+}

@@ -1,453 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Beer&Snacks Admin Panel">
-  <title>Admin — Beer&Snacks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Админка — Beer&amp;Snacks</title>
   <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@600;700;800&display=swap">
   <link rel="stylesheet" href="css/admin.css">
-  <link rel="stylesheet" href="css/admin-crm.css">
+  <script>
+    document.documentElement.dataset.theme = localStorage.getItem('bs_theme') ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  </script>
 </head>
 <body>
 
-  <!-- ── Header ── -->
-  <header class="admin-header">
-    <div class="admin-header__inner">
-      <div class="admin-header__logo">Beer<span>&</span>Snacks <span class="subtitle" style="font-size:13px;font-weight:400;color:var(--text-muted);margin-left:4px;" id="header-admin-label">Admin</span></div>
-      <div class="admin-header__actions">
-        <!-- Theme toggle -->
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-          <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-          <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
-        <!-- Language switcher -->
-        <div class="admin-lang-switcher" id="admin-lang-switcher">
-          <button class="admin-lang-switcher__btn" id="admin-lang-btn">
-            <span id="admin-lang-label">EN</span>
-            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 4.5L6 7.5L9 4.5"/>
-            </svg>
-          </button>
-          <div class="admin-lang-switcher__dropdown" id="admin-lang-dropdown"></div>
-        </div>
-        <!-- Logout -->
-        <button class="btn btn--secondary btn--sm" id="btn-logout" style="display:none;">Logout</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- ── Login Overlay ── -->
-  <div class="login-overlay" id="login-overlay">
-    <div class="login-overlay__logo">Beer<span>&amp;</span>Snacks</div>
-    <div class="login-card">
-      <div class="login-card__title" id="login-title">Admin Panel</div>
-      <p class="login-error" id="login-error">Invalid password</p>
-      <form id="login-form">
-        <div class="form-group" style="margin-bottom:16px;">
-          <label for="login-password" id="login-password-label">Password</label>
-          <input type="password" id="login-password" class="input-control" placeholder="Enter password" autocomplete="current-password">
-        </div>
-        <button type="submit" class="btn btn--primary" style="width:100%;" id="btn-login">
-          <span id="btn-login-label">Login</span>
-        </button>
-      </form>
-    </div>
+  <!-- ── Login ── -->
+  <div class="login" id="login" hidden>
+    <form class="login__card" id="login-form">
+      <div class="logo logo--big">Beer<span>&amp;</span>Snacks</div>
+      <p class="login__sub">Вход в админку</p>
+      <label class="field">
+        <span>Пароль</span>
+        <input type="password" id="login-password" autocomplete="current-password" required>
+      </label>
+      <p class="login__error" id="login-error" hidden></p>
+      <button class="btn btn--primary btn--block" type="submit">Войти</button>
+    </form>
   </div>
 
-  <!-- ── Admin Content ── -->
-  <main class="admin-main" id="admin-content" style="display:none;">
+  <!-- ── App ── -->
+  <div class="app" id="app" hidden>
+    <header class="bar">
+      <a class="logo" href="#products">Beer<span>&amp;</span>Snacks <em>Админ</em></a>
+      <div class="bar__right">
+        <a class="bar__link" href="/" target="_blank" rel="noopener">Открыть сайт ↗</a>
+        <button class="icon-btn" id="theme-toggle" type="button" title="Тема">
+          <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button class="btn btn--ghost" id="logout" type="button">Выйти</button>
+      </div>
+    </header>
 
-    <!-- ── Navigation Tabs ── -->
-    <nav class="admin-tabs" id="admin-tabs">
-      <button class="admin-tab active" data-tab="products" id="tab-products">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.884l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.116l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"/></svg>
-        <span id="tab-products-label">Products</span>
-      </button>
-      <button class="admin-tab" data-tab="categories" id="tab-categories">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"/></svg>
-        <span id="tab-categories-label">Categories</span>
-      </button>
-      <button class="admin-tab" data-tab="settings" id="tab-settings">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
-        <span id="tab-settings-label">Settings</span>
-      </button>
+    <nav class="side" aria-label="Разделы">
+      <a href="#products" data-view="products">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Товары
+      </a>
+      <a href="#categories" data-view="categories">
+        <svg viewBox="0 0 24 24"><path d="M4 5h7v6H4zM13 5h7v6h-7zM4 13h7v6H4zM13 13h7v6h-7z"/></svg> Категории
+      </a>
+      <a href="#settings" data-view="settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg> Настройки
+      </a>
     </nav>
 
-    <!-- ══════════════ TAB: Products ══════════════ -->
-    <div class="tab-content active" id="content-products">
-      <!-- KPI strip -->
-      <div class="crm-stats" id="crm-stats"></div>
-      <!-- Toolbar -->
-      <div class="toolbar">
-        <div class="toolbar__filters">
-          <input type="text" id="search-input" class="input-control" style="max-width:220px;" placeholder="Search…">
-          <select id="category-filter" class="input-control" style="max-width:160px;">
-            <option value="all" id="opt-all-cats">All Categories</option>
-            <!-- Dynamic options filled by JS -->
+    <main class="main">
+      <!-- Products -->
+      <section class="view" id="view-products">
+        <div class="kpis" id="kpis"></div>
+        <div class="toolbar">
+          <input class="input input--search" id="q" type="search" placeholder="Поиск по названию или ID">
+          <select class="input" id="f-cat"></select>
+          <select class="input" id="f-sort">
+            <option value="cat">По категориям</option>
+            <option value="name">По названию</option>
+            <option value="price">По цене</option>
+            <option value="updated">Недавно изменённые</option>
           </select>
-          <select id="sort-mode" class="input-control" style="max-width:140px;">
-            <option value="id" id="opt-sort-id">Sort by ID</option>
-            <option value="category" id="opt-sort-cat">Sort by Category</option>
-            <option value="price" id="opt-sort-price">Sort by Price</option>
-          </select>
-          <button id="toggle-view" class="btn btn--secondary btn--sm">Quick Edit</button>
+          <span class="toolbar__count" id="count"></span>
+          <button class="btn btn--primary" id="add" type="button">+ Товар</button>
         </div>
-        <button class="btn btn--primary btn--sm" id="btn-add">+ Add Product</button>
-      </div>
-
-      <!-- Desktop Table -->
-      <div class="table-container">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th style="width:52px;"></th>
-              <th class="sort-active" data-sort="id" id="th-id"><span class="th-label">ID</span> <span class="sort-arrow">↑</span></th>
-              <th data-sort="name_en" id="th-name"><span class="th-label">Name</span></th>
-              <th id="th-cat"><span class="th-label">Category</span></th>
-              <th data-sort="price" id="th-price"><span class="th-label">Price</span></th>
-              <th id="th-status"><span class="th-label">Status</span></th>
-              <th id="th-actions"><span class="th-label">Actions</span></th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
-        </table>
-      </div>
-
-      <!-- Mobile cards -->
-      <div class="product-cards-grid" id="mobile-cards"></div>
-
-      <!-- Detail view -->
-      <div class="detail-view" id="detail-view" style="display:none;">
-        <div class="detail-view__back">
-          <button class="btn btn--secondary btn--sm" id="btn-back-detail">← Back</button>
+        <div class="bulk" id="bulk" hidden>
+          <span id="bulk-n"></span>
+          <button class="btn btn--sm" data-bulk="in">В наличии</button>
+          <button class="btn btn--sm" data-bulk="out">Нет в наличии</button>
+          <button class="btn btn--sm btn--danger" data-bulk="delete">Удалить</button>
+          <button class="btn btn--sm btn--ghost" data-bulk="clear">Снять выделение</button>
         </div>
-        <div class="detail-view__container" id="detail-container"></div>
-      </div>
-    </div>
+        <div class="table-wrap">
+          <table class="table" id="table">
+            <thead>
+              <tr>
+                <th class="c-check"><input type="checkbox" id="check-all" aria-label="Выбрать все"></th>
+                <th class="c-img">Фото</th>
+                <th>Товар</th>
+                <th class="c-cat">Категория</th>
+                <th class="c-price">Цена</th>
+                <th class="c-stock">Наличие</th>
+                <th class="c-stores" id="th-stores">Магазины</th>
+                <th class="c-act"></th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <p class="empty" id="empty" hidden>Ничего не найдено. Измени фильтр или поиск.</p>
+        </div>
+        <input type="file" id="file" accept="image/*" hidden>
+      </section>
 
-    <!-- ══════════════ TAB: Categories ══════════════ -->
-    <div class="tab-content" id="content-categories">
-      <div class="section-header">
-        <h2 class="section-title" id="cat-manager-title">Categories & Subcategories</h2>
-        <button class="btn btn--primary btn--sm" id="btn-add-category">
-          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 2a.75.75 0 01.75.75v4.5h4.5a.75.75 0 010 1.5h-4.5v4.5a.75.75 0 01-1.5 0v-4.5h-4.5a.75.75 0 010-1.5h4.5v-4.5A.75.75 0 018 2z"/></svg>
-          <span id="btn-add-cat-label">Add Category</span>
+      <!-- Categories -->
+      <section class="view" id="view-categories" hidden>
+        <div class="view__head">
+          <div>
+            <h1>Категории</h1>
+            <p class="muted">Названия на 4 языках, порядок и подкатегории. Изменения сохраняются кнопкой справа.</p>
+          </div>
+          <button class="btn btn--primary" id="cats-save" type="button" disabled>Сохранить</button>
+        </div>
+        <div id="cats"></div>
+        <button class="btn" id="cat-add" type="button">+ Категория</button>
+      </section>
+
+      <!-- Settings -->
+      <section class="view" id="view-settings" hidden>
+        <div class="view__head">
+          <div>
+            <h1>Настройки</h1>
+            <p class="muted">Контакты, соцсети, доставка и магазины — показываются в шапке и подвале сайта.</p>
+          </div>
+          <button class="btn btn--primary" id="settings-save" type="button" disabled>Сохранить</button>
+        </div>
+        <form id="settings-form" class="panel"></form>
+      </section>
+    </main>
+  </div>
+
+  <!-- ── Product editor (one place for edit + create) ── -->
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer__backdrop" data-close></div>
+    <form class="drawer__panel" id="editor" novalidate>
+      <header class="drawer__head">
+        <div>
+          <p class="muted" id="ed-id"></p>
+          <h2 id="ed-title">Товар</h2>
+        </div>
+        <button class="icon-btn" type="button" data-close aria-label="Закрыть">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
         </button>
-      </div>
-      <div class="categories-grid" id="categories-grid">
-        <!-- Dynamically filled -->
-      </div>
-    </div>
-
-    <!-- ══════════════ TAB: Settings ══════════════ -->
-    <div class="tab-content" id="content-settings">
-      <div class="section-header">
-        <h2 class="section-title" id="settings-title">Site Settings</h2>
-        <button class="btn btn--primary btn--sm" id="btn-save-settings">
-          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M10.97 4.97a.75.75 0 011.07 1.05l-3.99 4.99a.75.75 0 01-1.08.02L4.324 8.384a.75.75 0 111.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 01.02-.022z"/></svg>
-          <span id="btn-save-settings-label">Save Settings</span>
-        </button>
-      </div>
-
-      <div class="settings-grid">
-        <!-- Translations Section -->
-        <div class="settings-card">
-          <div class="settings-card__header">
-            <h3>Translations (Footer & UI)</h3>
-            <span class="settings-card__badge">4 languages</span>
-          </div>
-          <div class="settings-card__body">
-            <div class="settings-lang-tabs" id="settings-lang-tabs">
-              <button class="settings-lang-tab active" data-lang="uk">🇺🇦 UK</button>
-              <button class="settings-lang-tab" data-lang="en">🇬🇧 EN</button>
-              <button class="settings-lang-tab" data-lang="et">🇪🇪 ET</button>
-              <button class="settings-lang-tab" data-lang="ru">🇷🇺 RU</button>
-            </div>
-            <div class="settings-lang-content" id="settings-trans-content">
-              <!-- Filled dynamically per language -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Social Links -->
-        <div class="settings-card">
-          <div class="settings-card__header">
-            <h3>Social Media & Delivery</h3>
-          </div>
-          <div class="settings-card__body">
-            <div class="form-group">
-              <label>📞 Phone</label>
-              <input type="text" id="settings-phone" class="input-control" placeholder="+372 ...">
-            </div>
-            <div class="form-group" style="margin-top:12px;">
-              <label>Facebook URL</label>
-              <input type="url" id="settings-facebook" class="input-control" placeholder="https://facebook.com/...">
-            </div>
-            <div class="form-group" style="margin-top:12px;">
-              <label>Instagram URL</label>
-              <input type="url" id="settings-instagram" class="input-control" placeholder="https://instagram.com/...">
-            </div>
-            <div class="form-group" style="margin-top:12px;">
-              <label>TikTok URL</label>
-              <input type="url" id="settings-tiktok" class="input-control" placeholder="https://tiktok.com/...">
-            </div>
-            <div class="form-group" style="margin-top:12px;">
-              <label>Wolt URL</label>
-              <input type="url" id="settings-wolt" class="input-control" placeholder="https://wolt.com/...">
-            </div>
-            <div class="form-group" style="margin-top:12px;">
-              <label>Bolt Food URL</label>
-              <input type="url" id="settings-bolt" class="input-control" placeholder="https://food.bolt.eu/...">
-            </div>
-          </div>
-        </div>
-
-        <!-- Stores -->
-        <div class="settings-card">
-          <div class="settings-card__header">
-            <h3>Stores</h3>
-            <button class="btn btn--secondary btn--xs" id="btn-add-store">+ Add Store</button>
-          </div>
-          <div class="settings-card__body" id="settings-stores-list">
-            <!-- Filled dynamically -->
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- ── Edit/Add Product Modal ── -->
-  <div class="modal" id="edit-modal">
-    <div class="modal__content">
-      <div class="modal__header">
-        <h2 class="modal__title" id="modal-title">Edit Product</h2>
-        <button class="modal__close" id="btn-close-modal" aria-label="Close">✕</button>
-      </div>
-      <div class="modal__body">
-        <form id="edit-form">
-          <input type="hidden" id="field-internal-id">
-
-          <!-- Basic info -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-basic">Basic Info</div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="field-id" id="label-id">ID</label>
-                <input type="text" id="field-id" class="input-control" required>
-              </div>
-              <div class="form-group">
-                <label for="field-sort_order" id="label-sort">Sort Order</label>
-                <input type="number" id="field-sort_order" class="input-control">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="field-category" id="label-category">Category</label>
-                <select id="field-category" class="input-control" required>
-                  <!-- Dynamic options filled by JS -->
-                </select>
-              </div>
-              <div class="form-group">
-                <label id="label-subcategory">Subcategory</label>
-                <!-- Chip picker generated by JS -->
-                <div class="subcategory-picker" id="subcategory-picker"></div>
-                <input type="hidden" id="field-subcategory">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="field-price" id="label-price">Price (€)</label>
-                <input type="number" step="0.01" id="field-price" class="input-control" required>
-              </div>
-              <div class="form-group">
-                <label for="field-price_unit" id="label-price-unit">Цена за / Price per</label>
-                <select id="field-price_unit" class="input-control">
-                  <option value="pcs">piece / шт</option>
-                  <option value="kg">kg / кг</option>
-                  <option value="100g">100 g / 100 г</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="field-volume" id="label-volume">Volume / Weight</label>
-                <input type="text" id="field-volume" class="input-control">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="field-abv" id="label-abv">ABV</label>
-                <input type="text" id="field-abv" class="input-control" placeholder="e.g. 5%">
-              </div>
-              <div class="form-group">
-                <label for="field-ibu" id="label-ibu">IBU</label>
-                <input type="text" id="field-ibu" class="input-control">
-              </div>
-              <div class="form-group">
-                <label for="field-price_05" id="label-price-05">Разлив 0,5 л / Draft 0.5 L (€)</label>
-                <input type="number" step="0.01" id="field-price_05" class="input-control" placeholder="only for draft beer">
-              </div>
-            </div>
-          </div>
-
-          <!-- Image -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-image">Image</div>
-            <div class="form-group" style="margin-bottom:10px;">
-              <label for="field-image" id="label-image-path">Image path</label>
-              <input type="text" id="field-image" class="input-control" placeholder="img/example.png">
-            </div>
-            <div class="image-upload-area" id="image-upload-area">
-              <input type="file" id="image-file-input" accept="image/*">
-              <div class="image-upload-area__icon">📁</div>
-              <div class="image-upload-area__text"><strong id="upload-click-label">Click or drag</strong> <span id="upload-drop-label">to upload image</span></div>
-            </div>
-            <div class="image-upload-preview" id="image-preview" style="display:none;">
-              <img id="preview-img" src="" alt="">
-              <div class="image-upload-preview__info">
-                <div class="image-upload-preview__name" id="preview-filename"></div>
-                <div id="preview-status" style="font-size:11px;color:var(--text-muted);margin-top:2px;"></div>
-                <div class="upload-progress"><div class="upload-progress__bar" id="upload-bar"></div></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Stock -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-stock">Stock</div>
-            <fieldset class="form-fieldset">
-              <legend id="legend-stock">Availability</legend>
-              <div style="display:flex;flex-wrap:wrap;gap:12px;">
-                <label class="checkbox-label"><input type="checkbox" id="field-in_stock"> <span id="check-in-stock">In Stock (global)</span></label>
-                <label class="checkbox-label"><input type="checkbox" id="field-stock_oismae"> Õismäe</label>
-                <label class="checkbox-label"><input type="checkbox" id="field-stock_mahtra"> Mahtra</label>
-              </div>
-            </fieldset>
-          </div>
-
-          <!-- Names -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-names">Names</div>
-            <div class="form-row">
-              <div class="form-group"><label>🇺🇦 UK</label><input type="text" id="field-name_uk" class="input-control"></div>
-              <div class="form-group"><label>🇬🇧 EN</label><input type="text" id="field-name_en" class="input-control"></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label>🇪🇪 ET</label><input type="text" id="field-name_et" class="input-control"></div>
-              <div class="form-group"><label>🇷🇺 RU</label><input type="text" id="field-name_ru" class="input-control"></div>
-            </div>
-          </div>
-
-          <!-- Types -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-types">Type / Variety</div>
-            <div class="form-row">
-              <div class="form-group"><label>🇺🇦 UK</label><input type="text" id="field-type_uk" class="input-control"></div>
-              <div class="form-group"><label>🇬🇧 EN</label><input type="text" id="field-type_en" class="input-control"></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label>🇪🇪 ET</label><input type="text" id="field-type_et" class="input-control"></div>
-              <div class="form-group"><label>🇷🇺 RU</label><input type="text" id="field-type_ru" class="input-control"></div>
-            </div>
-          </div>
-
-          <!-- Descriptions -->
-          <div class="form-section">
-            <div class="form-section__title" id="section-desc">Description</div>
-            <div class="form-row">
-              <div class="form-group"><label>🇺🇦 UK</label><textarea id="field-description_uk" class="input-control"></textarea></div>
-              <div class="form-group"><label>🇬🇧 EN</label><textarea id="field-description_en" class="input-control"></textarea></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label>🇪🇪 ET</label><textarea id="field-description_et" class="input-control"></textarea></div>
-              <div class="form-group"><label>🇷🇺 RU</label><textarea id="field-description_ru" class="input-control"></textarea></div>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal__footer">
-        <button type="button" class="btn btn--secondary" id="btn-cancel-modal">Cancel</button>
-        <button type="submit" form="edit-form" class="btn btn--primary" id="btn-save-modal">Save Changes</button>
-      </div>
-    </div>
+      </header>
+      <div class="drawer__body" id="ed-body"></div>
+      <footer class="drawer__foot">
+        <button class="btn btn--danger btn--ghost" type="button" id="ed-delete">Удалить</button>
+        <span class="spacer"></span>
+        <button class="btn btn--ghost" type="button" data-close>Отмена</button>
+        <button class="btn btn--primary" type="submit" id="ed-save">Сохранить</button>
+      </footer>
+    </form>
   </div>
 
-  <!-- ── Category Modal ── -->
-  <div class="modal" id="category-modal">
-    <div class="modal__content" style="max-width:560px;">
-      <div class="modal__header">
-        <h2 class="modal__title" id="cat-modal-title">Add Category</h2>
-        <button class="modal__close" id="btn-close-cat-modal" aria-label="Close">✕</button>
-      </div>
-      <div class="modal__body">
-        <form id="cat-form">
-          <div class="form-group" style="margin-bottom:14px;">
-            <label for="cat-field-slug">Slug (URL key)</label>
-            <input type="text" id="cat-field-slug" class="input-control" placeholder="e.g. wine" pattern="[a-z0-9_]+" required>
-            <small style="color:var(--text-muted);font-size:11px;">Lowercase, numbers, underscores only</small>
-          </div>
-          <div class="form-section__title" style="margin-bottom:10px;">Names</div>
-          <div class="form-row">
-            <div class="form-group"><label>🇺🇦 UK</label><input type="text" id="cat-field-name_uk" class="input-control" required></div>
-            <div class="form-group"><label>🇬🇧 EN</label><input type="text" id="cat-field-name_en" class="input-control" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>🇪🇪 ET</label><input type="text" id="cat-field-name_et" class="input-control" required></div>
-            <div class="form-group"><label>🇷🇺 RU</label><input type="text" id="cat-field-name_ru" class="input-control" required></div>
-          </div>
-        </form>
-      </div>
-      <div class="modal__footer">
-        <button type="button" class="btn btn--secondary" id="btn-cancel-cat-modal">Cancel</button>
-        <button type="submit" form="cat-form" class="btn btn--primary" id="btn-save-cat-modal">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── Subcategory Modal ── -->
-  <div class="modal" id="subcat-modal">
-    <div class="modal__content" style="max-width:560px;">
-      <div class="modal__header">
-        <h2 class="modal__title" id="subcat-modal-title">Add Subcategory</h2>
-        <button class="modal__close" id="btn-close-subcat-modal" aria-label="Close">✕</button>
-      </div>
-      <div class="modal__body">
-        <form id="subcat-form">
-          <input type="hidden" id="subcat-field-category">
-          <input type="hidden" id="subcat-field-old-slug">
-          <div class="form-group" style="margin-bottom:14px;">
-            <label for="subcat-field-slug">Slug (URL key)</label>
-            <input type="text" id="subcat-field-slug" class="input-control" placeholder="e.g. lager" pattern="[a-z0-9_]+" required>
-            <small style="color:var(--text-muted);font-size:11px;">Lowercase, numbers, underscores only</small>
-          </div>
-          <div class="form-section__title" style="margin-bottom:10px;">Names</div>
-          <div class="form-row">
-            <div class="form-group"><label>🇺🇦 UK</label><input type="text" id="subcat-field-name_uk" class="input-control" required></div>
-            <div class="form-group"><label>🇬🇧 EN</label><input type="text" id="subcat-field-name_en" class="input-control" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>🇪🇪 ET</label><input type="text" id="subcat-field-name_et" class="input-control" required></div>
-            <div class="form-group"><label>🇷🇺 RU</label><input type="text" id="subcat-field-name_ru" class="input-control" required></div>
-          </div>
-        </form>
-      </div>
-      <div class="modal__footer">
-        <button type="button" class="btn btn--secondary" id="btn-cancel-subcat-modal">Cancel</button>
-        <button type="submit" form="subcat-form" class="btn btn--primary" id="btn-save-subcat-modal">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast notification -->
-  <div class="toast hidden" id="toast"></div>
-
+  <div class="toast" id="toast" role="status" hidden></div>
   <script src="js/admin.js"></script>
 </body>
 </html>
