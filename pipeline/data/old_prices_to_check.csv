@@ -1,0 +1,139 @@
+﻿id;категория;название;цена (старая)
+beer-11;beer;Svijany Rytíř;7.5
+beer-25;beer;Genika Amber Lager;4.9
+beer-15;beer;Paulaner Münchner Hell;8
+beer-16;beer;Paulaner Hefe-Weißbier;7.9
+beer-8;beer;Культове Медовое;6.7
+beer-22;beer;Kultowe Банановое;2.9
+beer-23;beer;Kultowe Малиновое;2.9
+beer-24;beer;Kultowe Манго-Marakuja;2.9
+item-1775661290974;beer;Опилля Дункель Экспорт;6.5
+item-1775661580043;beer;Опилля Корифей;6.5
+item-1776702570239;beer;Пиво Черниговское Белое;2.5
+item-1776703539191;beer;Пиво Уманское Медовое Светлое;2.5
+beer-4;beer;Светлый Лагер;6.5
+beer-5;beer;Микулин Медовое сухое;7
+beer-6;beer;Микулин Ясне;6.5
+beer-21;beer;Микулин Новогоднее;3.2
+item-1776090416185;beer;Уманское Легкое;1.9
+item-1776091396939;beer;Венское Уманьпиво;1.9
+beer-18;beer;Первая Приватная Броварня Бочковое;1.9
+item-1776703309508;cider;Сидр Уманский Грушевый;2.7
+item-1776703437344;cider;Сидр Уманский Яблочный;2.7
+item-1776341267002;cider;Сидр Белая Черешня;7.8
+cider-5;cider;Сидр Медуза;7.8
+cider-1;cider;Сидр Яблоко-Груша;7.8
+cider-3;cider;Сидр Абрикос;7.8
+cider-4;cider;Сидр Грейпфрут;7.8
+cider-6;cider;Cidre Royal 0%;2.3
+drink-14;drinks;Non Stop Stalker;2.1
+item-1776702770167;drinks;Нектар Sandora Персиковый;2.5
+item-1776702921332;drinks;Минеральная вода Поляна Купель-5;0
+item-1776703208977;drinks;Сок Sandora Сицилийский апельсин;2.5
+drink-1;drinks;Наш Сок Слива;2.5
+drink-1b;drinks;Наш Сок Гранат-Арония;2.5
+item-1776084748986;drinks;Умань Лимонад;2.5
+item-1776085906652;drinks;Умань Лимонад Яблоко;2.5
+item-1776338112980;drinks;Опилля Квас Домашний;1.5
+item-1776338262982;drinks;Опилля Квас Белый;1.5
+item-1776340265218;drinks;Старокиевский квас живого брожения;2.5
+drink-4;drinks;Живчик с яблоком 1л;1.5
+drink-5;drinks;Живчик с яблоком 2л;2.4
+drink-6;drinks;Уманский Лимонад;1.7
+drink-8;drinks;Mojo Мята-Лайм;2.5
+drink-8b;drinks;Mojo Ананас;2.5
+drink-10;drinks;Опился Квас;5
+item-1776076303707;drinks;Кофе старого Львова;3.5
+item-1776076751551;drinks;Кофе Старого Львова;3.5
+item-1776077168552;drinks;Кофе Старого Львова;3.5
+item-1776697352466;drinks;Кофе Старого Львова;23
+item-1776699292057;drinks;Кофе Старого Львова;23
+item-1776699686288;drinks;Кофе Петровская Слобода Миндаль 3в1;0.35
+item-1776699761216;drinks;Кофе Петровская Слобода Пломбир 3в1;0.35
+item-1776699831670;drinks;Кофе Петровская Слобода Сгущенное молоко 3в1;0.35
+item-1776700372925;drinks;MacCoffee со вкусом сгущенного молока;0.35
+drink-16;drinks;Кофе Старого Львова;3.5
+drink-17b;drinks;Tea Moments Зелёный;3.2
+item-1776087266321;drinks;Моршинская сильногазированная;1.95
+snack-13a;snacks;Люкс Чипсы Краб;3.5
+snack-13b;snacks;Люкс Чипсы Бекон;3.5
+snack-13c;snacks;Люкс Чипсы Лисички;3.5
+snack-13d;snacks;Люкс Чипсы Сыр;3.5
+snack-16a;snacks;Big Panda XXLong;1.35
+snack-16b;snacks;Big Panda Курица;1.35
+snack-16c;snacks;Big Panda Краб;1.35
+snack-13e;snacks;Big Panda XXLong Курица;1.35
+snack-13f;snacks;Big Panda XXLong Сметана и Зелень;1.35
+snack-shrips1;snacks;Shrips Оригинал;2.9
+snack-shrips2;snacks;Shrips чипсы Сливочный Чеснок;2.9
+snack-17a;snacks;Flint Baguette Сливки и Лук;1.3
+snack-17b;snacks;Flint Baguette Грибы в Сливках;1.3
+snack-17c;snacks;Flint Baguette Лобстер;1.3
+snack-18a;snacks;Snekkin Бекон с Хреном;1.5
+snack-18b;snacks;Snekkin Хрен;1.5
+snack-18c;snacks;Snekkin Грибы;1.5
+item-1776700577521;snacks;Арахис в сырной оболочке;1.8
+item-1776700685824;snacks;Арахис васаби;1.8
+snack-21a;snacks;Big Bob Бекон;1.39
+snack-21b;snacks;Big Bob Бастурма;1.39
+snack-21c;snacks;Big Bob Сметана;1.39
+snack-21d;snacks;Big Bob Грибы в Сливках;1.39
+snack-21e;snacks;Big Bob Креветка;1.39
+snack-21f;snacks;Big Bob Васаби;1.39
+snack-1;snacks;Нити Лосося 50г;3
+snack-2;snacks;Нити Лосося 100г;5
+snack-11;snacks;Рёбра лосося;5
+snack-6a;snacks;Путассу Классическая 100г;5
+snack-7;snacks;Путассу 150г;6
+snack-5;snacks;Филе тунца;5
+snack-10;snacks;Филе трески;5
+snack-8;snacks;Икра леща;6
+snack-9;snacks;Икра плотвы;6
+snack-syr;snacks;Сыр Копчёный Косичка;3
+snack-19a;snacks;Сан Саныч Несолёные;3.5
+snack-19b;snacks;Сан Саныч Солёные;3.5
+snack-20a;snacks;Хомка Подсолнух;3.5
+snack-20b;snacks;Хомка Элитные Солёные;3.5
+snack-20c;snacks;Хомка Тыквенные;3.5
+sweet-12;sweets;Конфеты Ametist;1.8
+item-1776699170406;sweets;Батончик Creamo с цельным фундуком и ореховой начинкой;0.99
+sweet-18;sweets;Кекс Пасхальный 300г;5.5
+sweet-19;sweets;Кекс Пасхальный 450г;7.5
+sweet-20;sweets;Кекс Пасхальный 600г;11.5
+item-1776699366083;sweets;Конфеты Королевский Шарм с кокосовым кремом;1.8
+item-1776699896517;sweets;Конфеты Королевский Шарм со сливочным кремом;1.8
+item-1776700012506;sweets;Конфеты Королевский Шарм с ореховым кремом;1.8
+item-1776706287296;sweets;Шоколад Свиточ Черный с кофе;0
+item-1776706407151;sweets;Шоколад Свиточ Молочный с арахисовой пастой;0
+item-1776706486849;sweets;Конфеты Мария Звездная ночь;0
+item-1776706531548;sweets;Конфеты Свиточ Львовский трюфель с орехом;0
+item-1776706632238;sweets;Конфеты Груша с грецким орехом;0
+item-1776706699147;sweets;Конфеты Чернослив в белом шоколаде;0
+sweet-1c;sweets;АВК Trufalie Молочный;1.7
+sweet-1e;sweets;АВК Trufalie Апельсин;1.7
+sweet-2;sweets;АВК Trufalie;1.7
+sweet-5;sweets;Рошен Winter Dream;1.7
+sweet-6b;sweets;Рошен Mon Blanc Карамель-Миндаль;2
+sweet-6c;sweets;Рошен Mon Blanc Кокос-Миндаль;2
+item-1779200350642;sweets;Roshen Eclair;1.2
+sweet-9;sweets;Рошен Шеридан;1.4
+sweet-8;sweets;Crispy Jack;1.2
+item-1779199137433;sweets;Кара-Кум;2.2
+sweet-10;sweets;Свиточ Звёздное Сияние;2
+item-1779208125228;sweets;Дыня с орехом;1.8
+item-1779210022680;sweets;Абрикос с орехом;1.8
+item-1779212752763;sweets;Roshen Yummi Gummi Watermelon Slices;1.5
+item-1776705920070;sweets;Печенье Roshen Lovita с вишней и ванилью;2.5
+item-1776705993986;sweets;Печенье Roshen Lovita с яблоком и корицей;2.5
+item-1776706054353;sweets;Печенье Roshen Lovita с клубникой;2.5
+sweet-16;sweets;Десерт Bonjour Classic;3.5
+item-1776702122975;sweets;Клоун Арахисовое Драже;1.5
+item-1776701846409;sweets;Корсарж Кокосовое Драже;1.5
+sweet-14;sweets;Dražee Skawa Кокос/Арахис;1.5
+item-1776699244448;sweets;"Вафельные конфеты ""Джек""";1.5
+item-1776698442910;sweets;Бам-Бук со вкусом сгущенного молока;2.5
+item-1776700971978;sweets;Зефир Богуславна с кусочками груши;3.5
+item-1776701106077;sweets;Зефир Богуславна Фисташковый;3.5
+item-1776706107301;sweets;Зефир Богуславна с вишневой начинкой;0
+item-1776706172481;sweets;Зефир Богуславна Черничный;0
+item-1776706229585;sweets;Зефир Богуславна Крем-брюле;0

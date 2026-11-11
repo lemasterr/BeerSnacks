@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Проверка товаров — Beer&Snacks</title>
+<style>
+  :root { --bg:#f1f3ec; --card:#fff; --ink:#17251d; --muted:#6f7a72; --line:#dfe4da; --hop:#2e5e3e; --tag:#ffce1f; --red:#c8443a; --redbg:#fbe4e1; --ok:#2a8a4c; --okbg:#e3f4e6; }
+  * { box-sizing:border-box; margin:0; }
+  body { font:15px/1.45 system-ui,-apple-system,'Segoe UI',sans-serif; background:var(--bg); color:var(--ink); }
+  header { position:sticky; top:0; z-index:10; background:var(--ink); color:#fff; padding:12px 20px; display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; }
+  header h1 { font-size:17px; font-weight:700; }
+  .progress { display:flex; align-items:center; gap:10px; font-size:14px; }
+  .bar { width:180px; height:8px; background:rgba(255,255,255,.2); border-radius:9px; overflow:hidden; }
+  .bar i { display:block; height:100%; background:var(--tag); width:0; transition:width .3s; }
+  .save { margin-left:auto; font-size:13px; opacity:.8; }
+  .filters { position:sticky; top:52px; z-index:9; background:var(--bg); padding:12px 20px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; border-bottom:1px solid var(--line); }
+  .chip { border:1px solid var(--line); background:#fff; border-radius:99px; padding:6px 13px; font:inherit; font-size:14px; cursor:pointer; }
+  .chip b { font-weight:600; margin-left:4px; color:var(--muted); }
+  .chip.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .chip.on b { color:var(--tag); }
+  .filters select, .filters input { font:inherit; font-size:14px; padding:6px 10px; border:1px solid var(--line); border-radius:9px; background:#fff; }
+  .filters select { width:auto; }
+  .filters input { width:220px; }
+  main { padding:18px 20px 80px; display:grid; gap:14px; max-width:1300px; margin:0 auto; }
+  .help { background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 18px; font-size:14px; color:var(--muted); }
+  .help b { color:var(--ink); }
+  .item { background:var(--card); border-radius:16px; border:2px solid transparent; display:grid; grid-template-columns:240px 1fr; overflow:hidden; }
+  .item.ok { border-color:#9fd3ad; }
+  .item.skip { opacity:.5; }
+  .item.skip .ph img { filter:grayscale(1); }
+  .ph { background:#e8ebe4; position:relative; cursor:zoom-in; min-height:240px; }
+  .ph img { width:100%; height:100%; object-fit:cover; display:block; position:absolute; inset:0; }
+  .ph .n { position:absolute; left:8px; top:8px; background:rgba(0,0,0,.65); color:#fff; font-size:12px; padding:2px 8px; border-radius:99px; }
+  .ph .more { position:absolute; right:8px; bottom:8px; background:rgba(0,0,0,.65); color:#fff; font-size:12px; padding:2px 8px; border-radius:99px; }
+  .body { padding:14px 18px; display:grid; gap:10px; }
+  .top { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .badge { font-size:12px; font-weight:600; padding:3px 9px; border-radius:99px; background:#eef1ea; color:var(--muted); }
+  .badge.low { background:var(--redbg); color:var(--red); }
+  .badge.medium { background:#fff4cc; color:#8a6a00; }
+  .badge.high { background:var(--okbg); color:var(--ok); }
+  .badge.site { background:#e6eefb; color:#2a5aa8; }
+  .badge.diff { background:#ffe7c2; color:#9a5a00; }
+  .row { display:grid; grid-template-columns:2.4fr 0.8fr 0.8fr 0.7fr 1fr; gap:10px; align-items:end; }
+  .row.draft { grid-template-columns:2.4fr 0.8fr 0.8fr 0.8fr 1fr; }
+  label { display:grid; gap:3px; font-size:12px; color:var(--muted); }
+  input, select, textarea { font:inherit; font-size:15px; color:var(--ink); padding:7px 10px; border:1px solid var(--line); border-radius:9px; background:#fff; width:100%; }
+  input:focus, select:focus, textarea:focus { outline:2px solid var(--hop); border-color:transparent; }
+  input.price { font-weight:700; }
+  input.price.empty { background:var(--redbg); border-color:#efb3ac; }
+  textarea { min-height:38px; resize:vertical; }
+  .info { font-size:13px; color:var(--muted); display:grid; gap:2px; }
+  .info span b { color:var(--ink); font-weight:500; }
+  .actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .btn { font:inherit; font-size:14px; font-weight:600; padding:8px 14px; border-radius:10px; border:1px solid var(--line); background:#fff; cursor:pointer; }
+  .btn.ok.on { background:var(--ok); color:#fff; border-color:var(--ok); }
+  .btn.skip.on { background:var(--red); color:#fff; border-color:var(--red); }
+  .list-empty { text-align:center; padding:60px; color:var(--muted); }
+  .lb { position:fixed; inset:0; background:rgba(10,15,12,.9); z-index:50; display:none; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:20px; }
+  .lb.open { display:flex; }
+  .lb img.big { max-width:96vw; max-height:84vh; object-fit:contain; border-radius:8px; cursor:zoom-in; }
+  .lb img.big.zoom { max-width:none; max-height:none; width:180vw; cursor:zoom-out; }
+  .lb .wrap { overflow:auto; max-width:96vw; max-height:84vh; }
+  .lb .thumbs { display:flex; gap:8px; }
+  .lb .thumbs img { width:70px; height:70px; object-fit:cover; border-radius:8px; opacity:.6; cursor:pointer; border:2px solid transparent; }
+  .lb .thumbs img.on { opacity:1; border-color:var(--tag); }
+  .lb .x { position:absolute; top:14px; right:18px; color:#fff; font-size:30px; background:none; border:0; cursor:pointer; }
+  .lb .cap { color:#fff; font-size:14px; opacity:.8; }
+  @media (max-width:800px) { .item { grid-template-columns:1fr; } .ph { min-height:260px; } .row, .row.draft { grid-template-columns:1fr 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Проверка товаров</h1>
+  <div class="progress"><div class="bar"><i id="bar"></i></div><span id="prog"></span></div>
+  <span class="save" id="save">Все изменения сохраняются автоматически</span>
+</header>
+<div class="filters" id="filters"></div>
+<main id="list"><div class="list-empty">Загрузка…</div></main>
+
+<div class="lb" id="lb">
+  <button class="x" id="lb-x" aria-label="Закрыть">×</button>
+  <div class="wrap"><img class="big" id="lb-img" alt=""></div>
+  <div class="cap" id="lb-cap"></div>
+  <div class="thumbs" id="lb-thumbs"></div>
+</div>
+
+<script>
+const CATS = { beer:'Пиво', cider:'Сидр', drinks:'Напитки', sweets:'Сладости', snacks:'Снеки', groceries:'Продукты' };
+const UNITS = { pcs:'за шт', kg:'за кг', '100g':'за 100 г' };
+const CONF = { high:'уверенно', medium:'проверить', low:'сомнительно' };
+let products = [], edits = {};
+let filter = 'noprice', cat = '', q = '';
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const val = (p, f) => (edits[p.rid] && f in edits[p.rid]) ? edits[p.rid][f] : p[f];
+const has = (v) => v !== null && v !== undefined && v !== '';
+const priced = p => has(val(p, 'price'));
+
+const FILTERS = [
+  ['noprice', 'Без цены', p => !priced(p) && !val(p,'skip')],
+  ['maybe', 'Возможно уже есть на сайте', p => /возможно/.test(p.status)],
+  ['auto', 'Цена подставлена автоматически', p => p.price_source && !(edits[p.rid] && 'price' in edits[p.rid])],
+  ['low', 'Сомнительные', p => p.confidence === 'low'],
+  ['todo', 'Не проверены', p => !val(p,'ok') && !val(p,'skip')],
+  ['ok', 'Проверены', p => val(p,'ok')],
+  ['skip', 'Не добавлять', p => val(p,'skip')],
+  ['all', 'Все', () => true],
+];
+
+function renderFilters() {
+  const el = document.getElementById('filters');
+  el.innerHTML = FILTERS.map(([k, label, fn]) =>
+    `<button class="chip ${k===filter?'on':''}" data-f="${k}">${label}<b>${products.filter(fn).length}</b></button>`).join('') +
+    `<select id="cat"><option value="">Все категории</option>${Object.entries(CATS).map(([k,v]) => `<option value="${k}" ${k===cat?'selected':''}>${v}</option>`).join('')}</select>` +
+    `<input id="q" type="search" placeholder="Поиск по названию" value="${esc(q)}">`;
+}
+
+function renderProgress() {
+  const done = products.filter(p => val(p,'ok') || val(p,'skip') ).length;
+  document.getElementById('prog').textContent = `Проверено ${done} из ${products.length} · с ценой ${products.filter(p => priced(p) && !val(p,'skip')).length}`;
+  document.getElementById('bar').style.width = (done / products.length * 100) + '%';
+}
+
+function card(p) {
+  const draft = p.subcategory === 'draft';
+  const price = val(p,'price');
+  const unitOpts = Object.entries(UNITS).map(([k,v]) => `<option value="${k}" ${val(p,'price_unit')===k?'selected':''}>${v}</option>`).join('');
+  const catOpts = Object.entries(CATS).map(([k,v]) => `<option value="${k}" ${val(p,'category')===k?'selected':''}>${v}</option>`).join('');
+  const site = p.match_name ? `<span class="badge site">Похоже на товар с сайта: ${esc(p.match_name)}</span>` : '';
+  return `<article class="item ${val(p,'ok')?'ok':''} ${val(p,'skip')?'skip':''}" data-rid="${p.rid}">
+    <div class="ph" data-photos="${esc(p.photos.join(','))}">
+      <img src="/photos-preview/${p.photos[0]}.jpg" loading="lazy" alt="">
+      <span class="n">${p.rid.slice(1)}</span>
+      ${p.photos.length > 1 ? `<span class="more">${p.photos.length} фото</span>` : ''}
+    </div>
+    <div class="body">
+      <div class="top">
+        <span class="badge ${p.confidence}">${CONF[p.confidence] || ''}</span>
+        <span class="badge">${esc(p.status.replace(/ — цена.*$/, ''))}</span>
+        ${site}
+      </div>
+      <div class="row ${draft?'draft':''}">
+        <label>Название на сайте<input data-f="name_ru" value="${esc(val(p,'name_ru'))}"></label>
+        <label>Объём / вес<input data-f="size" value="${esc(val(p,'size'))}" placeholder="напр. 150g"></label>
+        ${draft ? `<label>Цена 0,5 л €<input class="price ${has(val(p,'price_05'))?'':'empty'}" data-f="price_05" inputmode="decimal" value="${esc(val(p,'price_05'))}"></label>` : ''}
+        <label>${draft ? 'Цена 1 л €' : 'Цена €'}<input class="price ${has(price)?'':'empty'}" data-f="price" inputmode="decimal" value="${esc(price)}"></label>
+        ${draft ? `<label>Категория<select data-f="category">${catOpts}</select></label>` :
+          `<label>&nbsp;<select data-f="price_unit">${unitOpts}</select></label>`}
+        ${draft ? '' : `<label>Категория<select data-f="category">${catOpts}</select></label>`}
+      </div>
+      <div class="info">
+        ${p.name_original ? `<span>На упаковке: <b>${esc(p.name_original)}</b></span>` : ''}
+        ${p.price_text ? `<span>Ценник: <b>${esc(p.price_text)}</b></span>` : ''}
+        ${p.price_source ? `<span style="color:#9a5a00">Откуда цена: <b>${esc(p.price_source)}</b> — проверь</span>` : ''}
+        ${p.notes ? `<span>Заметка распознавания: ${esc(p.notes)}</span>` : ''}
+      </div>
+      <label>Комментарий для меня (что исправить, если не влезает в поля выше)<textarea data-f="note" rows="1">${esc(val(p,'note'))}</textarea></label>
+      <div class="actions">
+        <button class="btn ok ${val(p,'ok')?'on':''}" data-act="ok">${val(p,'ok') ? '✓ Проверено' : 'Всё верно'}</button>
+        <button class="btn skip ${val(p,'skip')?'on':''}" data-act="skip">${val(p,'skip') ? 'Не добавляем' : 'Не добавлять'}</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function renderList() {
+  const fn = FILTERS.find(f => f[0] === filter)[2];
+  const ql = q.trim().toLowerCase();
+  const items = products.filter(p => fn(p) && (!cat || val(p,'category') === cat) &&
+    (!ql || [val(p,'name_ru'), p.name_original, p.brand].join(' ').toLowerCase().includes(ql)));
+  const help = `<div class="help"><b>Как пользоваться.</b> Сверху фильтры: начни с «Без цены». Впиши цену числом (например <b>2.50</b>), поправь название или вес прямо в полях.
+    Если всё верно, нажми <b>«Всё верно»</b>. Если товар не нужен на сайте или это дубль, нажми <b>«Не добавлять»</b>. Клик по фото открывает его крупно, повторный клик увеличивает.
+    Сохраняется само, можно закрыть страницу и продолжить потом. Показано: ${items.length}.</div>`;
+  document.getElementById('list').innerHTML = help + (items.length ? items.map(card).join('') : '<div class="list-empty">В этом фильтре пусто</div>');
+}
+
+function renderAll() { renderFilters(); renderProgress(); renderList(); }
+
+// ── saving ──
+const saveEl = document.getElementById('save');
+const timers = {};
+function save(rid, patch) {
+  edits[rid] = { ...(edits[rid] || {}), ...patch };
+  saveEl.textContent = 'Сохраняю…';
+  clearTimeout(timers[rid]);
+  timers[rid] = setTimeout(async () => {
+    try {
+      const r = await fetch('/api/edit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ rid, ...edits[rid] }) });
+      if (!r.ok) throw new Error();
+      saveEl.textContent = 'Сохранено ' + new Date().toLocaleTimeString('ru', {hour:'2-digit', minute:'2-digit'});
+    } catch { saveEl.textContent = '⚠ Не сохранилось — проверь, что сервер запущен'; }
+  }, 350);
+}
+
+function parsePrice(s) {
+  s = String(s).trim().replace(',', '.').replace(/[^\d.]/g, '');
+  if (!s) return null;
+  const n = Number(s); return Number.isFinite(n) ? n : null;
+}
+
+document.addEventListener('input', e => {
+  const el = e.target, art = el.closest('.item');
+  if (!art || !el.dataset.f) return;
+  const f = el.dataset.f;
+  let v = el.value;
+  if (f === 'price' || f === 'price_05') { v = parsePrice(v); el.classList.toggle('empty', v === null); }
+  save(art.dataset.rid, { [f]: v });
+  renderProgress();
+});
+document.addEventListener('focusin', e => { if (e.target.matches && e.target.matches('input.price')) e.target.select(); });
+document.addEventListener('change', e => {
+  if (e.target.id === 'cat') { cat = e.target.value; renderList(); }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'q') { q = e.target.value; renderList(); }
+});
+
+document.addEventListener('click', e => {
+  const chip = e.target.closest('[data-f].chip');
+  if (chip) { filter = chip.dataset.f; renderAll(); scrollTo(0, 0); return; }
+  const btn = e.target.closest('[data-act]');
+  if (btn) {
+    const art = btn.closest('.item'), rid = art.dataset.rid, p = products.find(x => x.rid === rid);
+    const act = btn.dataset.act, on = !val(p, act);
+    const patch = { [act]: on }; if (on) patch[act === 'ok' ? 'skip' : 'ok'] = false;
+    save(rid, patch);
+    art.outerHTML = card(p);
+    renderFilters(); renderProgress();
+    return;
+  }
+  const ph = e.target.closest('.ph');
+  if (ph) openLb(ph.dataset.photos.split(','), 0);
+});
+
+// ── lightbox ──
+const lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img');
+function openLb(photos, i) {
+  lbImg.classList.remove('zoom');
+  lbImg.src = `/photos-preview/${photos[i]}.jpg`;
+  document.getElementById('lb-cap').textContent = `${photos[i]} (${i + 1} из ${photos.length})`;
+  document.getElementById('lb-thumbs').innerHTML = photos.length > 1 ? photos.map((ph, j) =>
+    `<img src="/photos-preview/${ph}.jpg" class="${j===i?'on':''}" data-j="${j}">`).join('') : '';
+  document.getElementById('lb-thumbs').onclick = ev => { const t = ev.target.closest('[data-j]'); if (t) openLb(photos, +t.dataset.j); };
+  lb.classList.add('open');
+}
+lbImg.addEventListener('click', () => lbImg.classList.toggle('zoom'));
+document.getElementById('lb-x').onclick = () => lb.classList.remove('open');
+lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+
+fetch('/api/data').then(r => r.json()).then(d => { products = d.products; edits = d.edits || {}; renderAll(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+﻿id;категория;название;цена
+n-p001;beer;Chmielowa Ekipa Mistrz Fermentu American Pale Ale;2.99
+n-p003;beer;Kultowe Без глютена;2.99
+n-p004;beer;Kultowe Клубника-киви;2.3
+n-p005;beer;Kultowe Безалкогольное Манго;2.3
+n-p006;beer;BESTBIR Летняя слива;2.9
+n-p007;beer;Жигули Барное;2.3
+n-p008;beer;Жигули Барное Фирменное;2.3
+n-p009;beer;Перша приватна броварня Нефильтрованное безалкогольное;1.5
+n-p011;beer;Повна Діжка Тёмное Бархатное;1.9
+n-p017;cider;Royal Fruits Fragolino Клубника;4.0
+n-p019;cider;Royal Fruits Siider Грейпфрут;3.9
+n-p020;cider;Royal Fruits Siider Зелёное яблоко;3.9
+n-p023;drinks;SHAKE Pornstar;2.59
+n-p025;drinks;Shake Cocktails Bora Bora;2.59
+n-p026;drinks;Shake Cocktails Pornstar;2.59
+n-p027;drinks;Shake Cocktails Секс на пляже;2.59
+n-p030;drinks;NON STOP;2.1
+n-p032;drinks;Non Stop Juice Series Splash;2.1
+n-p035;drinks;Non Stop Original Zero Sugar;2.1
+n-p036;drinks;Non Stop Spark Zero Sugar;2.1
+n-p037;drinks;Non Stop Zoom;2.1
+n-p039;drinks;Sandora Банановый нектар;2.75
+n-p042;drinks;Sandora Гранатовый нектар;2.75
+n-p044;drinks;Sandora Мультивитамин;2.75
+n-p047;drinks;Sokovita Ананас;2.5
+n-p048;drinks;Sokovita Апельсин;2.5
+n-p049;drinks;Sokovita Фруктовый микс;2.5
+n-p050;drinks;Sokovita Яблоко-виноград;2.5
+n-p051;drinks;The Banka Яблочно-морковный с мякотью;3.5
+n-p052;drinks;The Banka Яблочно-тыквенный с мякотью;3.5
+n-p053;drinks;Vita Абрикос;2.5
+n-p055;drinks;Джусик Арбуз-личи;0.99
+n-p056;drinks;Джусик Арбуз-личи / Апельсин-мандарин;0.99
+n-p057;drinks;Живчик без газа с яблочным соком;2.8
+n-p058;drinks;Наш Сок Гранат;2.5
+n-p060;drinks;Air Heads Soda Арбуз;2.5
+n-p061;drinks;Air Heads Soda Голубая малина;2.5
+n-p062;drinks;Air Heads Soda Клубника;2.5
+n-p063;drinks;Biola Fruit Water Гуава;2.5
+n-p064;drinks;Baola Fruit Water Дыня;2.5
+n-p065;drinks;Biola Fruit Water Малина;2.5
+n-p066;drinks;Baola Fruit Water Тропик;2.5
+n-p067;drinks;Biola Аперол с травами и апельсином;0.5
+n-p069;drinks;Seth & Riley's Garage Fun Zero Грейпфрут;1.75
+n-p070;drinks;Kultowe Клубника;2.3
+n-p071;drinks;Kultowe Безалкогольное Манго;2.3
+n-p074;drinks;Белый квас хлебный с грушей;3.9
+n-p076;drinks;Живчик Вишня;2.8
+n-p082;drinks;Живчик Яблоко-лесные ягоды;2.8
+n-p089;drinks;Моршинская Лимонад;1.1
+n-p091;drinks;Львовский квас белый;1.4
+n-p092;drinks;Львовский квас белый нефильтрованный;1.4
+n-p094;drinks;Львівський квас Белый нефильтрованный;1.4
+n-p096;drinks;Львівський квас Чёрный нефильтрованный;1.4
+n-p100;drinks;Моршинская Лимонад Яблоко;1.1
+n-p103;drinks;Suliko Дюшес;1.9
+n-p104;drinks;MacCoffee 2в1;0.35
+n-p105;drinks;MacCoffee 2в1 со вкусом ирландского крема;0.35
+n-p106;drinks;MacCoffee 2в1 Французская ваниль;0.35
+n-p112;drinks;MacCoffee Coffee & Creamer 2в1;0.35
+n-p114;drinks;MacCoffee Original 3в1;0.35
+n-p117;drinks;Sherlock Secrets Dragon of China зелёный чай;3.2
+n-p118;drinks;Sherlock Secrets Зелёный чай с мелиссой;3.2
+n-p119;drinks;Sherlock Secrets Pure Ceylon;3.2
+n-p120;drinks;Tea Moments Assorted Fruit Tea Strawberry Kiss / Mango Paradise;3.2
+n-p121;drinks;Tea Moments Summer Melody;3.2
+n-p124;drinks;Галка Целебный;1.9
+n-p126;drinks;Галка Растворимый напиток;1.9
+n-p128;drinks;Петровская Слобода 3в1 классический;0.35
+n-p130;drinks;Петровская Слобода 3в1 тёмный шоколад;0.35
+n-p131;drinks;Трипільське сонце Лаванда и ромашка;1.59
+n-p132;drinks;Трипільське сонце Лавандовая фантазия;1.59
+n-p133;drinks;Трипільське сонце Украинские травы;1.59
+n-p134;drinks;Трипільське сонце Яблочный пирог;1.59
+n-p136;drinks;Lužanska минеральная вода;2.5
+n-p137;drinks;Poljana Kvasova;2.5
+n-p138;drinks;Poljana Kvasova минеральная вода;2.5
+n-p142;groceries;Komo Традиционный;3.5
+n-p143;groceries;Сушёный сулугуни ассорти;2.5
+n-p144;groceries;Сладосвит Сгущенное молоко;2.2
+n-p145;groceries;Куриные чипсы по-тайски;5.5
+n-p147;groceries;Куриные хрустящие чипсы с трюфелем;5.5
+n-p148;groceries;Пицца Vinci Капричоза;2.99
+n-p149;groceries;Пицца Vinci Салями;2.99
+n-p150;groceries;Сушёная колбаска;4.5
+n-p151;groceries;Хрустящие сушёные кусочки говядины;6.0
+n-p152;groceries;Торчин Заправка томатная с болгарским перцем;2.8
+n-p159;groceries;Сладосвит;2.2
+n-p160;groceries;Молоко сгущённое с сахаром;3.5
+n-p161;groceries;Щедро Кетчуп Chili;1.8
+n-p162;groceries;Щедро Деликатный;1.8
+n-p163;groceries;Верес Аджика Кавказская острая традиционная;1.4
+n-p164;groceries;Верес Горчица Американская оригинальная;1.6
+n-p165;groceries;Верес Горчица Украинская крепкая;1.6
+n-p166;groceries;Верес Горчица с хреном острая;1.6
+n-p168;groceries;Олис Соус Барбекю;1.95
+n-p169;groceries;Олис Чесночный соус;1.95
+n-p172;groceries;Торчин заправка томатная с болгарским перцем;2.8
+n-p173;groceries;Щедро Кетчуп Delicate со сладкой паприкой;1.8
+n-p174;groceries;Щедро Майонез Золотой 50%;2.5
+n-p175;groceries;Щедро Львовский премиум;2.7
+n-p177;groceries;Щедро Майонез Прованс 67%;2.6
+n-p179;groceries;Щедро Соус Карри со специями;1.95
+n-p180;groceries;Щедро Кисло-сладкий абрикос и имбирь;1.95
+n-p181;groceries;Щедро Соус Острый Батумский с чили и кориандром;1.95
+n-p182;groceries;Щедро Соус Тартар;1.95
+n-p183;groceries;Щедро Цезарь;1.95
+n-p184;groceries;Щедро Соус Цезарь с зернами белой горчицы и чесноком;1.95
+n-p187;groceries;Щедро Соус Ягодный;1.95
+n-p188;groceries;Avokado Приправа грибная;1.5
+n-p189;groceries;Avokado для блюд из картофеля;1.5
+n-p190;groceries;Avokado приправа для курицы по-восточному;1.5
+n-p191;groceries;Caramix 12 трав и овощей;1.5
+n-p192;groceries;Caramix Приправа для курицы и птицы;1.5
+n-p193;groceries;Caramix для плова;1.5
+n-p194;groceries;Caramix для сала;1.5
+n-p195;groceries;Caramix Чеснок гранулированный;1.5
+n-p196;groceries;Iris Приправа для борща;1.5
+n-p197;groceries;Iris для голубцов;1.5
+n-p198;groceries;Iris приправа для маринования селёдки;1.5
+n-p199;groceries;Iris Для сала;1.5
+n-p200;groceries;Shakko Грибная приправа с овощами и зеленью;1.8
+n-p201;groceries;Shakko Курица;1.8
+n-p202;groceries;Smakko 15 овощей;1.8
+n-p204;groceries;Tsvit Aromat Рыба и морепродукты;1.5
+n-p205;groceries;Tsvit Aromat Прованские травы;1.5
+n-p206;groceries;Мивина приправа со вкусом курицы;1.5
+n-p207;groceries;Хуторок Для плова;1.5
+n-p208;groceries;Цвіт Аромат М'ясна з овочами та зеленню;1.5
+n-p209;snacks;Big Bob Crunch Сметана с зеленью;1.8
+n-p210;snacks;Big Bob Crunch Варёные раки;1.8
+n-p211;snacks;Flint Tavern Чипсы ассорти;1.45
+n-p212;snacks;Flint Tavern Бекон;1.45
+n-p213;snacks;Flint Tavern Краб;1.45
+n-p214;snacks;Flint Tavern Чипсы маринованный укроп;1.45
+n-p215;snacks;Flint Tavern Сметана с зеленью;1.45
+n-p216;snacks;Flint Tavern Французский сыр;1.45
+n-p217;snacks;Golden Chips Сметана;1.7
+n-p218;snacks;Golden Chips Сметана и зелень;1.7
+n-p219;snacks;HruMer Pub Rings Краб;1.4
+n-p220;snacks;Hrumer Pub Rings;1.4
+n-p221;snacks;Jokers Grinky Extra Slice;1.8
+n-p222;snacks;Jokers Королевский краб;1.8
+n-p223;snacks;Flint Tavern Potato Sticks;1.5
+n-p224;snacks;Flint Tavern Potato Sticks Омар;1.5
+n-p225;snacks;Flint Tavern Potato Sticks с омаром;1.5
+n-p226;snacks;Flint Tavern Potato Sticks Сметана;1.5
+n-p227;snacks;Куриные чипсы классические;5.5
+n-p230;snacks;Лотисти Телятина с аджикой;1.7
+n-p237;snacks;Люкс Краб;3.5
+n-p239;snacks;Люкс Сметана и зелень;3.5
+n-p240;snacks;Люкс со вкусом сыра;3.5
+n-p241;snacks;Salut Кукурузные палочки со вкусом охотничьих колбасок;1.4
+n-p242;snacks;Свиные чипсы;5.5
+n-p243;snacks;Сушёная хрустящая кукуруза;1.5
+n-p244;snacks;Телятина с аджикой;1.7
+n-p245;snacks;Flint Bruschetta Rolls Острое чоризо;1.5
+n-p246;snacks;Flint Bruschetta Rolls Сливочный сыр и чеснок;1.5
+n-p247;snacks;Flint Crisps Лосось и сыр;1.8
+n-p249;snacks;Jokers Grinky Extra Slice Паприка;1.8
+n-p251;snacks;Jokers Grinky Extra Slice Сметана и зелень;1.8
+n-p255;snacks;Jokers Grinky Сало с чесноком;1.8
+n-p256;snacks;Jokers Grinky Салями;1.8
+n-p257;snacks;Jokers Grinky Сыр Чеддер;1.8
+n-p258;snacks;Jokers Grinky Холодец с хреном;1.8
+n-p259;snacks;Jokers Grinky Чеснок;1.8
+n-p260;snacks;Jokers Grinky Extra Slice Паприка;1.8
+n-p262;snacks;Jokers Grinky Салями;1.8
+n-p263;snacks;Jokers Grinky Хрен;1.8
+n-p265;snacks;Jokers Grinky Сметана и зелень;1.8
+n-p267;snacks;Jokers Королевский краб;1.8
+n-p270;snacks;Snekkin Хлебцы с лесными грибами;1.5
+n-p272;snacks;Star Snack Снечки;2.1
+n-p273;snacks;Хвилясті Topinky со вкусом сала;1.8
+n-p274;snacks;Хвилясті Topinky со вкусом сала;1.8
+n-p275;snacks;Вяленые палочки путассу с чили;5.0
+n-p276;snacks;Вяленые полоски лосося;6.0
+n-p277;snacks;Сушёная плотва;25
+n-p278;snacks;Сушёные полоски лосося;6.0
+n-p279;snacks;Сушёная желтополосая ставрида;4.5
+n-p280;snacks;Сушёная икра морской щуки;7.5
+n-p281;snacks;Сушёная мари;6.5
+n-p282;snacks;Сушёная мари;6.5
+n-p284;snacks;Сушёная путассу;4.5
+n-p285;snacks;Сушёная путассу хлопьями;4.5
+n-p286;snacks;Сушёная путассу палочками;5
+n-p288;snacks;Сушёная рыбная нить;5.0
+n-p289;snacks;Сушёная треска (спинка);5.0
+n-p290;snacks;Сушёные анчоусы;3.5
+n-p291;snacks;Сушёные ленты из чехони;5
+n-p292;snacks;Сушёные нити из лосося (нерка);5
+n-p293;snacks;Сушёные палочки из мари;6.5
+n-p294;snacks;Сушёный анчоус;3.5
+n-p295;snacks;Сушёный лососевый снек;6
+n-p296;snacks;Чехонь сушёная;25
+n-p297;snacks;Big Bob Арахис;1.49
+n-p298;snacks;Big Bob арахис со вкусом бекона;1.49
+n-p299;snacks;Peanuts 18:15 с сыром;1.8
+n-p300;snacks;Арахис в хрустящей глазури;1.49
+n-p303;snacks;Вяленые полоски кальмара;5
+n-p311;snacks;Кальмаровые ленты;5
+n-p313;snacks;Сушёные полоски кальмара;5.0
+n-p320;snacks;Сушёные щупальца осьминога;6.0
+n-p324;snacks;Martin Premium семечки с солью;2.8
+n-p325;snacks;Mr. Martin Семечки подсолнечника;2.8
+n-p326;snacks;Mr. Martin;2.8
+n-p327;snacks;Зайка Жареные семечки;3.5
+n-p328;snacks;Зайка Жареные;1.7
+n-p329;snacks;Зайчата Premium;1.7
+n-p330;snacks;Зайчата Семечки солёные;1.7
+n-p331;snacks;Martin Семечки подсолнечника;2.8
+n-p333;snacks;От Мартина семечки полосатые с солью;4.1
+n-p334;snacks;Свежачок;1.5
+n-p335;sweets;Roshen с вишней;2.9
+n-p337;sweets;TIMI Банан;0.7
+n-p338;sweets;Timi Вафельное пирожное Банан;0.7
+n-p339;sweets;Timi Шоколадно-молочный;0.7
+n-p340;sweets;АВК Kuninglik Võlu с кокосовой начинкой;18
+n-p341;sweets;АВК Kuninglik Võlu с кремовой начинкой;18
+n-p342;sweets;АВК Kuninglik Võlu с ореховой начинкой;18
+n-p343;sweets;AVK Kuninglik Võlu с шоколадной начинкой;18
+n-p348;sweets;Amanti Солёная карамель;20
+n-p349;sweets;Amanti;20
+n-p350;sweets;Аметист Ассорти;8.5
+n-p351;sweets;Mr. BIGuin Crispy;17
+n-p352;sweets;Roshen Bony Fruit Mix;2.5
+n-p353;sweets;Roshen Bony Fruit Mix Berry;2.5
+n-p355;sweets;Roshen Choco Lapki;14
+n-p359;sweets;Roshen Mon Blanc с миндалём;20
+n-p360;sweets;Roshen Mon Blanc с фундуком;20
+n-p364;sweets;Roshen Yummi Gummi Cupcakes;1.5
+n-p365;sweets;Roshen Yummi Gummi Frozen Yogo;1.5
+n-p366;sweets;Roshen Звёздное сияние;20
+n-p367;sweets;Roshen Йогуртини;9
+n-p368;sweets;Roshen Ковафетто;14
+n-p370;sweets;Roshen Эклер;14
+n-p371;sweets;Свиточ Звёздное Сияние;20
+n-p372;sweets;Свиточ Львовский трюфель;18
+n-p373;sweets;Свиточ Львовский трюфель кофе;18
+n-p374;sweets;АВК Mr. BIGuin Crispy;17
+n-p376;sweets;AVK Trufalie Кофе;17
+n-p380;sweets;АВК Королевский шарм Crispy Wafer;18.0
+n-p382;sweets;Аметист Абрикос с грецким орехом;18
+n-p384;sweets;Ametist Дыня с грецким орехом;18
+n-p386;sweets;Аметист Чернослив в шоколаде с орехом;18
+n-p388;sweets;Лещина конфеты;20
+n-p389;sweets;Манго;20
+n-p390;sweets;Marmeladoff Kaleidoskop;2.3
+n-p391;sweets;Метеорит;14
+n-p392;sweets;Roshen Каракум;22
+n-p398;sweets;Roshen Молочный шоколад с карамелью;1.5
+n-p399;sweets;Roshen тёмный шоколад с двойным арахисом;1.5
+n-p400;sweets;Truffle Hearts;3.9
+n-p402;sweets;Biscotti;4.3
+n-p404;sweets;Grona Зоологическое печенье;1.9
+n-p405;sweets;Kontik Super Молочно-кокосовый;1.5
+n-p406;sweets;Kontik Super Молочная ваниль;1.5
+n-p408;sweets;Mini Joy с какао и сливой;1.9
+n-p409;sweets;Super Pontik Молочная ваниль;0.75
+n-p410;sweets;SütKonti;1.5
+n-p412;sweets;Tendi Baby Печенье с морковью;1.6
+n-p413;sweets;Бискотти;1.9
+n-p414;sweets;Вогуславна Овсяное с арахисом;1.7
+n-p415;sweets;Вогуславна овсяное печенье с изюмом;1.7
+n-p417;sweets;Grona Зоологическое;1.9
+n-p420;sweets;Bimar Мороженое-брикет ванильное;1.19
+n-p421;sweets;Bonifie Десерт Классика;3.2
+n-p422;sweets;Bonifie Классический;3.2
+n-p423;sweets;Bonifie Десерт клубника со сливками;3.2
+n-p424;sweets;Imperium Тирамису;1.45
+n-p426;sweets;RUD Imperium Груша;1.45
+n-p427;sweets;RUD Ванильное без сахара;1.19
+n-p429;sweets;Золотой век халва подсолнечная;12
+n-p430;sweets;Золотой век Халва с арахисом;12
+n-p431;sweets;Лакомка пломбир;1.75
+n-p432;sweets;Малык-ам;1.35
+n-p433;sweets;Eskimo Четыре сыра и груша;1.29
+n-p436;sweets;Эскимос Пломбир;1.19
+n-p437;sweets;Eskimos Ванильный;1.19
+n-p438;sweets;Rollio с молочным вкусом;1.5
+n-p439;sweets;Rollio вафельные трубочки с фисташкой;1.5
+n-p441;sweets;Super Kontik Молочная ваниль;0.75
+n-p442;sweets;Артек Вафли;1.5
+n-p443;sweets;Артек Классические;1.5
+n-p446;sweets;Artek Вафли с шоколадом;1.5
+n-p447;sweets;BAM BUK Зелёный;2.5
+n-p449;sweets;BAM BUK красный;2.5
+n-p451;sweets;Джек молоко и мёд;17
+n-p453;sweets;TIMI Шоколадные;0.7
+n-p456;beer;Genika Honey Ale;4.9
+n-p458;beer;Kali Безалкогольное;5.0
+n-p461;beer;Микулин 900 Рисовое;6.5
+n-p468;beer;Uman Софиевское Блонд Эль;6.5
