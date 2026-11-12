@@ -9,3 +9,4 @@ node_modules/
 wrangler.toml
 .DS_Store
 .claude/
+.work/
