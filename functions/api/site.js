@@ -17,8 +17,14 @@ export async function onRequestGet({ env }) {
   (categories || []).slice().sort((a, b) => a.sort_order - b.sort_order)
     .forEach(c => { cats[c.slug] = c.subcategories || ['all']; });
 
+  // Visitors only see products in stock, and never need internal fields: a lighter response.
+  const visible = (catalog || []).filter(p => p.in_stock !== false).map(({ updated_at, ...p }) => {
+    for (const k in p) if (p[k] === '' || p[k] === null) delete p[k];
+    return p;
+  });
+
   return json(
-    { catalog: catalog || [], categories: cats, translations: translations || {}, settings: settings || {} },
+    { catalog: visible, categories: cats, translations: translations || {}, settings: settings || {} },
     200,
     { 'Cache-Control': 'public, max-age=60, stale-while-revalidate=300' },
   );

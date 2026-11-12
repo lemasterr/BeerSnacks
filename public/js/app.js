@@ -86,7 +86,7 @@
   const subName = (slug) => slug === 'all' ? ui().all : (tr().subcategories?.[slug] || slug);
   // "draft" / "bottled" are derived filters: a product is draft when it has a 0.5 L price,
   // so its real subcategory can stay the country.
-  // Cards use a light copy (img/products/sm/, 560 px tall); the product sheet shows the full image.
+  // Cards use a light copy (img/products/sm/, 420 px tall); the product sheet shows the full image.
   const thumb = (src) => /^img\/products\/[^/]+\.webp$/.test(src) ? src.replace('img/products/', 'img/products/sm/') : src;
   const isDraft = (p) => !!p.price_05 || p.subcategory === 'draft';
   const inSub = (p, s) => s === 'all' || (s === 'draft' ? isDraft(p) : s === 'bottled' ? !isDraft(p) : p.subcategory === s);
@@ -227,7 +227,7 @@
     return `<article class="card${out ? ' card--out' : ''}" style="--i:${Math.min(i, 12)}">
       <button type="button" class="card__hit" data-id="${esc(p.id)}" aria-label="${esc(name)}"></button>
       <div class="card__img${p.image ? '' : ' card__img--none'}">
-        ${p.image ? `<img src="${esc(thumb(p.image))}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400" data-full="${esc(p.image)}" onerror="if(this.dataset.full&&this.src.indexOf('/sm/')>0){this.src=this.dataset.full}else{this.parentNode.classList.add('is-broken')}" />`
+        ${p.image ? `<img src="${esc(thumb(p.image))}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}"${i < 2 ? ' fetchpriority="high"' : ''} decoding="async" width="400" height="400" data-full="${esc(p.image)}" onerror="if(this.dataset.full&&this.src.indexOf('/sm/')>0){this.src=this.dataset.full}else{this.parentNode.classList.add('is-broken')}" />`
           : `<span class="ph-name">${esc(name)}</span>`}
         ${out ? `<span class="card__out">${esc(ui().outOfStock)}</span>` : ''}
       </div>
