@@ -17,12 +17,12 @@
  ],
  "drinks": [
   "all",
-  "juices",
-  "sodas",
-  "water",
+  "cocktails",
   "energy",
-  "tea_coffee",
-  "cocktails"
+  "sodas",
+  "juices",
+  "water",
+  "tea_coffee"
  ],
  "sweets": [
   "all",
