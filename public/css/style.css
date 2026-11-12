@@ -302,6 +302,7 @@ html.gate-open body > :not(.gate) { visibility: hidden; }
   margin: auto; border: 0; padding: 0; width: min(880px, calc(100% - 32px)); max-height: calc(100dvh - 32px);
   background: var(--paper); color: var(--ink); border-radius: 26px; overflow: auto;
 }
+html.sheet-open { overflow: hidden; }  /* no background scrolling behind the product card */
 .sheet::backdrop { background: rgb(10 18 13 / .55); backdrop-filter: blur(3px); }
 .sheet[open] { animation: sheetIn .35s var(--ease); }
 @keyframes sheetIn { from { opacity: 0; transform: translateY(24px) scale(.98); } }
@@ -405,7 +406,12 @@ html.gate-open body > :not(.gate) { visibility: hidden; }
   .tag { margin: -16px 0 0 8px; padding: 6px 9px 5px 11px; }
   .tags { margin: -16px 0 0 8px; }
   .tag__eur { font-size: 18px; }
-  .tag--duo .tag__eur { font-size: 16px; }
+  .tag--duo { padding: 5px 7px 4px 10px; max-width: calc(100% - 8px); }
+  .tag--duo .tag__eur { font-size: 15px; }
+  .tag--duo .tag__cents, .tag--duo .tag__cur { font-size: 10px; }
+  .tag--duo .tag__vol { font-size: 9px; margin-right: 3px; }
+  .tag--duo .tag__part + .tag__part { margin-left: 5px; padding-left: 5px; }
+  .tag--duo::before { margin-right: 5px; }
   .tag__vol { font-size: 10px; }
   .card__name { font-size: 14px; line-height: 1.28; margin: 9px 2px 3px; }
   .card__specs { font-size: 12px; margin: 0 2px; gap: 1px 8px; }

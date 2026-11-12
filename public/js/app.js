@@ -257,8 +257,17 @@
   }
 
   // Animate filter changes with the View Transitions API when available.
+  // After a filter change, show the new list from its first product (not at the old scroll depth,
+  // which in a shorter list can land below the last item). Only scrolls up, never down.
+  function toListTop() {
+    const bar = document.querySelector('.cats');
+    const offset = (bar ? bar.getBoundingClientRect().height : 0) + 8;
+    const target = els.products.getBoundingClientRect().top + window.scrollY - offset;
+    if (window.scrollY > target + 1) window.scrollTo({ top: Math.max(0, target), behavior: 'instant' });
+  }
+
   function update(fn) {
-    const run = () => { fn(); renderCats(); renderProducts({ animate: false }); syncUrl(); };
+    const run = () => { fn(); renderCats(); renderProducts({ animate: false }); syncUrl(); toListTop(); };
     if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(run);
     else run();
   }
@@ -297,6 +306,9 @@
         </div>`}
       </div>`;
     els.sheet.showModal();
+    document.documentElement.classList.add('sheet-open');
+    // The phone's Back button closes the product card instead of leaving the site.
+    history.pushState({ sheet: true }, '', location.href);
   }
 
   // ── Events ──
@@ -318,15 +330,24 @@
   els.search.addEventListener('input', () => {
     els.searchClear.hidden = !els.search.value;
     clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => { state.q = els.search.value; renderCats(); renderProducts({ animate: false }); syncUrl(); }, 120);
+    searchTimer = setTimeout(() => { state.q = els.search.value; renderCats(); renderProducts({ animate: false }); syncUrl(); toListTop(); }, 120);
   });
   els.searchClear.addEventListener('click', () => {
     els.search.value = ''; state.q = ''; els.searchClear.hidden = true;
-    renderCats(); renderProducts({ animate: false }); syncUrl(); els.search.focus();
+    renderCats(); renderProducts({ animate: false }); syncUrl(); toListTop(); els.search.focus();
   });
+  // Enter on a phone keyboard: hide the keyboard so the results are visible.
+  els.search.addEventListener('keydown', (e) => { if (e.key === 'Enter') els.search.blur(); });
 
-  $('sheet-close').addEventListener('click', () => els.sheet.close());
-  els.sheet.addEventListener('click', (e) => { if (e.target === els.sheet) els.sheet.close(); });
+  function sheetClosed() {
+    document.documentElement.classList.remove('sheet-open');
+    if (history.state && history.state.sheet) history.back();
+  }
+  const closeSheet = () => { if (els.sheet.open) els.sheet.close(); sheetClosed(); };
+  $('sheet-close').addEventListener('click', closeSheet);
+  els.sheet.addEventListener('close', sheetClosed);   // Esc key
+  window.addEventListener('popstate', () => { document.documentElement.classList.remove('sheet-open'); if (els.sheet.open) els.sheet.close(); });
+  els.sheet.addEventListener('click', (e) => { if (e.target === els.sheet) closeSheet(); });
 
   els.langBtn.addEventListener('click', (e) => {
     e.stopPropagation();
