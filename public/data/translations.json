@@ -52,7 +52,8 @@
    "cheese": "Сир",
    "preserves": "Варення та джеми",
    "oil": "Олія",
-   "other": "Інше"
+   "other": "Інше",
+   "bottled": "Пляшкове"
   },
   "footer": {
    "about": "Beer&Snacks — ваш магазин крафтових напоїв та смачних снеків у Таллінні.",
@@ -120,7 +121,8 @@
    "cheese": "Cheese",
    "preserves": "Jams",
    "oil": "Oil",
-   "other": "Other"
+   "other": "Other",
+   "bottled": "Bottled"
   },
   "footer": {
    "about": "Beer&Snacks — your craft drinks and tasty snacks store in Tallinn.",
@@ -188,7 +190,8 @@
    "cheese": "Juust",
    "preserves": "Moosid",
    "oil": "Õli",
-   "other": "Muu"
+   "other": "Muu",
+   "bottled": "Pudeliõlu"
   },
   "footer": {
    "about": "Beer&Snacks — teie käsitööjookide ja maitsvate suupistete pood Tallinnas.",
@@ -254,7 +257,8 @@
    "cheese": "Сыр",
    "preserves": "Варенье и джемы",
    "oil": "Масло",
-   "other": "Другое"
+   "other": "Другое",
+   "bottled": "Бутылочное"
   },
   "footer": {
    "about": "Beer&Snacks — ваш магазин крафтовых напитков и вкусных снеков в Таллинне.",

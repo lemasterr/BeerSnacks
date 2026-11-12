@@ -1,12 +1,13 @@
 {
  "beer": [
   "all",
+  "draft",
+  "bottled",
   "ukraine",
   "poland",
   "czech",
   "germany",
-  "estonia",
-  "draft"
+  "estonia"
  ],
  "cider": [
   "all",

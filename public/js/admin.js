@@ -346,12 +346,15 @@
   }
 
   function updateSubOptions(selected) {
-    const f = $('#editor'); const subs = (S.cats.find(c => c.slug === f.category.value)?.subcategories || []).filter(s => s !== 'all');
+    // "draft" / "bottled" are filters derived from the 0.5 L price on the site, not a place to file a product
+    const f = $('#editor'); const subs = (S.cats.find(c => c.slug === f.category.value)?.subcategories || [])
+      .filter(s => s !== 'all' && ((s !== 'draft' && s !== 'bottled') || s === selected));
     f.subcategory.innerHTML = '<option value="">—</option>' + subs.map(s => `<option value="${esc(s)}" ${s === selected ? 'selected' : ''}>${esc(subName(s))}</option>`).join('');
   }
   function toggleDraftField() {
     const f = $('#editor');
-    $('#ed-draft').hidden = !(f.subcategory.value === 'draft' || parseNum(f.price_05.value) !== null);
+    // beer and cider can be on tap: filling the 0.5 L price is what makes a product "draft"
+    $('#ed-draft').hidden = !(['beer', 'cider'].includes(f.category.value) || f.subcategory.value === 'draft' || parseNum(f.price_05.value) !== null);
   }
 
   $('#editor').addEventListener('change', (e) => {

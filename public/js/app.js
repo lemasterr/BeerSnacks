@@ -84,6 +84,10 @@
   const field = (p, name) => p[`${name}_${state.lang}`] || p[`${name}_en`] || p[`${name}_ru`] || '';
   const catName = (slug) => tr().categories?.[slug] || slug;
   const subName = (slug) => slug === 'all' ? ui().all : (tr().subcategories?.[slug] || slug);
+  // "draft" / "bottled" are derived filters: a product is draft when it has a 0.5 L price,
+  // so its real subcategory can stay the country.
+  const isDraft = (p) => !!p.price_05 || p.subcategory === 'draft';
+  const inSub = (p, s) => s === 'all' || (s === 'draft' ? isDraft(p) : s === 'bottled' ? !isDraft(p) : p.subcategory === s);
   const price = (n, unit) => {
     const v = Number(n);
     if (!Number.isFinite(v)) return '';
@@ -119,10 +123,11 @@
       const words = q.split(/\s+/);
       items = index.filter(x => words.every(w => x.text.includes(w))).map(x => x.p);
     } else {
-      items = state.data.catalog.filter(p => p.category === state.cat && (state.sub === 'all' || p.subcategory === state.sub));
+      items = state.data.catalog.filter(p => p.category === state.cat && inSub(p, state.sub));
     }
+    // in stock first, then draft before bottled, then the manual order
     return items.slice().sort((a, b) =>
-      (b.in_stock !== false) - (a.in_stock !== false) || (a.sort_order || 0) - (b.sort_order || 0));
+      (b.in_stock !== false) - (a.in_stock !== false) || isDraft(b) - isDraft(a) || (a.sort_order || 0) - (b.sort_order || 0));
   }
 
   // ── Render ──
@@ -194,9 +199,9 @@
         ${esc(catName(slug))}<sup>${counts[slug] || 0}</sup></button>`).join('');
 
     const subs = (state.data.categories[state.cat] || []).filter(s =>
-      s === 'all' || state.data.catalog.some(p => p.category === state.cat && p.subcategory === s));
+      s === 'all' || state.data.catalog.some(p => p.category === state.cat && inSub(p, s)));
     els.subs.hidden = searching || subs.length <= 2;
-    const subCount = (s) => state.data.catalog.filter(p => p.category === state.cat && (s === 'all' || p.subcategory === s)).length;
+    const subCount = (s) => state.data.catalog.filter(p => p.category === state.cat && inSub(p, s)).length;
     els.subs.innerHTML = subs.map(s =>
       `<button type="button" class="sub" data-sub="${esc(s)}" aria-pressed="${s === state.sub}">${esc(subName(s))}<span class="sub__n">${subCount(s)}</span></button>`).join('');
   }
