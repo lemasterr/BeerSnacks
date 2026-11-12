@@ -6,7 +6,7 @@
   "chooseLanguage": "Оберіть мову",
   "categories": {
    "beer": "Пиво",
-   "cider": "Сидр",
+   "cider": "Сидр і коктейлі",
    "drinks": "Безалкогольні",
    "sweets": "Солодощі",
    "snacks": "Снеки",
@@ -53,7 +53,8 @@
    "preserves": "Варення та джеми",
    "oil": "Олія",
    "other": "Інше",
-   "bottled": "Пляшкове"
+   "bottled": "Пляшкове",
+   "non_alc_beer": "Безалкогольне пиво"
   },
   "footer": {
    "about": "Beer&Snacks — ваш магазин крафтових напоїв та смачних снеків у Таллінні.",
@@ -75,7 +76,7 @@
   "chooseLanguage": "Choose Language",
   "categories": {
    "beer": "Beer",
-   "cider": "Cider",
+   "cider": "Cider & Cocktails",
    "drinks": "Soft Drinks",
    "sweets": "Sweets",
    "snacks": "Snacks",
@@ -122,7 +123,8 @@
    "preserves": "Jams",
    "oil": "Oil",
    "other": "Other",
-   "bottled": "Bottled"
+   "bottled": "Bottled",
+   "non_alc_beer": "Non-alcoholic beer"
   },
   "footer": {
    "about": "Beer&Snacks — your craft drinks and tasty snacks store in Tallinn.",
@@ -144,7 +146,7 @@
   "chooseLanguage": "Vali keel",
   "categories": {
    "beer": "Õlu",
-   "cider": "Siider",
+   "cider": "Siider ja kokteilid",
    "drinks": "Karastusjoogid",
    "sweets": "Maiustused",
    "snacks": "Suupisted",
@@ -191,7 +193,8 @@
    "preserves": "Moosid",
    "oil": "Õli",
    "other": "Muu",
-   "bottled": "Pudeliõlu"
+   "bottled": "Pudeliõlu",
+   "non_alc_beer": "Alkoholivaba õlu"
   },
   "footer": {
    "about": "Beer&Snacks — teie käsitööjookide ja maitsvate suupistete pood Tallinnas.",
@@ -211,7 +214,7 @@
   "chooseLanguage": "Выберите язык",
   "categories": {
    "beer": "Пиво",
-   "cider": "Сидр",
+   "cider": "Сидр и коктейли",
    "drinks": "Безалкогольные",
    "sweets": "Сладости",
    "snacks": "Снеки",
@@ -258,7 +261,8 @@
    "preserves": "Варенье и джемы",
    "oil": "Масло",
    "other": "Другое",
-   "bottled": "Бутылочное"
+   "bottled": "Бутылочное",
+   "non_alc_beer": "Безалкогольное пиво"
   },
   "footer": {
    "about": "Beer&Snacks — ваш магазин крафтовых напитков и вкусных снеков в Таллинне.",

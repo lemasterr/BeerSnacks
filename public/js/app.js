@@ -86,6 +86,8 @@
   const subName = (slug) => slug === 'all' ? ui().all : (tr().subcategories?.[slug] || slug);
   // "draft" / "bottled" are derived filters: a product is draft when it has a 0.5 L price,
   // so its real subcategory can stay the country.
+  // Cards use a light copy (img/products/sm/, 560 px tall); the product sheet shows the full image.
+  const thumb = (src) => /^img\/products\/[^/]+\.webp$/.test(src) ? src.replace('img/products/', 'img/products/sm/') : src;
   const isDraft = (p) => !!p.price_05 || p.subcategory === 'draft';
   const inSub = (p, s) => s === 'all' || (s === 'draft' ? isDraft(p) : s === 'bottled' ? !isDraft(p) : p.subcategory === s);
   const price = (n, unit) => {
@@ -204,6 +206,13 @@
     const subCount = (s) => state.data.catalog.filter(p => p.category === state.cat && inSub(p, s)).length;
     els.subs.innerHTML = subs.map(s =>
       `<button type="button" class="sub" data-sub="${esc(s)}" aria-pressed="${s === state.sub}">${esc(subName(s))}<span class="sub__n">${subCount(s)}</span></button>`).join('');
+    // On narrow screens the tabs scroll sideways: keep the selected ones in view.
+    for (const sel of [els.cats.querySelector('[aria-selected="true"]'), els.subs.querySelector('[aria-pressed="true"]')]) {
+      if (!sel) continue;
+      const box = sel.parentElement;
+      const left = sel.offsetLeft - (box.clientWidth - sel.offsetWidth) / 2;
+      box.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+    }
   }
 
   function specs(p) {
@@ -218,7 +227,7 @@
     return `<article class="card${out ? ' card--out' : ''}" style="--i:${Math.min(i, 12)}">
       <button type="button" class="card__hit" data-id="${esc(p.id)}" aria-label="${esc(name)}"></button>
       <div class="card__img${p.image ? '' : ' card__img--none'}">
-        ${p.image ? `<img src="${esc(p.image)}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400" onerror="this.parentNode.classList.add('is-broken')" />`
+        ${p.image ? `<img src="${esc(thumb(p.image))}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400" data-full="${esc(p.image)}" onerror="if(this.dataset.full&&this.src.indexOf('/sm/')>0){this.src=this.dataset.full}else{this.parentNode.classList.add('is-broken')}" />`
           : `<span class="ph-name">${esc(name)}</span>`}
         ${out ? `<span class="card__out">${esc(ui().outOfStock)}</span>` : ''}
       </div>
@@ -369,6 +378,8 @@
         fallback('categories', 'data/categories.json'),
         data.catalog.length ? null : fallback('catalog', 'data/catalog.json'),
       ]);
+      // Out-of-stock products stay in the database (and the admin) but are not shown to visitors.
+      data.catalog = (data.catalog || []).filter(p => p.in_stock !== false);
       state.data = { ...state.data, ...data };
       const cats = Object.keys(state.data.categories);
       if (!cats.includes(state.cat)) state.cat = cats[0] || null;

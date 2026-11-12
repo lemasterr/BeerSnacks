@@ -20,7 +20,8 @@
    "all",
    "fruit_cider",
    "berry_cider",
-   "non_alc_cider"
+   "non_alc_cider",
+   "cocktails"
   ]
  },
  {
@@ -28,7 +29,7 @@
   "sort_order": 2,
   "subcategories": [
    "all",
-   "cocktails",
+   "non_alc_beer",
    "energy",
    "sodas",
    "juices",

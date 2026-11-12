@@ -383,6 +383,35 @@ html.gate-open body > :not(.gate) { visibility: hidden; }
   .pill { flex: 1; justify-content: center; height: 42px; padding: 0 12px; font-size: 14px; }
 }
 
+/* Phones: less header, more products on the first screen; tighter cards that still read well. */
+@media (max-width: 520px) {
+  .top__inner { padding-top: 8px; padding-bottom: 10px; }
+  .logo { font-size: 18px; }
+  .icon-btn, .lang__btn { height: 40px; }
+  .icon-btn { width: 40px; }
+  .search { height: 42px; }
+  .intro { padding-top: 14px; padding-bottom: 10px; gap: 10px; }
+  .intro__title { font-size: clamp(22px, 6.6vw, 28px); max-width: none; }
+  .intro__status { margin-top: 6px; font-size: 13.5px; }
+  .pill { height: 40px; }
+  .cats { padding-top: 6px; padding-bottom: 6px; }
+  .cat { font-size: 15px; padding: 9px 13px 9px 14px; }
+  .sub { font-size: 13.5px; padding: 7px 11px 7px 12px; }
+  .grid { gap: 14px 10px; padding-bottom: 64px; }
+  .card__img { border-radius: 14px; }
+  .card__hit { border-radius: 14px; }
+  .tag { margin: -16px 0 0 8px; padding: 6px 9px 5px 11px; }
+  .tags { margin: -16px 0 0 8px; }
+  .tag__eur { font-size: 18px; }
+  .tag--duo .tag__eur { font-size: 16px; }
+  .tag__vol { font-size: 10px; }
+  .card__name { font-size: 14px; line-height: 1.28; margin: 9px 2px 3px; }
+  .card__specs { font-size: 12px; margin: 0 2px; gap: 1px 8px; }
+  .sheet__info { padding: 20px 20px calc(24px + env(safe-area-inset-bottom)); gap: 12px; }
+  .sheet__title { font-size: 24px; }
+  .to-top { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
