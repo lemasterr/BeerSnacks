@@ -503,15 +503,7 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
 
 /* Holiday: the main title glows like a neon sign (the separate greeting line is not shown) */
 [data-season="newyear"] .season-greet { display: none; }
-[data-season="newyear"] .intro__title {
-  color: #c08a00; text-shadow: 0 0 8px rgb(255 190 40 / .45), 0 0 20px rgb(255 170 30 / .25);
-  transition: opacity .05s, text-shadow .05s;
-}
-[data-season="newyear"][data-theme="dark"] .intro__title {
-  color: #ffe6a6; text-shadow: 0 0 5px rgb(255 214 120 / .75), 0 0 16px rgb(255 120 80 / .5), 0 0 36px rgb(255 80 60 / .3);
-}
 /* A flicker is toggled from JS at random moments: once, twice or three times in a row */
-[data-season="newyear"] .intro__title.flick { opacity: .6; text-shadow: none; }
 
 .to-top {
   position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 30;

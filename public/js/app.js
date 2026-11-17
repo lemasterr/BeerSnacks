@@ -240,7 +240,6 @@
     if (season !== 'newyear') { delete root.dataset.season; $('season-greet').hidden = true; return; }
     root.dataset.season = 'newyear';
     const g = $('season-greet'); g.hidden = false; g.textContent = u.newyear;
-    if (!neonTimer && !matchMedia('(prefers-reduced-motion: reduce)').matches) neonLoop();
     const snowOn = localStorage.getItem('bs_snow') !== 'off';
     const sb = $('snow-toggle'); sb.setAttribute('aria-pressed', snowOn); sb.setAttribute('aria-label', snowOn ? u.snowOff : u.snowOn); sb.title = sb.getAttribute('aria-label');
     if (!snowOn) { $('snow')?.remove(); }
