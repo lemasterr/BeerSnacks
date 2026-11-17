@@ -214,11 +214,29 @@
   }
 
   // ── Seasonal decoration, switched on in the admin panel (settings.season) ──
+  // Neon title flicker at random moments: usually once, sometimes twice or three times in a row.
+  let neonTimer = 0;
+  function neonLoop() {
+    neonTimer = setTimeout(() => {
+      const el = $('intro-title');
+      if (document.documentElement.dataset.season !== 'newyear') { neonTimer = 0; return; }
+      const r = Math.random(), n = r < .55 ? 1 : r < .87 ? 2 : 3;
+      let t = 0;
+      for (let i = 0; i < n; i++) {
+        const on = 70 + Math.random() * 90;
+        setTimeout(() => el.classList.add('flick'), t);
+        setTimeout(() => el.classList.remove('flick'), t + on);
+        t += on + 80 + Math.random() * 120;
+      }
+      neonLoop();
+    }, 2500 + Math.random() * 6500);
+  }
   function renderSeason(season, u) {
     const root = document.documentElement;
     if (season !== 'newyear') { delete root.dataset.season; $('season-greet').hidden = true; return; }
     root.dataset.season = 'newyear';
     const g = $('season-greet'); g.hidden = false; g.textContent = u.newyear;
+    if (!neonTimer && !matchMedia('(prefers-reduced-motion: reduce)').matches) neonLoop();
     if (!$('snow') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const snow = document.createElement('div'); snow.id = 'snow'; snow.className = 'snow'; snow.setAttribute('aria-hidden', 'true');
       snow.innerHTML = Array.from({ length: 28 }, () =>
