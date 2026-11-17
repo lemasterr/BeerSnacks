@@ -10,6 +10,7 @@
   // Interface strings (product data and category names come from the admin panel).
   const UI = {
     uk: {
+      warnShort: 'Алкоголь може зашкодити вашому здоров’ю.', 
       snowOff: 'Вимкнути сніг', snowOn: 'Увімкнути сніг',
       ageQ: 'Вам уже є 18 років?', ageYes: 'Так, мені 18+', ageNo: 'Ні', ageDenied: 'Сайт містить інформацію про алкоголь і доступний лише особам від 18 років.',
       cookie: 'Ми не використовуємо рекламні чи аналітичні cookie. Сайт зберігає у браузері лише вибрану мову та тему.', ok: 'Зрозуміло', privacy: 'Політика конфіденційності',
@@ -23,6 +24,7 @@
       order: 'Замовити в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     ru: {
+      warnShort: 'Алкоголь может навредить вашему здоровью.', 
       snowOff: 'Выключить снег', snowOn: 'Включить снег',
       ageQ: 'Вам уже есть 18 лет?', ageYes: 'Да, мне 18+', ageNo: 'Нет', ageDenied: 'Сайт содержит информацию об алкоголе и доступен только лицам от 18 лет.',
       cookie: 'Мы не используем рекламные и аналитические cookie. Сайт хранит в браузере только выбранный язык и тему.', ok: 'Понятно', privacy: 'Политика конфиденциальности',
@@ -36,6 +38,7 @@
       order: 'Заказать в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     et: {
+      warnShort: 'Alkohol võib kahjustada teie tervist.', 
       snowOff: 'Lülita lumi välja', snowOn: 'Lülita lumi sisse',
       ageQ: 'Kas oled vähemalt 18-aastane?', ageYes: 'Jah, olen 18+', ageNo: 'Ei', ageDenied: 'Leht sisaldab teavet alkoholi kohta ja on mõeldud ainult vähemalt 18-aastastele.',
       cookie: 'Me ei kasuta reklaami- ega analüütikaküpsiseid. Leht salvestab brauserisse ainult valitud keele ja teema.', ok: 'Selge', privacy: 'Privaatsuspoliitika',
@@ -49,6 +52,7 @@
       order: 'Telli {s} kaudu', route: 'Teekond', phone: 'Telefon',
     },
     en: {
+      warnShort: 'Alcohol may harm your health.', 
       snowOff: 'Turn snow off', snowOn: 'Turn snow on',
       ageQ: 'Are you 18 or older?', ageYes: 'Yes, I am 18+', ageNo: 'No', ageDenied: 'This site contains information about alcohol and is only for persons aged 18 and over.',
       cookie: 'We use no advertising or analytics cookies. The site only stores your chosen language and theme in your browser.', ok: 'Got it', privacy: 'Privacy policy',
@@ -104,7 +108,8 @@
   // so its real subcategory can stay the country.
   // Cards use a light copy (img/products/sm/, 420 px tall); the product sheet shows the full image.
   const thumb = (src) => /^img\/products\/[^/]+\.webp$/.test(src) ? src.replace('img/products/', 'img/products/sm/') : src;
-  const isAlcohol = (p) => (p.category === 'beer' || p.category === 'cider') && !/^0(\.0)?\s*%/.test(String(p.abv || ''));
+  const isAlcohol = (p) => (p.category === 'beer' || p.category === 'cider') && !/^0([.,]0+)?\s*%/.test(String(p.abv || '')) &&
+    p.subcategory !== 'non_alc_cider' && !/non-alcoholic|alcohol-free|kvass/i.test(`${p.name_en || ''} ${p.type_en || ''}`);
   const isDraft = (p) => !!p.price_05 || p.subcategory === 'draft';
   const inSub = (p, s) => s === 'all' || (s === 'draft' ? isDraft(p) : s === 'bottled' ? !isDraft(p) : p.subcategory === s);
   const price = (n, unit) => {
@@ -166,7 +171,7 @@
     $('foot-hours').textContent = f.hoursValue || '';
     $('foot-rights').textContent = f.rights || `© ${new Date().getFullYear()} Beer&Snacks`;
     $('foot-age').textContent = u.age;
-    $('foot-warn').textContent = u.warn;
+    $('foot-warn').textContent = u.warnShort;
     const pl = $('foot-privacy'); pl.textContent = u.privacy; pl.href = `privacy.html?lang=${state.lang}`;
     $('foot-contact-title').textContent = u.contacts;
 
