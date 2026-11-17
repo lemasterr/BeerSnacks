@@ -375,9 +375,14 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
 .gate__btns button:focus-visible { outline: 2.5px solid #fff; outline-offset: 3px; }
 .gate__denied { color: #f3b4a8; font-size: 15px; min-height: 1.5em; }
 
-/* ── Alcohol warning ── */
-.warn { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
-.foot__warn { margin-top: 28px; font-size: 13px; opacity: .7; }
+/* ── Alcohol warning (Reklaamiseadus § 28 lg 4: noticeable, clearly separated from other information) ── */
+.warn, .alc-warn, .foot__warn { display: grid; gap: 2px; }
+.warn b, .alc-warn b, .foot__warn b { font-weight: 700; }
+.warn span, .alc-warn span, .foot__warn span { font-size: .92em; opacity: .8; }
+.warn { font-size: 14px; color: var(--ink); background: var(--tile); border: 1.5px solid var(--ink); border-radius: 10px; padding: 10px 12px; }
+.alc-warn { font-size: 14px; color: var(--ink); background: var(--tile); border: 1.5px solid var(--ink); border-radius: 12px; padding: 10px 14px; margin: 4px 0 16px; }
+.alc-warn[hidden] { display: none; }
+.foot__warn { margin-top: 28px; font-size: 15px; background: #fff; color: #111; border-radius: 10px; padding: 12px 16px; }
 
 /* ── Shops in the footer: small map + address, the whole card opens directions ── */
 .stores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }

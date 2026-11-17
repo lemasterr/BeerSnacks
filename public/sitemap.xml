@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://beersnacks.pages.dev/</loc><lastmod>2026-11-17</lastmod><priority>1.0</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?c=beer</loc><lastmod>2026-11-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?c=cider</loc><lastmod>2026-11-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?c=drinks</loc><lastmod>2026-11-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?c=sweets</loc><lastmod>2026-11-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?c=snacks</loc><lastmod>2026-11-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?c=groceries</loc><lastmod>2026-11-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?lang=et</loc><lastmod>2026-11-17</lastmod><priority>0.6</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?lang=en</loc><lastmod>2026-11-17</lastmod><priority>0.6</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?lang=uk</loc><lastmod>2026-11-17</lastmod><priority>0.6</priority></url>
+  <url><loc>https://beersnacks.pages.dev/?lang=ru</loc><lastmod>2026-11-17</lastmod><priority>0.6</priority></url>
+  <url><loc>https://beersnacks.pages.dev/privacy</loc><lastmod>2026-11-17</lastmod><priority>0.2</priority></url>
+</urlset>

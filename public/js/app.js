@@ -10,6 +10,7 @@
   // Interface strings (product data and category names come from the admin panel).
   const UI = {
     uk: {
+      warnTr: 'Увага! Це алкоголь. Алкоголь може зашкодити вашому здоров’ю.',
       fxOff: 'Вимкнути анімацію', fxOn: 'Увімкнути анімацію',
       warnShort: 'Алкоголь може зашкодити вашому здоров’ю.', 
       snowOff: 'Вимкнути сніг', snowOn: 'Увімкнути сніг',
@@ -25,6 +26,7 @@
       order: 'Замовити в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     ru: {
+      warnTr: 'Внимание! Это алкоголь. Алкоголь может навредить вашему здоровью.',
       fxOff: 'Выключить анимацию', fxOn: 'Включить анимацию',
       warnShort: 'Алкоголь может навредить вашему здоровью.', 
       snowOff: 'Выключить снег', snowOn: 'Включить снег',
@@ -40,6 +42,7 @@
       order: 'Заказать в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     et: {
+      warnTr: '',
       fxOff: 'Lülita animatsioon välja', fxOn: 'Lülita animatsioon sisse',
       warnShort: 'Alkohol võib kahjustada teie tervist.', 
       snowOff: 'Lülita lumi välja', snowOn: 'Lülita lumi sisse',
@@ -55,6 +58,7 @@
       order: 'Telli {s} kaudu', route: 'Teekond', phone: 'Telefon',
     },
     en: {
+      warnTr: 'Attention! This is alcohol. Alcohol may harm your health.',
       fxOff: 'Turn animation off', fxOn: 'Turn animation on',
       warnShort: 'Alcohol may harm your health.', 
       snowOff: 'Turn snow off', snowOn: 'Turn snow on',
@@ -112,6 +116,9 @@
   // so its real subcategory can stay the country.
   // Cards use a light copy (img/products/sm/, 420 px tall); the product sheet shows the full image.
   const thumb = (src) => /^img\/products\/[^/]+\.webp$/.test(src) ? src.replace('img/products/', 'img/products/sm/') : src;
+  // Mandatory warning for alcohol advertising (Reklaamiseadus § 28 lg 4): always this exact Estonian text.
+  const LEGAL_WARN = 'Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist.';
+  const warnHtml = () => `<b lang="et">${LEGAL_WARN}</b>${ui().warnTr ? `<span>${esc(ui().warnTr)}</span>` : ''}`;
   const isAlcohol = (p) => (p.category === 'beer' || p.category === 'cider') && !/^0([.,]0+)?\s*%/.test(String(p.abv || '')) &&
     p.subcategory !== 'non_alc_cider' && !/non-alcoholic|alcohol-free|kvass/i.test(`${p.name_en || ''} ${p.type_en || ''}`);
   const isDraft = (p) => !!p.price_05 || p.subcategory === 'draft';
@@ -175,7 +182,7 @@
     $('foot-hours').textContent = f.hoursValue || '';
     $('foot-rights').textContent = f.rights || `© ${new Date().getFullYear()} Beer&Snacks`;
     $('foot-age').textContent = u.age;
-    $('foot-warn').textContent = u.warnShort;
+    $('foot-warn').innerHTML = warnHtml();
     const pl = $('foot-privacy'); pl.textContent = u.privacy; pl.href = `privacy.html?lang=${state.lang}`;
     $('foot-contact-title').textContent = u.contacts;
 
@@ -364,6 +371,7 @@
       els.products.innerHTML = `<p class="grid__empty">${esc(q ? fmt(ui().nothing, { q }) : ui().empty)}</p>`;
       return;
     }
+    const aw = $('alc-warn'); aw.hidden = !items.some(isAlcohol); if (!aw.hidden) aw.innerHTML = warnHtml();
     els.products.classList.toggle('grid--animate', animate);
     els.products.innerHTML = items.map(card).join('');
   }
@@ -422,7 +430,7 @@
           <p>${esc(u.where)}</p>
           ${stores.map(s => `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.address)}" target="_blank" rel="noopener"><strong>${esc(s.name)}</strong> ${esc(s.address)}</a>`).join('')}
         </div>`}
-        ${isAlcohol(p) ? `<p class="warn">${esc(u.warn)}</p>` : ''}
+        ${isAlcohol(p) ? `<p class="warn">${warnHtml()}</p>` : ''}
       </div>`;
     els.sheet.showModal();
     els.sheet.focus({ preventScroll: true });  // no focus ring on the first store link
