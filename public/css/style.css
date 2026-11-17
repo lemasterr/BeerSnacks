@@ -457,21 +457,16 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-/* Price tags: a mound of snow lies a little differently on each tag (five variants by card position, no JS). */
-[data-season="newyear"] .tag { isolation: isolate; }
+/* Price tags: snow drifted inside the tag along its bottom, behind the digits (five variants by card position). */
+[data-season="newyear"] .tag { isolation: isolate; overflow: hidden; }
 [data-season="newyear"] .tag::after {
-  content: ''; position: absolute; left: 5px; top: -9px; width: 50%; max-width: 64px; height: 13px; pointer-events: none;
-  background: linear-gradient(#fff 45%, var(--snow-shade)); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 16' preserveAspectRatio='none'%3E%3Cpath d='M0 16C1 9 6 5 13 5C18 5 20 7 24 7C29 7 32 1 40 1C48 1 52 6 55 9C58 12 60 13 60 16Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 16' preserveAspectRatio='none'%3E%3Cpath d='M0 16C1 9 6 5 13 5C18 5 20 7 24 7C29 7 32 1 40 1C48 1 52 6 55 9C58 12 60 13 60 16Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
-  filter: drop-shadow(0 1px 0 rgb(40 70 95 / .28));
+  content: ''; position: absolute; bottom: 0; left: 0; width: 42%; max-width: 58px; height: 16px; z-index: -1; pointer-events: none;
+  background: linear-gradient(#fff 40%, var(--snow-shade)); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 20' preserveAspectRatio='none'%3E%3Cpath d='M0 20V7C6 4 12 4 17 8C21 11 25 9 30 11C37 14 44 16 50 20Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 20' preserveAspectRatio='none'%3E%3Cpath d='M0 20V7C6 4 12 4 17 8C21 11 25 9 30 11C37 14 44 16 50 20Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
 }
-[data-season="newyear"] .card:nth-child(5n+2) .tag::after { left: auto; right: 4px; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 16' preserveAspectRatio='none'%3E%3Cpath d='M0 16C2 12 5 8 11 8C16 8 18 3 26 3C34 3 36 9 42 9C47 9 49 6 54 7C58 8 60 12 60 16Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 16' preserveAspectRatio='none'%3E%3Cpath d='M0 16C2 12 5 8 11 8C16 8 18 3 26 3C34 3 36 9 42 9C47 9 49 6 54 7C58 8 60 12 60 16Z'/%3E%3C/svg%3E"); }
-[data-season="newyear"] .card:nth-child(5n+3) .tag::after { left: 22%; width: 60%; max-width: 86px; top: -10px; height: 14px; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 16' preserveAspectRatio='none'%3E%3Cpath d='M0 16C3 10 8 6 16 6C23 6 26 10 31 10C36 10 39 2 49 2C59 2 62 8 68 9C75 10 79 13 80 16Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 16' preserveAspectRatio='none'%3E%3Cpath d='M0 16C3 10 8 6 16 6C23 6 26 10 31 10C36 10 39 2 49 2C59 2 62 8 68 9C75 10 79 13 80 16Z'/%3E%3C/svg%3E"); }
-[data-season="newyear"] .card:nth-child(5n+4) .tag, [data-season="newyear"] .card:nth-child(5n) .tag { overflow: hidden; }
-[data-season="newyear"] .card:nth-child(5n+4) .tag::after, [data-season="newyear"] .card:nth-child(5n) .tag::after {
-  top: auto; bottom: 0; left: 0; width: 40%; max-width: 56px; height: 16px; z-index: -1; filter: none;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 20' preserveAspectRatio='none'%3E%3Cpath d='M0 20V7C6 4 12 4 17 8C21 11 25 9 30 11C37 14 44 16 50 20Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 20' preserveAspectRatio='none'%3E%3Cpath d='M0 20V7C6 4 12 4 17 8C21 11 25 9 30 11C37 14 44 16 50 20Z'/%3E%3C/svg%3E");
-}
-[data-season="newyear"] .card:nth-child(5n) .tag::after { left: auto; right: 0; transform: scaleX(-1); }
+[data-season="newyear"] .card:nth-child(5n+2) .tag::after { left: auto; right: 0; transform: scaleX(-1); }
+[data-season="newyear"] .card:nth-child(5n+3) .tag::after { left: 0; width: 100%; max-width: none; height: 11px; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M0 16V11C8 9 14 6 22 6C30 6 34 10 42 10C50 10 55 4 65 4C75 4 80 9 88 10C94 11 98 13 100 16Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M0 16V11C8 9 14 6 22 6C30 6 34 10 42 10C50 10 55 4 65 4C75 4 80 9 88 10C94 11 98 13 100 16Z'/%3E%3C/svg%3E"); }
+[data-season="newyear"] .card:nth-child(5n+4) .tag::after { width: 58%; max-width: 80px; height: 13px; }
+[data-season="newyear"] .card:nth-child(5n) .tag::after { left: auto; right: 0; width: 34%; height: 18px; transform: scaleX(-1); }
 [data-season="newyear"] .card--out .tag::after { display: none; }
 
 /* Snowdrift lying on the top edge of the footer: rounded mounds rise above the edge, a lip with small
