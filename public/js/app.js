@@ -431,12 +431,6 @@
     els.search.value = ''; state.q = ''; els.searchClear.hidden = true;
     renderCats(); renderProducts({ animate: false }); syncUrl(); toListTop(); els.search.focus();
   });
-  // Phones: the magnifier button opens / closes the search row.
-  const top = document.querySelector('.top'), searchOpen = $('search-open');
-  const setSearch = (open) => { top.classList.toggle('search-open', open); searchOpen.setAttribute('aria-expanded', open); if (open) els.search.focus(); };
-  searchOpen.addEventListener('click', () => setSearch(!top.classList.contains('search-open')));
-  els.search.addEventListener('blur', () => { if (!els.search.value) setTimeout(() => { if (document.activeElement !== els.search && !els.search.value) setSearch(false); }, 150); });
-  if (state.q) top.classList.add('search-open');
   // Enter on a phone keyboard: hide the keyboard so the results are visible.
   els.search.addEventListener('keydown', (e) => { if (e.key === 'Enter') els.search.blur(); });
 
