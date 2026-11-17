@@ -480,20 +480,16 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 30' preserveAspectRatio='none'%3E%3Cpath d='M0 14C20 14 30 6 56 6C82 6 88 14 110 14C130 14 140 4 168 4C196 4 204 13 226 13C246 13 256 7 280 7C300 7 306 14 320 14V24C312 24 310 30 304 30C298 30 297 24 288 24H210C204 24 203 29 198 29C193 29 192 24 186 24H96C90 24 89 30 83 30C77 30 76 24 70 24H0Z'/%3E%3C/svg%3E") 0 0 / 320px 100% repeat-x; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 30' preserveAspectRatio='none'%3E%3Cpath d='M0 14C20 14 30 6 56 6C82 6 88 14 110 14C130 14 140 4 168 4C196 4 204 13 226 13C246 13 256 7 280 7C300 7 306 14 320 14V24C312 24 310 30 304 30C298 30 297 24 288 24H210C204 24 203 29 198 29C193 29 192 24 186 24H96C90 24 89 30 83 30C77 30 76 24 70 24H0Z'/%3E%3C/svg%3E") 0 0 / 320px 100% repeat-x;
 }
 
-/* Greeting as a little neon sign with a spruce sprig */
-[data-season="newyear"] .season-greet {
-  display: inline-flex; align-items: center; gap: 8px; padding: 0; background: none; border-radius: 0;
-  font: 700 clamp(15px, 2vw, 18px)/1.2 var(--display); letter-spacing: -.01em;
-  color: #c62828; text-shadow: 0 0 6px rgb(255 80 60 / .35), 0 0 14px rgb(255 80 60 / .18);
-  animation: neon 4.5s ease-in-out infinite;
+/* Holiday: the main title glows like a neon sign (the separate greeting line is not shown) */
+[data-season="newyear"] .season-greet { display: none; }
+[data-season="newyear"] .intro__title {
+  color: #b3261e; text-shadow: 0 0 8px rgb(255 80 60 / .28), 0 0 22px rgb(255 80 60 / .14);
+  animation: neon 5s ease-in-out infinite;
 }
-[data-season="newyear"] .season-greet::before {
-  content: ''; width: 1.25em; height: 1.25em; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 6 10h3l-4 6h4l-3 5h12l-3-5h4l-4-6h3z' fill='%232e7d4f'/%3E%3Ccircle cx='9' cy='13' r='1.3' fill='%23e53935'/%3E%3Ccircle cx='15' cy='17' r='1.3' fill='%23fdd835'/%3E%3Ccircle cx='13' cy='8.5' r='1.1' fill='%231e88e5'/%3E%3C/svg%3E") center / contain no-repeat;
+[data-season="newyear"][data-theme="dark"] .intro__title {
+  color: #ffe6a6; text-shadow: 0 0 5px rgb(255 214 120 / .75), 0 0 16px rgb(255 120 80 / .5), 0 0 36px rgb(255 80 60 / .3);
 }
-[data-season="newyear"][data-theme="dark"] .season-greet {
-  color: #ffe6a6; text-shadow: 0 0 4px rgb(255 214 120 / .8), 0 0 12px rgb(255 120 80 / .55), 0 0 26px rgb(255 80 60 / .35);
-}
-@keyframes neon { 0%, 100% { opacity: 1; } 46% { opacity: 1; } 48% { opacity: .72; } 50% { opacity: 1; } 70% { opacity: .9; } }
+@keyframes neon { 0%, 100% { opacity: 1; } 46% { opacity: 1; } 47.5% { opacity: .78; } 49% { opacity: 1; } 70% { opacity: .93; } }
 
 .to-top {
   position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 30;
