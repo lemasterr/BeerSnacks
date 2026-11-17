@@ -407,8 +407,10 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
 .season-greet { display: inline-block; margin-bottom: 10px; font: 700 14px/1 var(--text); color: #b3261e; background: color-mix(in srgb, #b3261e 10%, transparent); padding: 7px 12px; border-radius: 999px; }
 .season-greet[hidden] { display: none; }
 [data-theme="dark"] .season-greet { color: #ff9a8f; background: rgb(255 120 110 / .12); }
-[data-season="newyear"] .top::after {  /* a string of lights under the header */
-  content: ''; position: absolute; left: 0; right: 0; bottom: -7px; height: 10px; pointer-events: none;
+/* ── Seasonal themes: each holiday swaps three small things: the line under the header, the little sign over
+   the "&" in the logo, and (where it fits) a few falling or rising particles. Everything else stays the same. ── */
+[data-season] .top::after { content: ''; position: absolute; left: 0; right: 0; bottom: -7px; height: 10px; pointer-events: none; }
+[data-season="newyear"] .top::after {  /* string of lights */
   background:
     radial-gradient(circle at 7px 5px, #e53935 3px, transparent 3.6px) 0 0 / 56px 10px,
     radial-gradient(circle at 21px 5px, #fdd835 3px, transparent 3.6px) 0 0 / 56px 10px,
@@ -417,22 +419,81 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
   filter: drop-shadow(0 0 3px rgb(255 220 120 / .55));
   animation: twinkle 2.4s ease-in-out infinite;
 }
+[data-season="valentine"] .top::after { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 10'%3E%3Cpath transform='translate(2 1) scale(.32)' d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.3 5.3 3.3 1.7-2 3.1-3.3 5.3-3.3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z' fill='%23e0335a'/%3E%3Cpath transform='translate(17 1) scale(.32)' d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.3 5.3 3.3 1.7-2 3.1-3.3 5.3-3.3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z' fill='%23f39ab0'/%3E%3Cpath transform='translate(32 1) scale(.32)' d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.3 5.3 3.3 1.7-2 3.1-3.3 5.3-3.3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z' fill='%23d92e5a'/%3E%3Cpath transform='translate(47 1) scale(.32)' d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.3 5.3 3.3 1.7-2 3.1-3.3 5.3-3.3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z' fill='%23f6b8c8'/%3E%3C/svg%3E") 0 0 / 60px 10px repeat-x; animation: twinkle 3.2s ease-in-out infinite; }
+[data-season="independence"] .top::after {  /* a quiet blue-black-white ribbon, no motion */
+  bottom: -5px; height: 6px; background: linear-gradient(#0072ce 0 33.3%, #000 33.3% 66.6%, #fff 66.6%);
+  box-shadow: 0 1px 0 rgb(0 0 0 / .12);
+}
+[data-season="womensday"] .top::after { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 10'%3E%3Cg transform='translate(4 0)'%3E%3Cpath d='M4 10V6' stroke='%234fa35f' stroke-width='1'/%3E%3Cpath d='M1.6 1.4c.7.4 1.2.9 1.4 1.6.3-.8.6-1.4 1-2 .4.6.7 1.2 1 2 .2-.7.7-1.2 1.4-1.6.3 1.7.1 3.1-.7 4-.6.6-1.1.9-1.7.9s-1.1-.3-1.7-.9c-.8-.9-1-2.3-.7-4z' fill='%23ec4f7c'/%3E%3C/g%3E%3Cg transform='translate(19 0)'%3E%3Cpath d='M4 10V6' stroke='%234fa35f' stroke-width='1'/%3E%3Cpath d='M1.6 1.4c.7.4 1.2.9 1.4 1.6.3-.8.6-1.4 1-2 .4.6.7 1.2 1 2 .2-.7.7-1.2 1.4-1.6.3 1.7.1 3.1-.7 4-.6.6-1.1.9-1.7.9s-1.1-.3-1.7-.9c-.8-.9-1-2.3-.7-4z' fill='%23ffb63b'/%3E%3C/g%3E%3Cg transform='translate(34 0)'%3E%3Cpath d='M4 10V6' stroke='%234fa35f' stroke-width='1'/%3E%3Cpath d='M1.6 1.4c.7.4 1.2.9 1.4 1.6.3-.8.6-1.4 1-2 .4.6.7 1.2 1 2 .2-.7.7-1.2 1.4-1.6.3 1.7.1 3.1-.7 4-.6.6-1.1.9-1.7.9s-1.1-.3-1.7-.9c-.8-.9-1-2.3-.7-4z' fill='%23e5486b'/%3E%3C/g%3E%3Cg transform='translate(49 0)'%3E%3Cpath d='M4 10V6' stroke='%234fa35f' stroke-width='1'/%3E%3Cpath d='M1.6 1.4c.7.4 1.2.9 1.4 1.6.3-.8.6-1.4 1-2 .4.6.7 1.2 1 2 .2-.7.7-1.2 1.4-1.6.3 1.7.1 3.1-.7 4-.6.6-1.1.9-1.7.9s-1.1-.3-1.7-.9c-.8-.9-1-2.3-.7-4z' fill='%23f7a9c4'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 60px 10px repeat-x; animation: none; }
+[data-season="easter"] .top::after { bottom: -9px; height: 12px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 12'%3E%3Cpath d='M0 2Q15 5 30 2T60 2' fill='none' stroke='%23b9a68c' stroke-width='.6'/%3E%3Cellipse cx='7' cy='7.4' rx='3' ry='4' fill='%23f6b6c8'/%3E%3Cpath d='M4 7.2h6' stroke='%23fff' stroke-width='.8' opacity='.8'/%3E%3Cellipse cx='22' cy='7.4' rx='3' ry='4' fill='%23a8d8ea'/%3E%3Cpath d='M19 7.2h6' stroke='%23fff' stroke-width='.8' opacity='.8'/%3E%3Cellipse cx='37' cy='7.4' rx='3' ry='4' fill='%23ffe08a'/%3E%3Cpath d='M34 7.2h6' stroke='%23fff' stroke-width='.8' opacity='.8'/%3E%3Cellipse cx='52' cy='7.4' rx='3' ry='4' fill='%23b9e4a6'/%3E%3Cpath d='M49 7.2h6' stroke='%23fff' stroke-width='.8' opacity='.8'/%3E%3C/svg%3E") 0 0 / 60px 12px repeat-x; animation: none; }
+[data-season="midsummer"] .top::after {  /* warm amber lights, flickering like fire */
+  background:
+    radial-gradient(circle at 7px 5px, #ff8a1f 3px, transparent 3.6px) 0 0 / 42px 10px,
+    radial-gradient(circle at 21px 5px, #ffc93b 3px, transparent 3.6px) 0 0 / 42px 10px,
+    radial-gradient(circle at 35px 5px, #ff6a2b 3px, transparent 3.6px) 0 0 / 42px 10px;
+  filter: drop-shadow(0 0 4px rgb(255 150 40 / .65));
+  animation: flicker 1.6s ease-in-out infinite;
+}
+[data-season="oktoberfest"] .top::after {  /* Bavarian blue-white diamonds */
+  bottom: -4px; height: 8px;
+  background: conic-gradient(from 45deg, #0098d4 25%, #fff 0 50%, #0098d4 0 75%, #fff 0) 0 0 / 12px 8px;
+  box-shadow: 0 1px 0 rgb(0 0 0 / .1);
+}
+[data-season="halloween"] .top::after {  /* orange and violet lights */
+  background:
+    radial-gradient(circle at 7px 5px, #ff7a00 3px, transparent 3.6px) 0 0 / 42px 10px,
+    radial-gradient(circle at 21px 5px, #8e44ff 3px, transparent 3.6px) 0 0 / 42px 10px,
+    radial-gradient(circle at 35px 5px, #ffb000 3px, transparent 3.6px) 0 0 / 42px 10px;
+  filter: drop-shadow(0 0 3px rgb(255 140 0 / .55));
+  animation: twinkle 2.8s ease-in-out infinite;
+}
 @keyframes twinkle { 50% { opacity: .55; } }
+@keyframes flicker { 0%, 100% { opacity: 1; } 30% { opacity: .75; } 55% { opacity: .95; } 75% { opacity: .7; } }
+
+/* The sign over the "&" (same place and size as the New Year gingerbread star) */
+[data-season] .logo span { position: relative; }
+[data-season]:not([data-season="newyear"]) .logo span::after {
+  content: ''; position: absolute; left: 39%; top: -.46em; width: .74em; height: .74em; transform: translateX(-50%) rotate(-6deg);
+  background-position: center; background-size: contain; background-repeat: no-repeat; filter: drop-shadow(0 1px 1px rgb(0 0 0 / .18)); pointer-events: none;
+}
+[data-season="valentine"] .logo span::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.3 5.3 3.3 1.7-2 3.1-3.3 5.3-3.3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z' fill='%23e0335a' stroke='%23b81f45' stroke-width='.8'/%3E%3Cpath d='M7 8.2c.7-.9 1.7-1.2 2.6-.9' fill='none' stroke='%23fff' stroke-width='1.2' stroke-linecap='round' opacity='.8'/%3E%3C/svg%3E"); }
+[data-season="independence"] .logo span::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%232f6fd6' stroke='%231d4fa3' stroke-width='.5'%3E%3Cpath transform='rotate(0 12 12)' d='M12 12 10.4 3.6 12 1.8 13.6 3.6Z'/%3E%3Cpath transform='rotate(40 12 12)' d='M12 12 10.4 3.6 12 1.8 13.6 3.6Z'/%3E%3Cpath transform='rotate(80 12 12)' d='M12 12 10.4 3.6 12 1.8 13.6 3.6Z'/%3E%3Cpath transform='rotate(120 12 12)' d='M12 12 10.4 3.6 12 1.8 13.6 3.6Z'/%3E%3Cpath transform='rotate(160 12 12)' d='M12 12 10.4 3.6 12 1.8 13.6 3.6Z'/%3E%3Cpath transform='rotate(200 12 12)' d='M12 12 10.4 3.6 12 1.8 13.6 3.6Z'/%3E%3Cpath transform='rotate(240 12 12)' d='M12 12 10.4 3.6 12 1.8 13.6 3.6Z'/%3E%3Cpath transform='rotate(280 12 12)' d='M12 12 10.4 3.6 12 1.8 13.6 3.6Z'/%3E%3Cpath transform='rotate(320 12 12)' d='M12 12 10.4 3.6 12 1.8 13.6 3.6Z'/%3E%3C/g%3E%3Ccircle cx='12' cy='12' r='2.4' fill='%2314245c'/%3E%3C/svg%3E"); }
+[data-season="womensday"] .logo span::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 22V12' stroke='%233f8f4f' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M12 17c-3-1-4.5-3-4.6-5.5 2.2.3 3.8 1.6 4.6 3.5' fill='%234fa35f'/%3E%3Cpath d='M7 3.5c1.6 1 2.6 2.1 3 3.4.5-1.6 1.2-2.8 2-3.9.8 1.1 1.5 2.3 2 3.9.4-1.3 1.4-2.4 3-3.4.6 3.3.3 6.2-1.4 8-1.2 1.3-2.4 1.9-3.6 1.9s-2.4-.6-3.6-1.9C7.7 9.7 6.4 6.8 7 3.5z' fill='%23ec4f7c' stroke='%23c2335d' stroke-width='.6'/%3E%3C/svg%3E"); }
+[data-season="easter"] .logo span::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 22c1-6 3.5-12 9-19' fill='none' stroke='%237a5a3c' stroke-width='1.3' stroke-linecap='round'/%3E%3Cellipse cx='9.6' cy='15' rx='1.9' ry='2.7' transform='rotate(-25 9.6 15)' fill='%23d9dcd6' stroke='%23a9ada6' stroke-width='.5'/%3E%3Cellipse cx='12.6' cy='9.5' rx='1.9' ry='2.7' transform='rotate(-30 12.6 9.5)' fill='%23d9dcd6' stroke='%23a9ada6' stroke-width='.5'/%3E%3Cellipse cx='15.3' cy='5.2' rx='1.9' ry='2.7' transform='rotate(-35 15.3 5.2)' fill='%23d9dcd6' stroke='%23a9ada6' stroke-width='.5'/%3E%3Cellipse cx='11.2' cy='12.4' rx='1.9' ry='2.7' transform='rotate(40 11.2 12.4)' fill='%23d9dcd6' stroke='%23a9ada6' stroke-width='.5'/%3E%3Cellipse cx='14' cy='7.2' rx='1.9' ry='2.7' transform='rotate(40 14 7.2)' fill='%23d9dcd6' stroke='%23a9ada6' stroke-width='.5'/%3E%3C/svg%3E"); }
+[data-season="midsummer"] .logo span::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23ffb52e' stroke='%23e07b00' stroke-width='.5'%3E%3Cpath transform='rotate(0 12 12)' d='M12 12C10.6 9.5 10.8 5.6 12 3c1.2 2.6 1.4 6.5 0 9z'/%3E%3Cpath transform='rotate(60 12 12)' d='M12 12C10.6 9.5 10.8 5.6 12 3c1.2 2.6 1.4 6.5 0 9z'/%3E%3Cpath transform='rotate(120 12 12)' d='M12 12C10.6 9.5 10.8 5.6 12 3c1.2 2.6 1.4 6.5 0 9z'/%3E%3Cpath transform='rotate(180 12 12)' d='M12 12C10.6 9.5 10.8 5.6 12 3c1.2 2.6 1.4 6.5 0 9z'/%3E%3Cpath transform='rotate(240 12 12)' d='M12 12C10.6 9.5 10.8 5.6 12 3c1.2 2.6 1.4 6.5 0 9z'/%3E%3Cpath transform='rotate(300 12 12)' d='M12 12C10.6 9.5 10.8 5.6 12 3c1.2 2.6 1.4 6.5 0 9z'/%3E%3C/g%3E%3Ccircle cx='12' cy='12' r='2.2' fill='%23fff3b0'/%3E%3C/svg%3E"); }
+[data-season="oktoberfest"] .logo span::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 9.5C9.5 5.5 4 5.8 3.3 10c-.6 3.6 2.6 7 6.2 7.8M12 9.5c2.5-4 8-3.7 8.7.5.6 3.6-2.6 7-6.2 7.8M8.2 19.6l7.3-7.7M15.8 19.6 8.5 11.9' fill='none' stroke='%23a8642a' stroke-width='2.6' stroke-linecap='round'/%3E%3Cg fill='%23fff'%3E%3Ccircle cx='6' cy='9.6' r='.6'/%3E%3Ccircle cx='17.6' cy='9.2' r='.6'/%3E%3Ccircle cx='12' cy='15.3' r='.6'/%3E%3C/g%3E%3C/svg%3E"); }
+[data-season="halloween"] .logo span::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 6.5c.2-1.8 1-3 2.6-3.6' fill='none' stroke='%234b7a2e' stroke-width='1.6' stroke-linecap='round'/%3E%3Cellipse cx='8.6' cy='14' rx='5' ry='6.6' fill='%23f07f18'/%3E%3Cellipse cx='15.4' cy='14' rx='5' ry='6.6' fill='%23f07f18'/%3E%3Cellipse cx='12' cy='14' rx='3.6' ry='7' fill='%23ff9a2e'/%3E%3Cpath d='M8.5 12.6l1.5-1.6 1 1.6zM13 12.6l1.5-1.6 1 1.6zM8.6 16.3c1.2 1.3 5.6 1.3 6.8 0' fill='%235a2a00' stroke='%235a2a00' stroke-width='.6' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+
+/* Effects toggle: snowflake for New Year, sparkles for the other themes */
 .snow-btn { display: none; }
-[data-season="newyear"] .snow-btn { display: grid; }
-.snow-btn .i-slash { display: none; }
+[data-season] .snow-btn:not([hidden]) { display: grid; }
+.snow-btn .i-slash, .snow-btn .i-spark { display: none; }
+[data-season]:not([data-season="newyear"]) .snow-btn .i-flake { display: none; }
+[data-season]:not([data-season="newyear"]) .snow-btn .i-spark { display: inline; }
 .snow-btn svg { width: 21px; height: 21px; stroke-width: 1.7; }
 .snow-btn[aria-pressed="false"] .i-slash { display: inline; stroke-width: 1.9; }
 .snow-btn[aria-pressed="false"] .i-gap { stroke: var(--paper); stroke-width: 5; }
-.snow-btn[aria-pressed="false"] .i-flake { opacity: .55; }
-.snow { position: fixed; inset: 0; pointer-events: none; z-index: 45; overflow: hidden; }
-.snow i {
-  position: absolute; top: -12px; left: var(--x); width: var(--s); height: var(--s); border-radius: 50%;
-  background: #fff; opacity: var(--o); box-shadow: 0 0 4px rgb(160 180 200 / .6);
-  animation: fall var(--d) linear var(--w) infinite;
-}
-:root:not([data-theme="dark"]) .snow i { background: #cfe0ee; box-shadow: 0 0 3px rgb(120 150 180 / .5); }
+.snow-btn[aria-pressed="false"] .i-flake, .snow-btn[aria-pressed="false"] .i-spark { opacity: .55; }
+
+/* Particles */
+.fx { position: fixed; inset: 0; pointer-events: none; z-index: 45; overflow: hidden; }
+.fx i { position: absolute; left: var(--x); width: var(--s); height: var(--s); opacity: var(--o); animation: var(--d) linear var(--w) infinite; }
+.fx--snow i { top: -12px; border-radius: 50%; background: #fff; box-shadow: 0 0 4px rgb(160 180 200 / .6); animation-name: fall; }
+:root:not([data-theme="dark"]) .fx--snow i { background: #cfe0ee; box-shadow: 0 0 3px rgb(120 150 180 / .5); }
+.fx--hearts i, .fx--petals i { top: -20px; background: var(--c); }
+.fx--hearts i { animation-name: drift; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.3 5.3 3.3 1.7-2 3.1-3.3 5.3-3.3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.3 5.3 3.3 1.7-2 3.1-3.3 5.3-3.3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E") center / contain no-repeat; }
+.fx--petals i { height: calc(var(--s) * .62); border-radius: 80% 0 80% 0; animation-name: petal; }
+.fx--embers i { top: auto; bottom: -10px; border-radius: 50%; background: #ffb43a; box-shadow: 0 0 6px 2px rgb(255 120 30 / .7); animation-name: rise; }
+.fx--bats i { left: -40px; top: var(--y); width: var(--s); height: calc(var(--s) * .5); background: #2a1d3a; animation-name: bat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 20'%3E%3Cpath d='M20 6c1-2 3-2 3 0 3-4 9-5 17-2-4 1-6 4-6 7-3-1-5 0-6 3-2-2-4-2-5 0-1-2-2-3-3-3s-2 1-3 3c-1-2-3-2-5 0-1-3-3-4-6-3 0-3-2-6-6-7 8-3 14-2 17 2 0-2 2-2 3 0z'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 20'%3E%3Cpath d='M20 6c1-2 3-2 3 0 3-4 9-5 17-2-4 1-6 4-6 7-3-1-5 0-6 3-2-2-4-2-5 0-1-2-2-3-3-3s-2 1-3 3c-1-2-3-2-5 0-1-3-3-4-6-3 0-3-2-6-6-7 8-3 14-2 17 2 0-2 2-2 3 0z'/%3E%3C/svg%3E") center / contain no-repeat; }
+[data-theme="dark"] .fx--bats i { background: #b9a6d6; }
 @keyframes fall { to { transform: translate3d(6vw, 105vh, 0); } }
+@keyframes drift { 0% { transform: translate3d(0, 0, 0) rotate(-10deg); } 50% { transform: translate3d(3vw, 52vh, 0) rotate(8deg); } 100% { transform: translate3d(-2vw, 106vh, 0) rotate(-6deg); } }
+@keyframes petal { 0% { transform: translate3d(0, 0, 0) rotate(var(--r)); } 50% { transform: translate3d(5vw, 52vh, 0) rotate(calc(var(--r) + 180deg)); } 100% { transform: translate3d(-3vw, 106vh, 0) rotate(calc(var(--r) + 360deg)); } }
+@keyframes rise { 0% { transform: translate3d(0, 0, 0); opacity: 0; } 10% { opacity: var(--o); } 80% { opacity: calc(var(--o) * .6); } 100% { transform: translate3d(var(--dx), -70vh, 0); opacity: 0; } }
+@keyframes bat { 0% { transform: translate3d(0, 0, 0) scaleY(1); } 10% { transform: translate3d(11vw, -2vh, 0) scaleY(.5); } 20% { transform: translate3d(22vw, 1vh, 0) scaleY(1); }
+  30% { transform: translate3d(33vw, -1vh, 0) scaleY(.5); } 40% { transform: translate3d(44vw, 2vh, 0) scaleY(1); } 50% { transform: translate3d(55vw, 0, 0) scaleY(.5); }
+  60% { transform: translate3d(66vw, -2vh, 0) scaleY(1); } 70% { transform: translate3d(77vw, 1vh, 0) scaleY(.5); } 80% { transform: translate3d(88vw, -1vh, 0) scaleY(1); } 100% { transform: translate3d(112vw, 0, 0) scaleY(.5); } }
 
 /* New Year details (only while the holiday theme is on). Static shapes, seamless tiles, no extra motion
    except the soft glow of the greeting. */

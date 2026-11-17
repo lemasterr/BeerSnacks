@@ -10,6 +10,7 @@
   // Interface strings (product data and category names come from the admin panel).
   const UI = {
     uk: {
+      fxOff: 'Вимкнути анімацію', fxOn: 'Увімкнути анімацію',
       warnShort: 'Алкоголь може зашкодити вашому здоров’ю.', 
       snowOff: 'Вимкнути сніг', snowOn: 'Увімкнути сніг',
       ageQ: 'Вам уже є 18 років?', ageYes: 'Так, мені 18+', ageNo: 'Ні', ageDenied: 'Сайт містить інформацію про алкоголь і доступний лише особам від 18 років.',
@@ -24,6 +25,7 @@
       order: 'Замовити в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     ru: {
+      fxOff: 'Выключить анимацию', fxOn: 'Включить анимацию',
       warnShort: 'Алкоголь может навредить вашему здоровью.', 
       snowOff: 'Выключить снег', snowOn: 'Включить снег',
       ageQ: 'Вам уже есть 18 лет?', ageYes: 'Да, мне 18+', ageNo: 'Нет', ageDenied: 'Сайт содержит информацию об алкоголе и доступен только лицам от 18 лет.',
@@ -38,6 +40,7 @@
       order: 'Заказать в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     et: {
+      fxOff: 'Lülita animatsioon välja', fxOn: 'Lülita animatsioon sisse',
       warnShort: 'Alkohol võib kahjustada teie tervist.', 
       snowOff: 'Lülita lumi välja', snowOn: 'Lülita lumi sisse',
       ageQ: 'Kas oled vähemalt 18-aastane?', ageYes: 'Jah, olen 18+', ageNo: 'Ei', ageDenied: 'Leht sisaldab teavet alkoholi kohta ja on mõeldud ainult vähemalt 18-aastastele.',
@@ -52,6 +55,7 @@
       order: 'Telli {s} kaudu', route: 'Teekond', phone: 'Telefon',
     },
     en: {
+      fxOff: 'Turn animation off', fxOn: 'Turn animation on',
       warnShort: 'Alcohol may harm your health.', 
       snowOff: 'Turn snow off', snowOn: 'Turn snow on',
       ageQ: 'Are you 18 or older?', ageYes: 'Yes, I am 18+', ageNo: 'No', ageDenied: 'This site contains information about alcohol and is only for persons aged 18 and over.',
@@ -212,38 +216,66 @@
   // Shop coordinates for the footer map pictures and directions links
   const MAPS = { 'Õismäe': ['oismae', 59.41415, 24.65468], 'Mahtra': ['mahtra', 59.44219, 24.87358] };
 
-  // Neon title flicker at random moments: usually once, sometimes twice or three times in a row.
-  let neonTimer = 0;
-  function neonLoop() {
-    neonTimer = setTimeout(() => {
-      const el = $('intro-title');
-      if (document.documentElement.dataset.season !== 'newyear') { neonTimer = 0; return; }
-      const r = Math.random(), n = r < .55 ? 1 : r < .87 ? 2 : 3;
-      let t = 0;
-      for (let i = 0; i < n; i++) {
-        const on = 70 + Math.random() * 90;
-        setTimeout(() => el.classList.add('flick'), t);
-        setTimeout(() => el.classList.remove('flick'), t + on);
-        t += on + 80 + Math.random() * 120;
-      }
-      neonLoop();
-    }, 2500 + Math.random() * 6500);
+  // ── Seasonal themes. The admin picks one, or "auto" (by the Tallinn calendar). ?season=<name> previews a theme. ──
+  // fx = falling / rising particles: [type, count on desktop, count on phones]
+  const SEASONS = {
+    newyear: { fx: ['snow', 28, 14] }, valentine: { fx: ['hearts', 14, 7] }, independence: {},
+    womensday: { fx: ['petals', 16, 8] }, easter: {}, midsummer: { fx: ['embers', 22, 11] },
+    oktoberfest: {}, halloween: { fx: ['bats', 5, 3] },
+  };
+  function easterSunday(y) {  // anonymous Gregorian algorithm
+    const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
+      g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4,
+      l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451), mo = Math.floor((h + l - 7 * m + 114) / 31);
+    return Date.UTC(y, mo - 1, ((h + l - 7 * m + 114) % 31) + 1);
   }
-  function renderSeason(season, u) {
-    const root = document.documentElement;
-    if (season !== 'newyear') { delete root.dataset.season; $('season-greet').hidden = true; return; }
-    root.dataset.season = 'newyear';
-    const g = $('season-greet'); g.hidden = false; g.textContent = u.newyear;
-    const snowOn = localStorage.getItem('bs_snow') !== 'off';
-    const sb = $('snow-toggle'); sb.setAttribute('aria-pressed', snowOn); sb.setAttribute('aria-label', snowOn ? u.snowOff : u.snowOn); sb.title = sb.getAttribute('aria-label');
-    if (!snowOn) { $('snow')?.remove(); }
-    else if (!$('snow') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const snow = document.createElement('div'); snow.id = 'snow'; snow.className = 'snow'; snow.setAttribute('aria-hidden', 'true');
-      // phones get half as many flakes: on a small screen the same number looks twice as dense
-      snow.innerHTML = Array.from({ length: matchMedia('(max-width: 760px)').matches ? 14 : 28 }, () =>
-        `<i style="--x:${(Math.random() * 100).toFixed(1)}vw;--s:${(4 + Math.random() * 6).toFixed(1)}px;--d:${(9 + Math.random() * 10).toFixed(1)}s;--w:${(-Math.random() * 18).toFixed(1)}s;--o:${(.35 + Math.random() * .5).toFixed(2)}"></i>`).join('');
-      document.body.appendChild(snow);
-    }
+  function seasonByDate(now = new Date()) {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: 'numeric', day: 'numeric' })
+      .formatToParts(now).map(x => [x.type, Number(x.value)]));
+    const y = p.year, t = Date.UTC(y, p.month - 1, p.day), D = (m, d) => Date.UTC(y, m - 1, d), day = 864e5;
+    const advent = (() => { let d = D(11, 27); while (new Date(d).getUTCDay() !== 0) d += day; return d; })();  // 1st Advent Sunday
+    const octSun = (() => { let d = D(10, 1); while (new Date(d).getUTCDay() !== 0) d += day; return Math.max(d, D(10, 3)); })();
+    const easter = easterSunday(y);
+    const ranges = [
+      ['newyear', advent, D(12, 31)], ['newyear', D(1, 1), D(1, 6)],
+      ['valentine', D(2, 8), D(2, 15)], ['independence', D(2, 20), D(2, 25)], ['womensday', D(3, 5), D(3, 9)],
+      ['easter', easter - 7 * day, easter + day], ['midsummer', D(6, 16), D(6, 26)],
+      ['oktoberfest', D(9, 15), octSun], ['halloween', D(10, 24), D(11, 1)],
+    ];
+    return (ranges.find(([, from, to]) => t >= from && t <= to) || [''])[0];
+  }
+  function pickSeason(setting) {
+    const preview = params.get('season');
+    if (preview && (SEASONS[preview] || preview === 'none')) return preview === 'none' ? '' : preview;
+    return setting === 'auto' ? seasonByDate() : (SEASONS[setting] ? setting : '');
+  }
+  const fxParticle = {
+    snow: () => `--x:${(Math.random() * 100).toFixed(1)}vw;--s:${(4 + Math.random() * 6).toFixed(1)}px;--d:${(9 + Math.random() * 10).toFixed(1)}s;--o:${(.35 + Math.random() * .5).toFixed(2)}`,
+    hearts: () => `--x:${(Math.random() * 100).toFixed(1)}vw;--s:${(9 + Math.random() * 8).toFixed(1)}px;--d:${(12 + Math.random() * 10).toFixed(1)}s;--o:${(.35 + Math.random() * .4).toFixed(2)};--c:${['#e5486b', '#f07a95', '#d92e5a', '#f4a6b8'][Math.floor(Math.random() * 4)]}`,
+    petals: () => `--x:${(Math.random() * 100).toFixed(1)}vw;--s:${(8 + Math.random() * 7).toFixed(1)}px;--d:${(11 + Math.random() * 9).toFixed(1)}s;--o:${(.5 + Math.random() * .4).toFixed(2)};--c:${['#f7a9b8', '#f9c6a8', '#f48fb1', '#fbd3df'][Math.floor(Math.random() * 4)]};--r:${Math.floor(Math.random() * 360)}deg`,
+    embers: () => `--x:${(Math.random() * 100).toFixed(1)}vw;--s:${(2.5 + Math.random() * 3.5).toFixed(1)}px;--d:${(7 + Math.random() * 8).toFixed(1)}s;--o:${(.5 + Math.random() * .5).toFixed(2)};--dx:${(Math.random() * 16 - 8).toFixed(1)}vw`,
+    bats: () => `--y:${(6 + Math.random() * 40).toFixed(1)}vh;--s:${(16 + Math.random() * 12).toFixed(1)}px;--d:${(18 + Math.random() * 14).toFixed(1)}s;--o:${(.45 + Math.random() * .35).toFixed(2)}`,
+  };
+  function renderSeason(setting, u) {
+    const root = document.documentElement, season = pickSeason(setting), conf = SEASONS[season];
+    $('season-greet').hidden = true;
+    const old = $('fx');
+    if (!conf) { delete root.dataset.season; old?.remove(); return; }
+    if (root.dataset.season !== season) old?.remove();
+    root.dataset.season = season;
+    const fx = conf.fx, on = localStorage.getItem('bs_snow') !== 'off';
+    const sb = $('snow-toggle');
+    sb.hidden = !fx; sb.setAttribute('aria-pressed', on);
+    const label = season === 'newyear' ? (on ? u.snowOff : u.snowOn) : (on ? u.fxOff : u.fxOn);
+    sb.setAttribute('aria-label', label); sb.title = label;
+    if (!fx || !on) { $('fx')?.remove(); return; }
+    if ($('fx') || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const [type, many, few] = fx;
+    const box = document.createElement('div'); box.id = 'fx'; box.className = `fx fx--${type}`; box.setAttribute('aria-hidden', 'true');
+    // phones get about half as many particles: on a small screen the same number looks twice as dense
+    box.innerHTML = Array.from({ length: matchMedia('(max-width: 760px)').matches ? few : many }, () =>
+      `<i style="${fxParticle[type]()};--w:${(-Math.random() * 20).toFixed(1)}s"></i>`).join('');
+    document.body.appendChild(box);
   }
 
   // ── Cookie notice: only language and theme are stored, so this is an information note, not a consent form ──

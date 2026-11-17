@@ -20,7 +20,7 @@ const DEFAULT_SETTINGS = {
   ]
 };
 
-const SEASONS = ['', 'newyear'];
+const SEASONS = ['', 'auto', 'newyear', 'valentine', 'independence', 'womensday', 'easter', 'midsummer', 'oktoberfest', 'halloween'];
 const STORE_FIELDS = ['stock_oismae', 'stock_mahtra'];
 const text = (v, max = 200) => String(v ?? '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, max);
 const url = (v) => {
