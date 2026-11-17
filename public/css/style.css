@@ -543,6 +543,20 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
   .pill { flex: 1; justify-content: center; height: 42px; padding: 0 12px; font-size: 14px; }
 }
 
+/* Phones: the search field hides behind a magnifier button in the header and opens on tap. */
+.search-btn { display: none; }
+@media (max-width: 760px) {
+  .search-btn { display: grid; }
+  .top:not(.search-open) .search { display: none; }
+  .top.search-open .search { animation: searchIn .2s var(--ease); }
+  .top.search-open .search-btn { background: var(--line); }
+  .top__inner { flex-wrap: wrap; }
+  .top__tools { gap: 0; flex: none; }
+  .top__tools .icon-btn { width: 38px; height: 38px; }
+  .lang__btn { height: 38px; min-width: 44px; padding: 0 9px; }
+  @keyframes searchIn { from { opacity: 0; transform: translateY(-6px); } }
+}
+
 /* Phones: less header, more products on the first screen; tighter cards that still read well. */
 @media (max-width: 520px) {
   .top__inner { padding-top: 8px; padding-bottom: 10px; }
