@@ -6,7 +6,7 @@
   <title>Privacy · Beer&amp;Snacks</title>
   <meta name="robots" content="noindex" />
   <link rel="icon" type="image/png" href="img/favicon.png" />
-  <link rel="stylesheet" href="css/style.css?v=20261118a" />
+  <link rel="stylesheet" href="css/style.css?v=20261118b" />
   <script>
     (function () {
       var t = localStorage.getItem('bs_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -23,6 +23,7 @@
     .doc__langs a { text-decoration: none; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); font: 700 13px/1 var(--display); }
     .doc__langs a[aria-current="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
     .doc section[hidden] { display: none; }
+    .doc__date { font-size: 13px; color: var(--muted); margin-top: -10px; }
   </style>
 </head>
 <body>
@@ -34,75 +35,96 @@
 
     <section lang="et" data-l="et">
       <h1>Privaatsuspoliitika</h1>
-      <p>Vastutav töötleja: <span class="co"></span>. Kontakt: <a class="mail"></a>.</p>
-      <h2>Mida me kogume</h2>
-      <p>See leht on poodide kataloog. Me ei küsi teie nime, telefoni ega muid isikuandmeid ega müü midagi veebis. Tellimused tehakse Wolti ja Bolt Foodi kaudu nende enda tingimustel.</p>
+      <p class="doc__date">Kehtib alates 17.11.2026</p>
+      <h2>Vastutav töötleja</h2>
+      <p><span class="co"></span>. E-post: <a class="mail"></a>.</p>
+      <h2>Milliseid andmeid töötleme</h2>
+      <p>See leht on meie poodide kataloog. Me ei küsi teie nime, telefoni ega muid isikuandmeid, lehel pole kontaktvormi ega kontot ning me ei müü midagi veebis. Tellimused tehakse Wolti ja Bolt Foodi kaudu nende enda tingimustel.</p>
+      <h2>Tehnilised andmed</h2>
+      <p>Lehe kuvamisel töötleb meie majutaja Cloudflare tehnilisi andmeid (IP-aadress, brauser, külastatud aadress), et lehte edastada ja kaitsta rünnakute eest. Õiguslik alus: õigustatud huvi (IKÜM art 6 lg 1 p f). Ise me neid andmeid ei salvesta; Cloudflare säilitab neid lühiajaliselt oma tingimuste kohaselt.</p>
+      <h2>Külastuste statistika</h2>
+      <p>Kasutame Cloudflare Web Analyticsit, mis näitab ainult koondstatistikat (külastuste arv, populaarsemad lehed). See ei kasuta küpsiseid ega tuvasta isikuid. Õiguslik alus: õigustatud huvi.</p>
       <h2>Brauserisse salvestatav teave</h2>
-      <ul>
-        <li>valitud keel ja teema (hele/tume);</li>
-        <li>kinnitus, et olete vähemalt 18-aastane;</li>
-        <li>märge, et küpsiste teade on suletud.</li>
-      </ul>
-      <p>Need jäävad ainult teie seadmesse (localStorage) ja on vajalikud lehe toimimiseks. Reklaami- ja analüütikaküpsiseid me ei kasuta.</p>
-      <h2>Teenusepakkujad</h2>
-      <p>Lehte majutab Cloudflare, kes töötleb turvalisuse tagamiseks tehnilisi andmeid (nt IP-aadress). Kaardipildid (© OpenStreetMapi kaastöötajad) on salvestatud meie lehele. Külastuste koondstatistika jaoks kasutame Cloudflare Web Analyticsit: see ei kasuta küpsiseid ega tuvasta isikuid. Välised lingid (Wolt, Bolt Food, Google Maps, sotsiaalvõrgustikud) avanevad nende teenuste tingimustel.</p>
+      <p>Teie seadmesse (localStorage) salvestatakse ainult: valitud keel ja teema, kinnitus vanuse kohta, märge küpsiste teate sulgemise kohta ning animatsiooni sisse/välja valik. Need on vajalikud lehe toimimiseks ja teie valikute meelespidamiseks, me ei saa neid kätte ning saate need igal ajal brauseri seadetes kustutada. Reklaami- ja jälgimisküpsiseid me ei kasuta.</p>
+      <h2>Volitatud töötleja ja andmete edastamine</h2>
+      <p>Majutus, sisuedastus ja statistika: Cloudflare, Inc. Andmeid võidakse töödelda väljaspool EL-i (USA); edastamine toimub EL–USA andmekaitseraamistiku ja Euroopa Komisjoni tüüptingimuste alusel.</p>
+      <h2>Välised lingid</h2>
+      <p>Wolti, Bolt Foodi, Google Mapsi ja sotsiaalvõrgustike lingid avanevad nende teenuste tingimustel ja privaatsuspoliitika järgi.</p>
+      <h2>Teie õigused</h2>
+      <p>Teil on õigus küsida teavet oma andmete töötlemise kohta, nõuda andmete parandamist või kustutamist, piirata töötlemist ja esitada vastuväide. Kirjutage meile e-postil. Kui leiate, et teie õigusi on rikutud, võite pöörduda Andmekaitse Inspektsiooni poole (www.aki.ee, info@aki.ee).</p>
       <h2>Alkohol</h2>
       <p>Alkoholi müüakse ainult vähemalt 18-aastastele. Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist.</p>
     </section>
 
     <section lang="en" data-l="en">
       <h1>Privacy policy</h1>
-      <p>Controller: <span class="co"></span>. Contact: <a class="mail"></a>.</p>
-      <h2>What we collect</h2>
-      <p>This site is a catalogue of our shops. We do not ask for your name, phone or any other personal data and sell nothing online. Orders are placed through Wolt and Bolt Food under their own terms.</p>
+      <p class="doc__date">Effective from 17.11.2026</p>
+      <h2>Controller</h2>
+      <p><span class="co"></span>. Email: <a class="mail"></a>.</p>
+      <h2>What data we process</h2>
+      <p>This site is a catalogue of our shops. We do not ask for your name, phone or any other personal data, there is no contact form or account, and we sell nothing online. Orders are placed through Wolt and Bolt Food under their own terms.</p>
+      <h2>Technical data</h2>
+      <p>When the site is shown, our host Cloudflare processes technical data (IP address, browser, page address) to deliver the site and protect it from attacks. Legal basis: legitimate interest (GDPR Art. 6(1)(f)). We do not store this data ourselves; Cloudflare keeps it for a short time under its own terms.</p>
+      <h2>Visit statistics</h2>
+      <p>We use Cloudflare Web Analytics, which shows only aggregate figures (number of visits, most viewed pages). It uses no cookies and does not identify people. Legal basis: legitimate interest.</p>
       <h2>What is stored in your browser</h2>
-      <ul>
-        <li>your chosen language and theme (light/dark);</li>
-        <li>your confirmation that you are 18 or older;</li>
-        <li>a note that you closed the cookie notice.</li>
-      </ul>
-      <p>These stay only on your device (localStorage) and are needed for the site to work. We use no advertising or analytics cookies.</p>
-      <h2>Service providers</h2>
-      <p>The site is hosted by Cloudflare, which processes technical data (such as IP address) for security. The map pictures (© OpenStreetMap contributors) are stored on our own site. For aggregate visit statistics we use Cloudflare Web Analytics, which uses no cookies and does not identify people. External links (Wolt, Bolt Food, Google Maps, social networks) open under those services' terms.</p>
+      <p>Only the following is stored on your device (localStorage): your chosen language and theme, your age confirmation, a note that you closed the cookie notice, and your animation on/off choice. These are needed for the site to work and to remember your choices; we cannot access them, and you can delete them in your browser settings at any time. We use no advertising or tracking cookies.</p>
+      <h2>Processor and data transfers</h2>
+      <p>Hosting, content delivery and statistics: Cloudflare, Inc. Data may be processed outside the EU (USA); transfers rely on the EU–US Data Privacy Framework and the European Commission’s standard contractual clauses.</p>
+      <h2>External links</h2>
+      <p>Links to Wolt, Bolt Food, Google Maps and social networks open under those services’ terms and privacy policies.</p>
+      <h2>Your rights</h2>
+      <p>You may ask what data about you is processed, request correction or deletion, restrict processing and object to it. Write to us by email. If you believe your rights have been violated, you can contact the Estonian Data Protection Inspectorate (www.aki.ee, info@aki.ee).</p>
       <h2>Alcohol</h2>
-      <p>Alcohol is sold only to persons aged 18 and over. Alcohol may harm your health.</p>
+      <p>Alcohol is sold only to persons aged 18 and over. Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist. (Attention! This is alcohol. Alcohol may harm your health.)</p>
     </section>
 
     <section lang="uk" data-l="uk">
       <h1>Політика конфіденційності</h1>
-      <p>Відповідальна особа: <span class="co"></span>. Контакт: <a class="mail"></a>.</p>
-      <h2>Що ми збираємо</h2>
-      <p>Цей сайт — каталог наших магазинів. Ми не просимо ваше ім’я, телефон чи інші персональні дані й нічого не продаємо онлайн. Замовлення оформлюються через Wolt і Bolt Food на їхніх умовах.</p>
+      <p class="doc__date">Діє з 17.11.2026</p>
+      <h2>Відповідальна особа</h2>
+      <p><span class="co"></span>. Email: <a class="mail"></a>.</p>
+      <h2>Які дані ми обробляємо</h2>
+      <p>Цей сайт — каталог наших магазинів. Ми не просимо ваше ім’я, телефон чи інші персональні дані, на сайті немає форми зворотного зв’язку чи акаунта, і ми нічого не продаємо онлайн. Замовлення оформлюються через Wolt і Bolt Food на їхніх умовах.</p>
+      <h2>Технічні дані</h2>
+      <p>Під час показу сайту наш хостинг Cloudflare обробляє технічні дані (IP-адресу, браузер, адресу сторінки), щоб доставити сайт і захистити його від атак. Правова підстава: законний інтерес (GDPR ст. 6(1)(f)). Самі ми ці дані не зберігаємо; Cloudflare зберігає їх короткий час на своїх умовах.</p>
+      <h2>Статистика відвідувань</h2>
+      <p>Ми використовуємо Cloudflare Web Analytics, що показує лише загальні цифри (кількість відвідувань, популярні сторінки). Вона не використовує cookie і не ідентифікує людей. Правова підстава: законний інтерес.</p>
       <h2>Що зберігається у браузері</h2>
-      <ul>
-        <li>вибрана мова й тема (світла/темна);</li>
-        <li>підтвердження, що вам виповнилося 18 років;</li>
-        <li>позначка, що ви закрили повідомлення про cookie.</li>
-      </ul>
-      <p>Ці дані залишаються лише на вашому пристрої (localStorage) і потрібні для роботи сайту. Рекламні та аналітичні cookie ми не використовуємо.</p>
-      <h2>Постачальники послуг</h2>
-      <p>Сайт розміщено на Cloudflare, який обробляє технічні дані (наприклад, IP-адресу) для безпеки. Зображення карти (© учасники OpenStreetMap) зберігаються на нашому сайті. Для загальної статистики відвідувань ми використовуємо Cloudflare Web Analytics: без cookie і без ідентифікації людей. Зовнішні посилання (Wolt, Bolt Food, Google Maps, соцмережі) відкриваються на умовах цих сервісів.</p>
+      <p>На вашому пристрої (localStorage) зберігаються лише: вибрана мова й тема, підтвердження віку, позначка, що ви закрили повідомлення про cookie, і вибір увімкнути чи вимкнути анімацію. Це потрібно для роботи сайту й запам’ятовування ваших налаштувань; ми не маємо до цього доступу, і ви можете будь-коли видалити це в налаштуваннях браузера. Рекламних і стежувальних cookie ми не використовуємо.</p>
+      <h2>Обробник і передача даних</h2>
+      <p>Хостинг, доставка контенту й статистика: Cloudflare, Inc. Дані можуть оброблятися поза ЄС (США); передача відбувається на підставі Рамки захисту даних ЄС–США та стандартних договірних умов Єврокомісії.</p>
+      <h2>Зовнішні посилання</h2>
+      <p>Посилання на Wolt, Bolt Food, Google Maps і соцмережі відкриваються на умовах цих сервісів і за їхніми політиками конфіденційності.</p>
+      <h2>Ваші права</h2>
+      <p>Ви можете дізнатися, які ваші дані обробляються, вимагати їх виправлення чи видалення, обмежити обробку та заперечити проти неї. Напишіть нам на email. Якщо ви вважаєте, що ваші права порушено, можна звернутися до Інспекції із захисту даних Естонії (www.aki.ee, info@aki.ee).</p>
       <h2>Алкоголь</h2>
-      <p>Алкоголь продається лише особам від 18 років. Алкоголь може зашкодити вашому здоров’ю.</p>
+      <p>Алкоголь продається лише особам від 18 років. Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist. (Увага! Це алкоголь. Алкоголь може зашкодити вашому здоров’ю.)</p>
     </section>
 
     <section lang="ru" data-l="ru">
       <h1>Политика конфиденциальности</h1>
-      <p>Ответственное лицо: <span class="co"></span>. Контакт: <a class="mail"></a>.</p>
-      <h2>Что мы собираем</h2>
-      <p>Этот сайт — каталог наших магазинов. Мы не спрашиваем ваше имя, телефон или другие персональные данные и ничего не продаём онлайн. Заказы оформляются через Wolt и Bolt Food на их условиях.</p>
+      <p class="doc__date">Действует с 17.11.2026</p>
+      <h2>Ответственное лицо</h2>
+      <p><span class="co"></span>. Email: <a class="mail"></a>.</p>
+      <h2>Какие данные мы обрабатываем</h2>
+      <p>Этот сайт — каталог наших магазинов. Мы не спрашиваем ваше имя, телефон или другие персональные данные, на сайте нет формы обратной связи или аккаунта, и мы ничего не продаём онлайн. Заказы оформляются через Wolt и Bolt Food на их условиях.</p>
+      <h2>Технические данные</h2>
+      <p>При показе сайта наш хостинг Cloudflare обрабатывает технические данные (IP-адрес, браузер, адрес страницы), чтобы доставить сайт и защитить его от атак. Правовое основание: законный интерес (GDPR ст. 6(1)(f)). Сами мы эти данные не храним; Cloudflare хранит их короткое время на своих условиях.</p>
+      <h2>Статистика посещений</h2>
+      <p>Мы используем Cloudflare Web Analytics, которая показывает только общие цифры (число посещений, популярные страницы). Она не использует cookie и не идентифицирует людей. Правовое основание: законный интерес.</p>
       <h2>Что хранится в браузере</h2>
-      <ul>
-        <li>выбранный язык и тема (светлая/тёмная);</li>
-        <li>подтверждение, что вам исполнилось 18 лет;</li>
-        <li>отметка, что вы закрыли уведомление о cookie.</li>
-      </ul>
-      <p>Эти данные остаются только на вашем устройстве (localStorage) и нужны для работы сайта. Рекламные и аналитические cookie мы не используем.</p>
-      <h2>Поставщики услуг</h2>
-      <p>Сайт размещён на Cloudflare, который обрабатывает технические данные (например, IP-адрес) для безопасности. Изображения карты (© участники OpenStreetMap) хранятся на нашем сайте. Для общей статистики посещений мы используем Cloudflare Web Analytics: без cookie и без идентификации людей. Внешние ссылки (Wolt, Bolt Food, Google Maps, соцсети) открываются на условиях этих сервисов.</p>
+      <p>На вашем устройстве (localStorage) хранятся только: выбранный язык и тема, подтверждение возраста, отметка, что вы закрыли уведомление о cookie, и выбор включить или выключить анимацию. Это нужно для работы сайта и запоминания ваших настроек; у нас нет к этому доступа, и вы можете в любой момент удалить это в настройках браузера. Рекламные и отслеживающие cookie мы не используем.</p>
+      <h2>Обработчик и передача данных</h2>
+      <p>Хостинг, доставка контента и статистика: Cloudflare, Inc. Данные могут обрабатываться за пределами ЕС (США); передача происходит на основании Рамки защиты данных ЕС–США и стандартных договорных условий Еврокомиссии.</p>
+      <h2>Внешние ссылки</h2>
+      <p>Ссылки на Wolt, Bolt Food, Google Maps и соцсети открываются на условиях этих сервисов и по их политикам конфиденциальности.</p>
+      <h2>Ваши права</h2>
+      <p>Вы можете узнать, какие ваши данные обрабатываются, потребовать их исправления или удаления, ограничить обработку и возразить против неё. Напишите нам на email. Если вы считаете, что ваши права нарушены, можно обратиться в Инспекцию по защите данных Эстонии (www.aki.ee, info@aki.ee).</p>
       <h2>Алкоголь</h2>
-      <p>Алкоголь продаётся только лицам от 18 лет. Алкоголь может навредить вашему здоровью.</p>
+      <p>Алкоголь продаётся только лицам от 18 лет. Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist. (Внимание! Это алкоголь. Алкоголь может навредить вашему здоровью.)</p>
     </section>
+
   </main>
   <script>
     (function () {
@@ -114,7 +136,7 @@
       document.querySelectorAll('.doc__langs a').forEach(function (a) { a.setAttribute('aria-current', a.dataset.l === lang); });
       function fill(s) {
         var c = (s && s.company) || {};
-        var co = [c.name || 'Beer&Snacks', c.reg, c.address].filter(Boolean).join(', ');
+        var co = [c.name || 'Beer&Snacks', c.reg ? 'reg. kood ' + c.reg : '', c.address].filter(Boolean).join(', ');
         var mail = (s && s.email) || 'beermix.ee@gmail.com';
         document.querySelectorAll('.co').forEach(function (e) { e.textContent = co; });
         document.querySelectorAll('.mail').forEach(function (e) { e.textContent = mail; e.href = 'mailto:' + mail; });
