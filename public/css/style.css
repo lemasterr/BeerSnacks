@@ -379,19 +379,17 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
 .warn { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
 .foot__warn { margin-top: 28px; font-size: 13px; opacity: .7; }
 
-/* ── Map ── */
-.map { padding-top: 8px; padding-bottom: 56px; }
-.map__title { font: 800 clamp(22px, 3vw, 30px)/1.1 var(--display); letter-spacing: -.03em; margin-bottom: 18px; }
-.map__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; }
-.map__card { background: var(--tile); border-radius: var(--r-tile); overflow: hidden; border: 1px solid var(--line); }
-.map__img { position: relative; display: block; height: 240px; overflow: hidden; }
-.map__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
-.map__img:hover img { transform: scale(1.03); }
-.map__img small { position: absolute; right: 6px; bottom: 4px; font-size: 10px; background: rgb(255 255 255 / .8); color: #333; padding: 1px 5px; border-radius: 4px; }
-[data-theme="dark"] .map__img img { filter: brightness(.82) saturate(.85); }
-.map__card figcaption { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; font-size: 15px; color: var(--ink-2); }
-.map__card strong { color: var(--ink); }
-.pill--route { background: var(--ink); color: var(--paper); height: 40px; padding: 0 16px; font-size: 14px; flex: none; }
+/* ── Shops in the footer: small map + address, the whole card opens directions ── */
+.stores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.store { display: grid; align-content: start; gap: 2px; text-decoration: none; color: inherit; font-size: 14px; line-height: 1.35; }
+.store__map { display: block; aspect-ratio: 480 / 304; border-radius: 12px; overflow: hidden; margin-bottom: 8px; background: rgb(255 255 255 / .08); }
+.store__map img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
+.store:hover .store__map img { transform: scale(1.05); }
+[data-theme="dark"] .store__map img { filter: brightness(.85) saturate(.85); }
+.store strong { font-size: 15px; }
+.store__addr { opacity: .75; }
+.store__route { margin-top: 4px; font-weight: 600; font-size: 13px; color: var(--tag); }
+.foot .store { opacity: 1; }
 
 /* ── Cookie note ── */
 .cookie {

@@ -168,7 +168,6 @@
     $('foot-age').textContent = u.age;
     $('foot-warn').textContent = u.warn;
     const pl = $('foot-privacy'); pl.textContent = u.privacy; pl.href = `privacy.html?lang=${state.lang}`;
-    $('map-title').textContent = u.map;
     $('foot-contact-title').textContent = u.contacts;
 
     const s = state.data.settings || {};
@@ -178,12 +177,17 @@
     const co = s.company || {};
     $('foot-company').textContent = [co.name, co.reg ? `${co.reg}` : '', co.address].filter(Boolean).join(' · ');
     if (s.email) { const em = $('foot-email'); em.textContent = s.email; em.href = `mailto:${s.email}`; }
-    renderMap(s.stores || [], u);
     renderSeason(s.season, u);
     renderCookie(u);
     const stores = s.stores || [];
-    $('foot-stores').innerHTML = `<h2>${esc(u.stores)}</h2>` + stores.map(st =>
-      `<p><strong>${esc(st.name)}</strong><br><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(st.address)}" target="_blank" rel="noopener">${esc(st.address)}</a></p>`).join('');
+    // Each shop in the footer: a small map picture (served from our site) that opens directions, plus the address.
+    $('foot-stores').innerHTML = `<h2>${esc(u.stores)}</h2><div class="stores">` + stores.map(st => {
+      const m = MAPS[st.name];
+      const dir = m ? `https://www.google.com/maps/dir/?api=1&amp;destination=${m[1]},${m[2]}` : `https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(st.address)}`;
+      return `<a class="store" href="${dir}" target="_blank" rel="noopener" aria-label="${esc(u.route)}: ${esc(st.name)}, ${esc(st.address)}">
+        ${m ? `<span class="store__map"><img src="img/map_${m[0]}_sm.webp" alt="" loading="lazy" decoding="async" width="480" height="304" /></span>` : ''}
+        <strong>${esc(st.name)}</strong><span class="store__addr">${esc(st.address)}</span><span class="store__route">${esc(u.route)} →</span></a>`;
+    }).join('') + '</div>';
 
     const icons = {  // solid glyphs (the stylesheet strips strokes from footer icons)
       instagram: '<path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/>',
@@ -200,24 +204,9 @@
     renderOpenStatus();
   }
 
-  // ── Store map: a static map picture per shop (served from our site, no third-party requests) + directions ──
+  // Shop coordinates for the footer map pictures and directions links
   const MAPS = { 'Õismäe': ['oismae', 59.41415, 24.65468], 'Mahtra': ['mahtra', 59.44219, 24.87358] };
-  function renderMap(stores, u) {
-    const box = $('map'); if (!box) return;
-    box.innerHTML = stores.filter(st => MAPS[st.name]).map(st => {
-      const [img, lat, lon] = MAPS[st.name];
-      const dir = `https://www.google.com/maps/dir/?api=1&amp;destination=${lat},${lon}`;
-      return `<figure class="map__card">
-        <a class="map__img" href="${dir}" target="_blank" rel="noopener" aria-label="${esc(u.route)}: ${esc(st.name)}">
-          <img src="img/map_${img}.webp" alt="" loading="lazy" decoding="async" width="960" height="480" />
-          <small>© OpenStreetMap</small></a>
-        <figcaption><span><strong>${esc(st.name)}</strong><br>${esc(st.address)}</span>
-          <a class="pill pill--route" href="${dir}" target="_blank" rel="noopener">${esc(u.route)}</a></figcaption>
-      </figure>`;
-    }).join('');
-  }
 
-  // ── Seasonal decoration, switched on in the admin panel (settings.season) ──
   // Neon title flicker at random moments: usually once, sometimes twice or three times in a row.
   let neonTimer = 0;
   function neonLoop() {
