@@ -196,18 +196,19 @@
     renderOpenStatus();
   }
 
-  // ── Store map: one OpenStreetMap view per shop (no tracking cookies) + a directions link ──
-  const COORDS = { 'Õismäe': [59.41415, 24.65468], 'Mahtra': [59.44219, 24.87358] };
+  // ── Store map: a static map picture per shop (served from our site, no third-party requests) + directions ──
+  const MAPS = { 'Õismäe': ['oismae', 59.41415, 24.65468], 'Mahtra': ['mahtra', 59.44219, 24.87358] };
   function renderMap(stores, u) {
     const box = $('map'); if (!box) return;
-    box.innerHTML = stores.filter(st => COORDS[st.name] || (st.lat && st.lon)).map(st => {
-      const [lat, lon] = st.lat && st.lon ? [Number(st.lat), Number(st.lon)] : COORDS[st.name];
-      const d = 0.006, bbox = [lon - d * 2, lat - d, lon + d * 2, lat + d].map(n => n.toFixed(5)).join('%2C');
+    box.innerHTML = stores.filter(st => MAPS[st.name]).map(st => {
+      const [img, lat, lon] = MAPS[st.name];
+      const dir = `https://www.google.com/maps/dir/?api=1&amp;destination=${lat},${lon}`;
       return `<figure class="map__card">
-        <iframe title="${esc(st.name)}" loading="lazy" referrerpolicy="no-referrer"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&amp;layer=mapnik&amp;marker=${lat}%2C${lon}"></iframe>
+        <a class="map__img" href="${dir}" target="_blank" rel="noopener" aria-label="${esc(u.route)}: ${esc(st.name)}">
+          <img src="img/map_${img}.webp" alt="" loading="lazy" decoding="async" width="960" height="480" />
+          <small>© OpenStreetMap</small></a>
         <figcaption><span><strong>${esc(st.name)}</strong><br>${esc(st.address)}</span>
-          <a class="pill pill--route" href="https://www.google.com/maps/dir/?api=1&amp;destination=${lat},${lon}" target="_blank" rel="noopener">${esc(u.route)}</a></figcaption>
+          <a class="pill pill--route" href="${dir}" target="_blank" rel="noopener">${esc(u.route)}</a></figcaption>
       </figure>`;
     }).join('');
   }
