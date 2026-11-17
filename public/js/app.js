@@ -10,6 +10,7 @@
   // Interface strings (product data and category names come from the admin panel).
   const UI = {
     uk: {
+      snowOff: 'Вимкнути сніг', snowOn: 'Увімкнути сніг',
       ageQ: 'Вам уже є 18 років?', ageYes: 'Так, мені 18+', ageNo: 'Ні', ageDenied: 'Сайт містить інформацію про алкоголь і доступний лише особам від 18 років.',
       cookie: 'Ми не використовуємо рекламні чи аналітичні cookie. Сайт зберігає у браузері лише вибрану мову та тему.', ok: 'Зрозуміло', privacy: 'Політика конфіденційності',
       warn: 'Увага! Це алкогольний напій. Алкоголь може зашкодити вашому здоров’ю.', map: 'Як нас знайти', newyear: 'З Новим роком і Різдвом!',
@@ -22,6 +23,7 @@
       order: 'Замовити в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     ru: {
+      snowOff: 'Выключить снег', snowOn: 'Включить снег',
       ageQ: 'Вам уже есть 18 лет?', ageYes: 'Да, мне 18+', ageNo: 'Нет', ageDenied: 'Сайт содержит информацию об алкоголе и доступен только лицам от 18 лет.',
       cookie: 'Мы не используем рекламные и аналитические cookie. Сайт хранит в браузере только выбранный язык и тему.', ok: 'Понятно', privacy: 'Политика конфиденциальности',
       warn: 'Внимание! Это алкогольный напиток. Алкоголь может навредить вашему здоровью.', map: 'Как нас найти', newyear: 'С Новым годом и Рождеством!',
@@ -34,6 +36,7 @@
       order: 'Заказать в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     et: {
+      snowOff: 'Lülita lumi välja', snowOn: 'Lülita lumi sisse',
       ageQ: 'Kas oled vähemalt 18-aastane?', ageYes: 'Jah, olen 18+', ageNo: 'Ei', ageDenied: 'Leht sisaldab teavet alkoholi kohta ja on mõeldud ainult vähemalt 18-aastastele.',
       cookie: 'Me ei kasuta reklaami- ega analüütikaküpsiseid. Leht salvestab brauserisse ainult valitud keele ja teema.', ok: 'Selge', privacy: 'Privaatsuspoliitika',
       warn: 'Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist.', map: 'Kuidas meid leida', newyear: 'Head uut aastat ja häid jõule!',
@@ -46,6 +49,7 @@
       order: 'Telli {s} kaudu', route: 'Teekond', phone: 'Telefon',
     },
     en: {
+      snowOff: 'Turn snow off', snowOn: 'Turn snow on',
       ageQ: 'Are you 18 or older?', ageYes: 'Yes, I am 18+', ageNo: 'No', ageDenied: 'This site contains information about alcohol and is only for persons aged 18 and over.',
       cookie: 'We use no advertising or analytics cookies. The site only stores your chosen language and theme in your browser.', ok: 'Got it', privacy: 'Privacy policy',
       warn: 'Attention! This is an alcoholic beverage. Alcohol may harm your health.', map: 'How to find us', newyear: 'Merry Christmas and Happy New Year!',
@@ -237,9 +241,13 @@
     root.dataset.season = 'newyear';
     const g = $('season-greet'); g.hidden = false; g.textContent = u.newyear;
     if (!neonTimer && !matchMedia('(prefers-reduced-motion: reduce)').matches) neonLoop();
-    if (!$('snow') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const snowOn = localStorage.getItem('bs_snow') !== 'off';
+    const sb = $('snow-toggle'); sb.setAttribute('aria-pressed', snowOn); sb.setAttribute('aria-label', snowOn ? u.snowOff : u.snowOn); sb.title = sb.getAttribute('aria-label');
+    if (!snowOn) { $('snow')?.remove(); }
+    else if (!$('snow') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const snow = document.createElement('div'); snow.id = 'snow'; snow.className = 'snow'; snow.setAttribute('aria-hidden', 'true');
-      snow.innerHTML = Array.from({ length: 28 }, () =>
+      // phones get half as many flakes: on a small screen the same number looks twice as dense
+      snow.innerHTML = Array.from({ length: matchMedia('(max-width: 760px)').matches ? 14 : 28 }, () =>
         `<i style="--x:${(Math.random() * 100).toFixed(1)}vw;--s:${(4 + Math.random() * 6).toFixed(1)}px;--d:${(9 + Math.random() * 10).toFixed(1)}s;--w:${(-Math.random() * 18).toFixed(1)}s;--o:${(.35 + Math.random() * .5).toFixed(2)}"></i>`).join('');
       document.body.appendChild(snow);
     }
@@ -253,6 +261,10 @@
     bar.querySelector('p').innerHTML = `${esc(u.cookie)} <a href="privacy.html?lang=${state.lang}">${esc(u.privacy)}</a>`;
     bar.querySelector('button').textContent = u.ok;
   }
+  $('snow-toggle').addEventListener('click', () => {
+    localStorage.setItem('bs_snow', localStorage.getItem('bs_snow') === 'off' ? 'on' : 'off');
+    renderSeason(state.data.settings?.season, ui());
+  });
   $('cookie').querySelector('button').addEventListener('click', () => { localStorage.setItem('bs_cookie_ok', '1'); $('cookie').hidden = true; });
 
   function renderOpenStatus() {
