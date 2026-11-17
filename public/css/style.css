@@ -423,8 +423,10 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
 .snow-btn { display: none; }
 [data-season="newyear"] .snow-btn { display: grid; }
 .snow-btn .i-slash { display: none; }
-.snow-btn[aria-pressed="false"] .i-slash { display: inline; stroke-width: 2.6; color: var(--ink); }
-.snow-btn[aria-pressed="false"] svg path:first-child { opacity: .45; }
+.snow-btn svg { width: 21px; height: 21px; stroke-width: 1.7; }
+.snow-btn[aria-pressed="false"] .i-slash { display: inline; stroke-width: 1.9; }
+.snow-btn[aria-pressed="false"] .i-gap { stroke: var(--paper); stroke-width: 5; }
+.snow-btn[aria-pressed="false"] .i-flake { opacity: .55; }
 .snow { position: fixed; inset: 0; pointer-events: none; z-index: 45; overflow: hidden; }
 .snow i {
   position: absolute; top: -12px; left: var(--x); width: var(--s); height: var(--s); border-radius: 50%;
