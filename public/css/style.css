@@ -457,12 +457,28 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-/* Price tag: a small mound of snow on its top edge */
+/* Price tags: snow lies a little differently on each tag (five variants by card position, no JS):
+   a mound on the left or right of the top edge, a cap with drips, or a drift in a bottom corner. */
+[data-season="newyear"] .tag { isolation: isolate; }
 [data-season="newyear"] .tag::after {
-  content: ''; position: absolute; left: 7px; top: -6px; width: 34px; height: 9px; pointer-events: none;
-  background: var(--snowfill); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 12' preserveAspectRatio='none'%3E%3Cpath d='M0 12C2 6 8 2 15 2C19 2 21 4 24 4C28 4 31 1 35 3C39 5 40 9 40 12Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 12' preserveAspectRatio='none'%3E%3Cpath d='M0 12C2 6 8 2 15 2C19 2 21 4 24 4C28 4 31 1 35 3C39 5 40 9 40 12Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
-  filter: drop-shadow(0 1px 0 rgb(40 70 95 / .25));
+  content: ''; position: absolute; left: 6px; top: -7px; width: 48%; max-width: 64px; height: 11px; pointer-events: none;
+  background: var(--snowfill); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14' preserveAspectRatio='none'%3E%3Cpath d='M0 14C1 8 6 4 13 4C18 4 20 6 24 6C29 6 32 1 39 1C47 1 50 5 54 7C58 9 60 11 60 14Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14' preserveAspectRatio='none'%3E%3Cpath d='M0 14C1 8 6 4 13 4C18 4 20 6 24 6C29 6 32 1 39 1C47 1 50 5 54 7C58 9 60 11 60 14Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  filter: drop-shadow(0 1px 0 rgb(40 70 95 / .22));
 }
+[data-season="newyear"] .card:nth-child(5n+2) .tag::after {  /* mound on the right */
+  left: auto; right: 4px; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14' preserveAspectRatio='none'%3E%3Cpath d='M0 14C2 10 5 7 10 7C15 7 17 3 25 3C33 3 35 8 41 8C46 8 48 5 53 6C58 7 60 11 60 14Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14' preserveAspectRatio='none'%3E%3Cpath d='M0 14C2 10 5 7 10 7C15 7 17 3 25 3C33 3 35 8 41 8C46 8 48 5 53 6C58 7 60 11 60 14Z'/%3E%3C/svg%3E");
+}
+[data-season="newyear"] .card:nth-child(5n+3) .tag::after {  /* cap along the top with small drips */
+  left: 10%; width: 80%; max-width: none; top: -5px; height: 10px; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 9C0 4 4 1 10 1H90C96 1 100 4 100 9V10C96 10 95 14 92 14C89 14 88 10 84 10H56C52 10 51 13 48 13C45 13 44 10 40 10H14C10 10 9 14 6 14C3 14 2 10 0 10Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 9C0 4 4 1 10 1H90C96 1 100 4 100 9V10C96 10 95 14 92 14C89 14 88 10 84 10H56C52 10 51 13 48 13C45 13 44 10 40 10H14C10 10 9 14 6 14C3 14 2 10 0 10Z'/%3E%3C/svg%3E");
+}
+[data-season="newyear"] .card:nth-child(5n+4) .tag,
+[data-season="newyear"] .card:nth-child(5n) .tag { overflow: hidden; }
+[data-season="newyear"] .card:nth-child(5n+4) .tag::after,
+[data-season="newyear"] .card:nth-child(5n) .tag::after {  /* drift blown into a bottom corner, behind the digits */
+  top: auto; bottom: 0; left: 0; width: 46%; max-width: 70px; height: 12px; z-index: -1; filter: none;
+  background: linear-gradient(#fff 40%, var(--snow-shade)); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 20' preserveAspectRatio='none'%3E%3Cpath d='M0 20V5C9 5 13 11 22 11C31 11 36 15 44 16C51 17 56 19 60 20Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 20' preserveAspectRatio='none'%3E%3Cpath d='M0 20V5C9 5 13 11 22 11C31 11 36 15 44 16C51 17 56 19 60 20Z'/%3E%3C/svg%3E");
+}
+[data-season="newyear"] .card:nth-child(5n) .tag::after { left: auto; right: 0; transform: scaleX(-1); }
 [data-season="newyear"] .card--out .tag::after { display: none; }
 
 /* Snowdrift lying on the top edge of the footer: rounded mounds rise above the edge, a lip with small
