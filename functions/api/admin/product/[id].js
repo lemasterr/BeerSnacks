@@ -9,9 +9,10 @@ export async function onRequestPut({ request, env, params }) {
   const i = catalog.findIndex(p => p.id === params.id);
   if (i === -1) return error('Not found', 404);
 
-  catalog[i] = { ...catalog[i], ...updates, id: params.id, updated_at: new Date().toISOString() };
-  await saveCatalog(env.DB_KV, catalog);
-  return json({ success: true, updatedProduct: catalog[i] });
+  const updated = { ...catalog[i], ...updates, id: params.id, updated_at: new Date().toISOString() };
+  catalog[i] = updated;
+  await saveCatalog(env.DB_KV, catalog);  // sorts the array in place, so catalog[i] may now be another product
+  return json({ success: true, updatedProduct: updated });
 }
 
 export async function onRequestDelete({ env, params }) {

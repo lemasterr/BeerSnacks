@@ -519,16 +519,20 @@
 
   // ── Settings view ──
   function renderSettings() {
-    const s = S.settings; const so = s.socials || {}; const d = s.delivery || {};
+    const s = S.settings; const so = s.socials || {}; const d = s.delivery || {}; const co = s.company || {};
     const inp = (path, label, val, ph = '') => `<label class="field"><span>${label}</span><input data-path="${path}" value="${esc(val)}" placeholder="${esc(ph)}"></label>`;
     $('#settings-form').innerHTML = `<div class="settings">
-      <div class="sec"><h3>Контакты</h3><div class="grid2">${inp('phone', 'Телефон', s.phone, '+372 …')}</div></div>
+      <div class="sec"><h3>Оформление сайта</h3><div class="grid2"><label class="field"><span>Праздничная тема</span>
+        <select data-path="season">${[['', 'Выключена'], ['newyear', 'Новый год и Рождество']].map(([v, t]) => `<option value="${v}"${(s.season || '') === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label></div></div>
+      <div class="sec"><h3>Контакты</h3><div class="grid2">${inp('phone', 'Телефон', s.phone, '+372 …')}${inp('email', 'Email', s.email, 'beermix.ee@gmail.com')}</div></div>
+      <div class="sec"><h3>Реквизиты (футер и политика конфиденциальности)</h3><div class="grid3">${inp('company.name', 'Название фирмы', co.name, 'OÜ …')}${inp('company.reg', 'Рег. код', co.reg, '1xxxxxxx')}${inp('company.address', 'Юр. адрес', co.address)}</div></div>
       <div class="sec"><h3>Соцсети</h3><div class="grid3">${inp('socials.instagram', 'Instagram', so.instagram)}${inp('socials.facebook', 'Facebook', so.facebook)}${inp('socials.tiktok', 'TikTok', so.tiktok)}</div></div>
       <div class="sec"><h3>Доставка</h3><div class="grid2">${inp('delivery.wolt', 'Wolt', d.wolt)}${inp('delivery.bolt', 'Bolt Food', d.bolt)}</div></div>
       <div class="sec"><h3>Магазины</h3>${(s.stores || []).map((st, i) => `<div class="grid2">${inp(`stores.${i}.name`, 'Название', st.name)}${inp(`stores.${i}.address`, 'Адрес', st.address)}</div>`).join('')}</div>
     </div>`;
   }
   $('#settings-form').addEventListener('input', () => { $('#settings-save').disabled = false; });
+  $('#settings-form').addEventListener('change', () => { $('#settings-save').disabled = false; });
   $('#settings-form').addEventListener('submit', (e) => e.preventDefault());
   $('#settings-save').addEventListener('click', async () => {
     const next = clone(S.settings);

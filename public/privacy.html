@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Privacy · Beer&amp;Snacks</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  <link rel="stylesheet" href="css/style.css?v=20261117a" />
+  <script>
+    (function () {
+      var t = localStorage.getItem('bs_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <style>
+    .doc { max-width: 760px; padding-top: 32px; padding-bottom: 80px; }
+    .doc h1 { font: 800 clamp(22px, 6vw, 40px)/1.1 var(--display); letter-spacing: -.03em; margin: 22px 0 18px; hyphens: auto; overflow-wrap: break-word; }
+    .doc h2 { font: 700 18px/1.25 var(--display); margin: 26px 0 8px; }
+    .doc p, .doc li { color: var(--ink-2); margin-bottom: 8px; }
+    .doc ul { padding-left: 20px; }
+    .doc__langs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .doc__langs a { text-decoration: none; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); font: 700 13px/1 var(--display); }
+    .doc__langs a[aria-current="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .doc section[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <main class="wrap doc">
+    <a class="logo" href="./">Beer&amp;Snacks</a>
+    <nav class="doc__langs" style="margin-top:18px">
+      <a href="?lang=et" data-l="et">ET</a><a href="?lang=en" data-l="en">EN</a><a href="?lang=uk" data-l="uk">UK</a><a href="?lang=ru" data-l="ru">RU</a>
+    </nav>
+
+    <section lang="et" data-l="et">
+      <h1>Privaatsuspoliitika</h1>
+      <p>Vastutav töötleja: <span class="co"></span>. Kontakt: <a class="mail"></a>.</p>
+      <h2>Mida me kogume</h2>
+      <p>See leht on poodide kataloog. Me ei küsi teie nime, telefoni ega muid isikuandmeid ega müü midagi veebis. Tellimused tehakse Wolti ja Bolt Foodi kaudu nende enda tingimustel.</p>
+      <h2>Brauserisse salvestatav teave</h2>
+      <ul>
+        <li>valitud keel ja teema (hele/tume);</li>
+        <li>kinnitus, et olete vähemalt 18-aastane;</li>
+        <li>märge, et küpsiste teade on suletud.</li>
+      </ul>
+      <p>Need jäävad ainult teie seadmesse (localStorage) ja on vajalikud lehe toimimiseks. Reklaami- ja analüütikaküpsiseid me ei kasuta.</p>
+      <h2>Teenusepakkujad</h2>
+      <p>Lehte majutab Cloudflare, kes töötleb turvalisuse tagamiseks tehnilisi andmeid (nt IP-aadress). Kaart laaditakse OpenStreetMapist. Välised lingid (Wolt, Bolt Food, Google Maps, sotsiaalvõrgustikud) avanevad nende teenuste tingimustel.</p>
+      <h2>Alkohol</h2>
+      <p>Alkoholi müüakse ainult vähemalt 18-aastastele. Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist.</p>
+    </section>
+
+    <section lang="en" data-l="en">
+      <h1>Privacy policy</h1>
+      <p>Controller: <span class="co"></span>. Contact: <a class="mail"></a>.</p>
+      <h2>What we collect</h2>
+      <p>This site is a catalogue of our shops. We do not ask for your name, phone or any other personal data and sell nothing online. Orders are placed through Wolt and Bolt Food under their own terms.</p>
+      <h2>What is stored in your browser</h2>
+      <ul>
+        <li>your chosen language and theme (light/dark);</li>
+        <li>your confirmation that you are 18 or older;</li>
+        <li>a note that you closed the cookie notice.</li>
+      </ul>
+      <p>These stay only on your device (localStorage) and are needed for the site to work. We use no advertising or analytics cookies.</p>
+      <h2>Service providers</h2>
+      <p>The site is hosted by Cloudflare, which processes technical data (such as IP address) for security. The map is loaded from OpenStreetMap. External links (Wolt, Bolt Food, Google Maps, social networks) open under those services' terms.</p>
+      <h2>Alcohol</h2>
+      <p>Alcohol is sold only to persons aged 18 and over. Alcohol may harm your health.</p>
+    </section>
+
+    <section lang="uk" data-l="uk">
+      <h1>Політика конфіденційності</h1>
+      <p>Відповідальна особа: <span class="co"></span>. Контакт: <a class="mail"></a>.</p>
+      <h2>Що ми збираємо</h2>
+      <p>Цей сайт — каталог наших магазинів. Ми не просимо ваше ім’я, телефон чи інші персональні дані й нічого не продаємо онлайн. Замовлення оформлюються через Wolt і Bolt Food на їхніх умовах.</p>
+      <h2>Що зберігається у браузері</h2>
+      <ul>
+        <li>вибрана мова й тема (світла/темна);</li>
+        <li>підтвердження, що вам виповнилося 18 років;</li>
+        <li>позначка, що ви закрили повідомлення про cookie.</li>
+      </ul>
+      <p>Ці дані залишаються лише на вашому пристрої (localStorage) і потрібні для роботи сайту. Рекламні та аналітичні cookie ми не використовуємо.</p>
+      <h2>Постачальники послуг</h2>
+      <p>Сайт розміщено на Cloudflare, який обробляє технічні дані (наприклад, IP-адресу) для безпеки. Карта завантажується з OpenStreetMap. Зовнішні посилання (Wolt, Bolt Food, Google Maps, соцмережі) відкриваються на умовах цих сервісів.</p>
+      <h2>Алкоголь</h2>
+      <p>Алкоголь продається лише особам від 18 років. Алкоголь може зашкодити вашому здоров’ю.</p>
+    </section>
+
+    <section lang="ru" data-l="ru">
+      <h1>Политика конфиденциальности</h1>
+      <p>Ответственное лицо: <span class="co"></span>. Контакт: <a class="mail"></a>.</p>
+      <h2>Что мы собираем</h2>
+      <p>Этот сайт — каталог наших магазинов. Мы не спрашиваем ваше имя, телефон или другие персональные данные и ничего не продаём онлайн. Заказы оформляются через Wolt и Bolt Food на их условиях.</p>
+      <h2>Что хранится в браузере</h2>
+      <ul>
+        <li>выбранный язык и тема (светлая/тёмная);</li>
+        <li>подтверждение, что вам исполнилось 18 лет;</li>
+        <li>отметка, что вы закрыли уведомление о cookie.</li>
+      </ul>
+      <p>Эти данные остаются только на вашем устройстве (localStorage) и нужны для работы сайта. Рекламные и аналитические cookie мы не используем.</p>
+      <h2>Поставщики услуг</h2>
+      <p>Сайт размещён на Cloudflare, который обрабатывает технические данные (например, IP-адрес) для безопасности. Карта загружается с OpenStreetMap. Внешние ссылки (Wolt, Bolt Food, Google Maps, соцсети) открываются на условиях этих сервисов.</p>
+      <h2>Алкоголь</h2>
+      <p>Алкоголь продаётся только лицам от 18 лет. Алкоголь может навредить вашему здоровью.</p>
+    </section>
+  </main>
+  <script>
+    (function () {
+      var L = ['et', 'en', 'uk', 'ru'];
+      var q = new URLSearchParams(location.search).get('lang');
+      var lang = L.indexOf(q) >= 0 ? q : (L.indexOf(localStorage.getItem('bs_lang')) >= 0 ? localStorage.getItem('bs_lang') : 'et');
+      document.documentElement.lang = lang;
+      document.querySelectorAll('section[data-l]').forEach(function (s) { s.hidden = s.dataset.l !== lang; });
+      document.querySelectorAll('.doc__langs a').forEach(function (a) { a.setAttribute('aria-current', a.dataset.l === lang); });
+      function fill(s) {
+        var c = (s && s.company) || {};
+        var co = [c.name || 'Beer&Snacks', c.reg, c.address].filter(Boolean).join(', ');
+        var mail = (s && s.email) || 'beermix.ee@gmail.com';
+        document.querySelectorAll('.co').forEach(function (e) { e.textContent = co; });
+        document.querySelectorAll('.mail').forEach(function (e) { e.textContent = mail; e.href = 'mailto:' + mail; });
+      }
+      fill(null);
+      fetch('/api/site').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) { if (d) fill(d.settings); }).catch(function () {});
+    })();
+  </script>
+</body>
+</html>

@@ -11,10 +11,7 @@
   <meta property="og:description" content="Каталог с ценами и наличием в двух магазинах в Таллинне." />
   <meta property="og:url" content="https://beersnacks.pages.dev/" />
   <link rel="icon" type="image/png" href="img/favicon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700;800&display=swap" />
-  <link rel="stylesheet" href="css/style.css?v=20261112h" />
+  <link rel="stylesheet" href="css/style.css?v=20261117a" />
   <link rel="preload" href="/api/site" as="fetch" crossorigin />
   <script>
     // Apply saved theme before first paint (no flash).
@@ -22,7 +19,7 @@
       var t = localStorage.getItem('bs_theme') ||
         (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.dataset.theme = t;
-      if (!sessionStorage.getItem('bs_lang_ok')) document.documentElement.classList.add('gate-open');
+      if (!sessionStorage.getItem('bs_lang_ok') || !localStorage.getItem('bs_age_ok')) document.documentElement.classList.add('gate-open');
     })();
   </script>
 </head>
@@ -33,11 +30,19 @@
       <h1 class="gate__title" id="gate-title">
         <span lang="et">Vali keel</span><span lang="en">Choose language</span><span lang="uk">Оберіть мову</span><span lang="ru">Выберите язык</span>
       </h1>
-      <div class="gate__langs">
+      <div class="gate__langs" id="gate-langs">
         <button type="button" data-lang="et"><b>Eesti</b><small>Õlu ja snäkid Tallinnas</small></button>
         <button type="button" data-lang="en"><b>English</b><small>Beer and snacks in Tallinn</small></button>
         <button type="button" data-lang="uk"><b>Українська</b><small>Пиво та снеки у Таллінні</small></button>
         <button type="button" data-lang="ru"><b>Русский</b><small>Пиво и снеки в Таллинне</small></button>
+      </div>
+      <div class="gate__age" id="gate-age" hidden>
+        <h1 class="gate__q"></h1>
+        <div class="gate__btns">
+          <button type="button" class="gate__yes" data-age="yes"></button>
+          <button type="button" class="gate__no" data-age="no"></button>
+        </div>
+        <p class="gate__denied" role="alert"></p>
       </div>
     </div>
   </div>
@@ -71,6 +76,7 @@
   <main>
     <section class="intro wrap" aria-labelledby="intro-title">
       <div class="intro__text">
+        <p class="season-greet" id="season-greet" hidden></p>
         <h1 id="intro-title" class="intro__title"></h1>
         <p class="intro__status" id="open-status"></p>
       </div>
@@ -90,6 +96,11 @@
     </section>
   </main>
 
+  <section class="map wrap" aria-labelledby="map-title">
+    <h2 class="map__title" id="map-title"></h2>
+    <div class="map__grid" id="map"></div>
+  </section>
+
   <footer class="foot">
     <div class="wrap foot__inner">
       <div class="foot__brand">
@@ -105,13 +116,16 @@
         <div class="socials" id="socials"></div>
       </div>
     </div>
+    <p class="wrap foot__warn" id="foot-warn"></p>
     <div class="wrap foot__legal">
       <span id="foot-rights"></span>
+      <span id="foot-company"></span>
+      <a id="foot-privacy" href="privacy.html"></a>
       <span id="foot-age"></span>
     </div>
   </footer>
 
-  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+  <dialog class="sheet" id="sheet" tabindex="-1" aria-labelledby="sheet-title">
     <div class="sheet__body" id="sheet-body"></div>
     <button class="sheet__close icon-btn" id="sheet-close" type="button" aria-label="Close">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
@@ -122,7 +136,12 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6" /></svg>
   </button>
 
+  <div class="cookie" id="cookie" role="region" aria-label="Cookies" hidden>
+    <p></p>
+    <button type="button" class="cookie__ok"></button>
+  </div>
+
   <noscript><p class="wrap">Beer&amp;Snacks — Õismäe tee 1a, Mahtra tn 1, Tallinn. Please enable JavaScript to see the catalog.</p></noscript>
-  <script src="js/app.js?v=20261112h" defer></script>
+  <script src="js/app.js?v=20261117a" defer></script>
 </body>
 </html>

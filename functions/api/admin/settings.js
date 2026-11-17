@@ -1,6 +1,7 @@
 // ── Admin Settings API ──
 // GET → return site settings
-// PUT → update site settings
+// PUT → update site settings (only known fields; links must be http(s), texts are length-limited)
+import { json, error, readJsonBody } from '../../_lib/store.js';
 
 const DEFAULT_SETTINGS = {
   phone: '',
@@ -19,33 +20,61 @@ const DEFAULT_SETTINGS = {
   ]
 };
 
-export async function onRequestGet(context) {
-  let settings = await context.env.DB_KV.get('site:settings', { type: 'json' });
-  if (!settings) {
-    settings = DEFAULT_SETTINGS;
-    await context.env.DB_KV.put('site:settings', JSON.stringify(settings));
-  }
+const SEASONS = ['', 'newyear'];
+const STORE_FIELDS = ['stock_oismae', 'stock_mahtra'];
+const text = (v, max = 200) => String(v ?? '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, max);
+const url = (v) => {
+  const s = text(v, 500);
+  if (!s) return '';
+  try { const u = new URL(s); return u.protocol === 'https:' || u.protocol === 'http:' ? u.href : null; } catch { return null; }
+};
 
-  return new Response(JSON.stringify(settings), {
-    headers: { 'Content-Type': 'application/json' }
-  });
+function clean(current, input) {
+  const next = structuredClone(current);
+  if ('phone' in input) next.phone = text(input.phone, 40);
+  if ('email' in input) {
+    const e = text(input.email, 120);
+    if (e && !/^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(e)) throw new Error('Неверный email');
+    next.email = e;
+  }
+  if ('season' in input) next.season = SEASONS.includes(input.season) ? input.season : '';
+  if (input.company && typeof input.company === 'object') {
+    next.company = { name: text(input.company.name, 120), reg: text(input.company.reg, 40), address: text(input.company.address, 200) };
+  }
+  for (const group of ['socials', 'delivery']) {
+    if (!input[group] || typeof input[group] !== 'object') continue;
+    for (const [k, v] of Object.entries(input[group])) {
+      if (!(k in (DEFAULT_SETTINGS[group]))) continue;
+      const u = url(v);
+      if (u === null) throw new Error(`Ссылка «${k}» должна начинаться с https://`);
+      next[group] = { ...(next[group] || {}), [k]: u };
+    }
+  }
+  if (Array.isArray(input.stores)) {
+    next.stores = input.stores.slice(0, 10).map((s, i) => ({
+      name: text(s && s.name, 60),
+      address: text(s && s.address, 200),
+      field: STORE_FIELDS.includes(s && s.field) ? s.field : (current.stores?.[i]?.field || ''),
+    }));
+  }
+  return next;
 }
 
-export async function onRequestPut(context) {
-  const updates = await context.request.json();
+export async function onRequestGet({ env }) {
+  let settings = await env.DB_KV.get('site:settings', { type: 'json' });
+  if (!settings) {
+    settings = DEFAULT_SETTINGS;
+    await env.DB_KV.put('site:settings', JSON.stringify(settings));
+  }
+  return json(settings, 200, { 'Cache-Control': 'no-store' });
+}
 
-  let settings = await context.env.DB_KV.get('site:settings', { type: 'json' });
-  if (!settings) settings = DEFAULT_SETTINGS;
-
-  // Merge updates
-  const merged = { ...settings, ...updates };
-  if (updates.socials) merged.socials = { ...settings.socials, ...updates.socials };
-  if (updates.delivery) merged.delivery = { ...settings.delivery, ...updates.delivery };
-  if (updates.stores) merged.stores = updates.stores;
-
-  await context.env.DB_KV.put('site:settings', JSON.stringify(merged));
-
-  return new Response(JSON.stringify({ success: true, settings: merged }), {
-    headers: { 'Content-Type': 'application/json' }
-  });
+export async function onRequestPut({ request, env }) {
+  const input = await readJsonBody(request);
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return error('Expected an object');
+  const current = (await env.DB_KV.get('site:settings', { type: 'json' })) || DEFAULT_SETTINGS;
+  let merged;
+  try { merged = clean(current, input); } catch (e) { return error(e.message, 400); }
+  await env.DB_KV.put('site:settings', JSON.stringify(merged));
+  return json({ success: true, settings: merged });
 }

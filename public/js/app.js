@@ -10,6 +10,9 @@
   // Interface strings (product data and category names come from the admin panel).
   const UI = {
     uk: {
+      ageQ: 'Вам уже є 18 років?', ageYes: 'Так, мені 18+', ageNo: 'Ні', ageDenied: 'Сайт містить інформацію про алкоголь і доступний лише особам від 18 років.',
+      cookie: 'Ми не використовуємо рекламні чи аналітичні cookie. Сайт зберігає у браузері лише вибрану мову та тему.', ok: 'Зрозуміло', privacy: 'Політика конфіденційності',
+      warn: 'Увага! Це алкогольний напій. Алкоголь може зашкодити вашому здоров’ю.', map: 'Як нас знайти', newyear: 'З Новим роком і Різдвом!',
       title: 'Пиво та снеки у Таллінні', search: 'Пошук: пиво, кальмар, сидр…', all: 'Усі',
       inStock: 'В наявності', outOfStock: 'Немає в наявності', openUntil: 'Відкрито до {t}', closedOpens: 'Зачинено · відкриємо о {t}',
       found: 'Знайдено: {n}', nothing: 'Нічого не знайшли за запитом «{q}». Спробуйте іншу назву.', empty: 'Тут поки порожньо.',
@@ -19,6 +22,9 @@
       order: 'Замовити в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     ru: {
+      ageQ: 'Вам уже есть 18 лет?', ageYes: 'Да, мне 18+', ageNo: 'Нет', ageDenied: 'Сайт содержит информацию об алкоголе и доступен только лицам от 18 лет.',
+      cookie: 'Мы не используем рекламные и аналитические cookie. Сайт хранит в браузере только выбранный язык и тему.', ok: 'Понятно', privacy: 'Политика конфиденциальности',
+      warn: 'Внимание! Это алкогольный напиток. Алкоголь может навредить вашему здоровью.', map: 'Как нас найти', newyear: 'С Новым годом и Рождеством!',
       title: 'Пиво и снеки в Таллинне', search: 'Поиск: пиво, кальмар, сидр…', all: 'Все',
       inStock: 'В наличии', outOfStock: 'Нет в наличии', openUntil: 'Открыто до {t}', closedOpens: 'Закрыто · откроемся в {t}',
       found: 'Найдено: {n}', nothing: 'Ничего не нашли по запросу «{q}». Попробуйте другое название.', empty: 'Здесь пока пусто.',
@@ -28,6 +34,9 @@
       order: 'Заказать в {s}', route: 'Маршрут', phone: 'Телефон',
     },
     et: {
+      ageQ: 'Kas oled vähemalt 18-aastane?', ageYes: 'Jah, olen 18+', ageNo: 'Ei', ageDenied: 'Leht sisaldab teavet alkoholi kohta ja on mõeldud ainult vähemalt 18-aastastele.',
+      cookie: 'Me ei kasuta reklaami- ega analüütikaküpsiseid. Leht salvestab brauserisse ainult valitud keele ja teema.', ok: 'Selge', privacy: 'Privaatsuspoliitika',
+      warn: 'Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist.', map: 'Kuidas meid leida', newyear: 'Head uut aastat ja häid jõule!',
       title: 'Õlu ja snäkid Tallinnas', search: 'Otsi: õlu, kalmaar, siider…', all: 'Kõik',
       inStock: 'Laos', outOfStock: 'Otsas', openUntil: 'Avatud kuni {t}', closedOpens: 'Suletud · avame {t}',
       found: 'Leitud: {n}', nothing: 'Päringule „{q}” ei leitud midagi. Proovi teist nime.', empty: 'Siin pole veel midagi.',
@@ -37,6 +46,9 @@
       order: 'Telli {s} kaudu', route: 'Teekond', phone: 'Telefon',
     },
     en: {
+      ageQ: 'Are you 18 or older?', ageYes: 'Yes, I am 18+', ageNo: 'No', ageDenied: 'This site contains information about alcohol and is only for persons aged 18 and over.',
+      cookie: 'We use no advertising or analytics cookies. The site only stores your chosen language and theme in your browser.', ok: 'Got it', privacy: 'Privacy policy',
+      warn: 'Attention! This is an alcoholic beverage. Alcohol may harm your health.', map: 'How to find us', newyear: 'Merry Christmas and Happy New Year!',
       title: 'Beer and snacks in Tallinn', search: 'Search: beer, squid, cider…', all: 'All',
       inStock: 'In stock', outOfStock: 'Out of stock', openUntil: 'Open until {t}', closedOpens: 'Closed · opens at {t}',
       found: 'Found: {n}', nothing: 'Nothing matches “{q}”. Try another name.', empty: 'Nothing here yet.',
@@ -88,6 +100,7 @@
   // so its real subcategory can stay the country.
   // Cards use a light copy (img/products/sm/, 420 px tall); the product sheet shows the full image.
   const thumb = (src) => /^img\/products\/[^/]+\.webp$/.test(src) ? src.replace('img/products/', 'img/products/sm/') : src;
+  const isAlcohol = (p) => (p.category === 'beer' || p.category === 'cider') && !/^0(\.0)?\s*%/.test(String(p.abv || ''));
   const isDraft = (p) => !!p.price_05 || p.subcategory === 'draft';
   const inSub = (p, s) => s === 'all' || (s === 'draft' ? isDraft(p) : s === 'bottled' ? !isDraft(p) : p.subcategory === s);
   const price = (n, unit) => {
@@ -149,12 +162,21 @@
     $('foot-hours').textContent = f.hoursValue || '';
     $('foot-rights').textContent = f.rights || `© ${new Date().getFullYear()} Beer&Snacks`;
     $('foot-age').textContent = u.age;
+    $('foot-warn').textContent = u.warn;
+    const pl = $('foot-privacy'); pl.textContent = u.privacy; pl.href = `privacy.html?lang=${state.lang}`;
+    $('map-title').textContent = u.map;
     $('foot-contact-title').textContent = u.contacts;
 
     const s = state.data.settings || {};
     const phone = $('foot-phone');
     if (s.phone) { phone.hidden = false; phone.innerHTML = `<a href="tel:${esc(s.phone.replace(/\s/g, ''))}">${esc(s.phone)}</a>`; }
 
+    const co = s.company || {};
+    $('foot-company').textContent = [co.name, co.reg ? `${co.reg}` : '', co.address].filter(Boolean).join(' · ');
+    if (s.email) { const em = $('foot-email'); em.textContent = s.email; em.href = `mailto:${s.email}`; }
+    renderMap(s.stores || [], u);
+    renderSeason(s.season, u);
+    renderCookie(u);
     const stores = s.stores || [];
     $('foot-stores').innerHTML = `<h2>${esc(u.stores)}</h2>` + stores.map(st =>
       `<p><strong>${esc(st.name)}</strong><br><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(st.address)}" target="_blank" rel="noopener">${esc(st.address)}</a></p>`).join('');
@@ -173,6 +195,46 @@
 
     renderOpenStatus();
   }
+
+  // ── Store map: one OpenStreetMap view per shop (no tracking cookies) + a directions link ──
+  const COORDS = { 'Õismäe': [59.41415, 24.65468], 'Mahtra': [59.44219, 24.87358] };
+  function renderMap(stores, u) {
+    const box = $('map'); if (!box) return;
+    box.innerHTML = stores.filter(st => COORDS[st.name] || (st.lat && st.lon)).map(st => {
+      const [lat, lon] = st.lat && st.lon ? [Number(st.lat), Number(st.lon)] : COORDS[st.name];
+      const d = 0.006, bbox = [lon - d * 2, lat - d, lon + d * 2, lat + d].map(n => n.toFixed(5)).join('%2C');
+      return `<figure class="map__card">
+        <iframe title="${esc(st.name)}" loading="lazy" referrerpolicy="no-referrer"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&amp;layer=mapnik&amp;marker=${lat}%2C${lon}"></iframe>
+        <figcaption><span><strong>${esc(st.name)}</strong><br>${esc(st.address)}</span>
+          <a class="pill pill--route" href="https://www.google.com/maps/dir/?api=1&amp;destination=${lat},${lon}" target="_blank" rel="noopener">${esc(u.route)}</a></figcaption>
+      </figure>`;
+    }).join('');
+  }
+
+  // ── Seasonal decoration, switched on in the admin panel (settings.season) ──
+  function renderSeason(season, u) {
+    const root = document.documentElement;
+    if (season !== 'newyear') { delete root.dataset.season; $('season-greet').hidden = true; return; }
+    root.dataset.season = 'newyear';
+    const g = $('season-greet'); g.hidden = false; g.textContent = u.newyear;
+    if (!$('snow') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const snow = document.createElement('div'); snow.id = 'snow'; snow.className = 'snow'; snow.setAttribute('aria-hidden', 'true');
+      snow.innerHTML = Array.from({ length: 28 }, () =>
+        `<i style="--x:${(Math.random() * 100).toFixed(1)}vw;--s:${(4 + Math.random() * 6).toFixed(1)}px;--d:${(9 + Math.random() * 10).toFixed(1)}s;--w:${(-Math.random() * 18).toFixed(1)}s;--o:${(.35 + Math.random() * .5).toFixed(2)}"></i>`).join('');
+      document.body.appendChild(snow);
+    }
+  }
+
+  // ── Cookie notice: only language and theme are stored, so this is an information note, not a consent form ──
+  function renderCookie(u) {
+    const bar = $('cookie');
+    if (localStorage.getItem('bs_cookie_ok')) { bar.hidden = true; return; }
+    bar.hidden = false;
+    bar.querySelector('p').innerHTML = `${esc(u.cookie)} <a href="privacy.html?lang=${state.lang}">${esc(u.privacy)}</a>`;
+    bar.querySelector('button').textContent = u.ok;
+  }
+  $('cookie').querySelector('button').addEventListener('click', () => { localStorage.setItem('bs_cookie_ok', '1'); $('cookie').hidden = true; });
 
   function renderOpenStatus() {
     const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
@@ -304,8 +366,10 @@
           <p>${esc(u.where)}</p>
           ${stores.map(s => `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.address)}" target="_blank" rel="noopener"><strong>${esc(s.name)}</strong> ${esc(s.address)}</a>`).join('')}
         </div>`}
+        ${isAlcohol(p) ? `<p class="warn">${esc(u.warn)}</p>` : ''}
       </div>`;
     els.sheet.showModal();
+    els.sheet.focus({ preventScroll: true });  // no focus ring on the first store link
     document.documentElement.classList.add('sheet-open');
     // The phone's Back button closes the product card instead of leaving the site.
     history.pushState({ sheet: true }, '', location.href);
@@ -417,23 +481,45 @@
 
   // ── Language gate: asked once per visit (browser session) ──
   const gate = $('gate');
+  // Then (once per browser) the age question: the site shows alcohol, so it is meant for adults only.
+  const ageOk = () => !!localStorage.getItem('bs_age_ok');
   function closeGate() {
-    sessionStorage.setItem('bs_lang_ok', '1');
     document.documentElement.classList.remove('gate-open');
     gate.hidden = true;
   }
-  if (!sessionStorage.getItem('bs_lang_ok')) {
+  function showAge() {
+    const u = ui();
+    $('gate-langs').hidden = true; $('gate-title').hidden = true;
+    const box = $('gate-age'); box.hidden = false;
+    box.querySelector('h1').textContent = u.ageQ;
+    box.querySelector('[data-age="yes"]').textContent = u.ageYes;
+    box.querySelector('[data-age="no"]').textContent = u.ageNo;
+    box.querySelector('p').textContent = '';
+    setTimeout(() => box.querySelector('[data-age="yes"]').focus({ preventScroll: true }), 50);
+  }
+  const langOk = !!sessionStorage.getItem('bs_lang_ok');
+  if (!langOk || !ageOk()) {
     gate.hidden = false;
-    const cur = gate.querySelector(`[data-lang="${state.lang}"]`);
-    if (cur) { cur.classList.add('is-last'); setTimeout(() => cur.focus({ preventScroll: true }), 50); }
+    if (langOk) showAge();
+    else {
+      const cur = gate.querySelector(`[data-lang="${state.lang}"]`);
+      if (cur) { cur.classList.add('is-last'); setTimeout(() => cur.focus({ preventScroll: true }), 50); }
+    }
   }
   gate.addEventListener('click', (e) => {
     const b = e.target.closest('[data-lang]');
-    if (!b) return;
-    state.lang = b.dataset.lang;
-    localStorage.setItem('bs_lang', state.lang);
-    closeGate();
-    renderAll({ animate: true });
+    if (b) {
+      state.lang = b.dataset.lang;
+      localStorage.setItem('bs_lang', state.lang);
+      sessionStorage.setItem('bs_lang_ok', '1');
+      renderAll({ animate: true });
+      if (ageOk()) closeGate(); else showAge();
+      return;
+    }
+    const a = e.target.closest('[data-age]');
+    if (!a) return;
+    if (a.dataset.age === 'yes') { localStorage.setItem('bs_age_ok', '1'); closeGate(); }
+    else $('gate-age').querySelector('p').textContent = ui().ageDenied;
   });
 
   renderStatic();

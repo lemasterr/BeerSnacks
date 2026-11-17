@@ -1,11 +1,19 @@
 // GET /api/site — everything the public catalog needs in ONE request:
 // products, categories, translations and public settings (stores, socials, delivery).
-// Cached at the edge for 60 s, so admin edits appear within about a minute.
+// The built response is kept in the Cloudflare edge cache for 60 s, so a crowd of visitors costs
+// one set of KV reads per minute per data centre (admin edits appear within about a minute).
 import { json } from '../_lib/store.js';
 
-export async function onRequestGet({ env }) {
+const TTL = 60;
+
+export async function onRequestGet({ request, env, waitUntil }) {
+  const cache = caches.default;
+  const key = new Request(new URL('/api/site', request.url).toString(), { method: 'GET' });
+  const hit = await cache.match(key);
+  if (hit) return hit;
+
   const kv = env.DB_KV;
-  const opts = { type: 'json', cacheTtl: 60 };
+  const opts = { type: 'json', cacheTtl: TTL };
   const [catalog, categories, translations, settings] = await Promise.all([
     kv.get('catalog:compiled', opts),
     kv.get('site:categories', opts),
@@ -23,9 +31,11 @@ export async function onRequestGet({ env }) {
     return p;
   });
 
-  return json(
+  const res = json(
     { catalog: visible, categories: cats, translations: translations || {}, settings: settings || {} },
     200,
-    { 'Cache-Control': 'public, max-age=60, stale-while-revalidate=300' },
+    { 'Cache-Control': `public, max-age=${TTL}, stale-while-revalidate=300` },
   );
+  waitUntil(cache.put(key, res.clone()));
+  return res;
 }
