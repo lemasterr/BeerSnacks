@@ -39,7 +39,7 @@ function clean(current, input) {
   }
   if ('season' in input) next.season = SEASONS.includes(input.season) ? input.season : '';
   if (input.company && typeof input.company === 'object') {
-    next.company = { name: text(input.company.name, 120), reg: text(input.company.reg, 40), address: text(input.company.address, 200) };
+    next.company = { name: text(input.company.name, 120), reg: text(input.company.reg, 40), vat: text(input.company.vat, 40), address: text(input.company.address, 200) };
   }
   for (const group of ['socials', 'delivery']) {
     if (!input[group] || typeof input[group] !== 'object') continue;

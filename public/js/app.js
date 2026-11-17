@@ -191,7 +191,7 @@
     if (s.phone) { phone.hidden = false; phone.innerHTML = `<a href="tel:${esc(s.phone.replace(/\s/g, ''))}">${esc(s.phone)}</a>`; }
 
     const co = s.company || {};
-    $('foot-company').textContent = [co.name, co.reg ? `${co.reg}` : '', co.address].filter(Boolean).join(' · ');
+    $('foot-company').textContent = [co.name, co.reg ? `reg. kood ${co.reg}` : '', co.vat ? `KMKR ${co.vat}` : '', co.address].filter(Boolean).join(' · ');
     if (s.email) { const em = $('foot-email'); em.textContent = s.email; em.href = `mailto:${s.email}`; }
     renderSeason(s.season, u);
     renderCookie(u);
@@ -263,9 +263,18 @@
     embers: () => `--x:${(Math.random() * 100).toFixed(1)}vw;--s:${(2.5 + Math.random() * 3.5).toFixed(1)}px;--d:${(7 + Math.random() * 8).toFixed(1)}s;--o:${(.5 + Math.random() * .5).toFixed(2)};--dx:${(Math.random() * 16 - 8).toFixed(1)}vw`,
     bats: () => `--y:${(6 + Math.random() * 40).toFixed(1)}vh;--s:${(16 + Math.random() * 12).toFixed(1)}px;--d:${(18 + Math.random() * 14).toFixed(1)}s;--o:${(.45 + Math.random() * .35).toFixed(2)}`,
   };
-  function renderSeason(setting, u) {
-    const root = document.documentElement, season = pickSeason(setting), conf = SEASONS[season];
+  // Estonian alcohol advertising rules (RekS § 28 lg 3) forbid tying alcohol to a holiday or season and animated
+  // objects next to it, so the holiday decoration switches off while beer or cider is on the screen.
+  let seasonPicked = '', alcOnScreen = false;
+  function renderSeason(setting, u) { seasonPicked = pickSeason(setting); showSeason(alcOnScreen ? '' : seasonPicked, u); }
+  function setAlcOnScreen(on) {
+    if (on === alcOnScreen) return;
+    alcOnScreen = on; showSeason(on ? '' : seasonPicked, ui());
+  }
+  function showSeason(season, u) {
+    const root = document.documentElement, conf = SEASONS[season];
     $('season-greet').hidden = true;
+    if (!conf) $('snow-toggle').hidden = true;
     const old = $('fx');
     if (!conf) { delete root.dataset.season; old?.remove(); return; }
     if (root.dataset.season !== season) old?.remove();
@@ -295,7 +304,7 @@
   }
   $('snow-toggle').addEventListener('click', () => {
     localStorage.setItem('bs_snow', localStorage.getItem('bs_snow') === 'off' ? 'on' : 'off');
-    renderSeason(state.data.settings?.season, ui());
+    showSeason(alcOnScreen ? '' : seasonPicked, ui());
   });
   $('cookie').querySelector('button').addEventListener('click', () => { localStorage.setItem('bs_cookie_ok', '1'); $('cookie').hidden = true; });
 
@@ -368,10 +377,12 @@
     els.note.hidden = !q;
     if (q) els.note.textContent = items.length ? fmt(ui().found, { n: items.length }) : '';
     if (!items.length) {
+      $('alc-warn').hidden = true; setAlcOnScreen(false);
       els.products.innerHTML = `<p class="grid__empty">${esc(q ? fmt(ui().nothing, { q }) : ui().empty)}</p>`;
       return;
     }
     const aw = $('alc-warn'); aw.hidden = !items.some(isAlcohol); if (!aw.hidden) aw.innerHTML = warnHtml();
+    setAlcOnScreen(!aw.hidden);
     els.products.classList.toggle('grid--animate', animate);
     els.products.innerHTML = items.map(card).join('');
   }

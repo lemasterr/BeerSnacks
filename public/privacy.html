@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Privacy · Beer&amp;Snacks</title>
   <meta name="robots" content="noindex" />
-  <link rel="icon" type="image/png" href="img/favicon.png" />
-  <link rel="stylesheet" href="css/style.css?v=20261118b" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/img/favicon-48.png" />
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="css/style.css?v=20261118c" />
   <script>
     (function () {
       var t = localStorage.getItem('bs_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -136,7 +139,7 @@
       document.querySelectorAll('.doc__langs a').forEach(function (a) { a.setAttribute('aria-current', a.dataset.l === lang); });
       function fill(s) {
         var c = (s && s.company) || {};
-        var co = [c.name || 'Beer&Snacks', c.reg ? 'reg. kood ' + c.reg : '', c.address].filter(Boolean).join(', ');
+        var co = [c.name || 'Beer&Snacks', c.reg ? 'reg. kood ' + c.reg : '', c.vat ? 'KMKR ' + c.vat : '', c.address].filter(Boolean).join(', ');
         var mail = (s && s.email) || 'beermix.ee@gmail.com';
         document.querySelectorAll('.co').forEach(function (e) { e.textContent = co; });
         document.querySelectorAll('.mail').forEach(function (e) { e.textContent = mail; e.href = 'mailto:' + mail; });
