@@ -76,7 +76,8 @@ export async function onRequestPost({ request, env }) {
 
     // ── Abuse limits ──
     const ip = request.headers.get('CF-Connecting-IP') || '';
-    if (!(await verifyTurnstile(env, input.captcha, ip))) return error('captcha', 403);
+    // Bot check only when both halves are configured: the secret (Pages variable) and the public site key (admin).
+    if (settings.turnstile_sitekey && !(await verifyTurnstile(env, input.captcha, ip))) return error('captcha', 403);
     const ipHash = (await sha256(`${ip}|orders`)).slice(0, 32);
     const recent = await env.DB.prepare(`SELECT COUNT(*) AS n FROM orders WHERE ip_hash = ?1 AND created_at > ?2`).bind(ipHash, now - 3600_000).first();
     if (recent.n >= 5) return error('rate', 429);

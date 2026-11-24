@@ -728,3 +728,5 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
   .cart { width: 100%; }
   .cart-fab { left: 16px; transform: none; }
 }
+.cart__captcha:empty { display: none; }
+.cart__captcha { min-height: 0; }

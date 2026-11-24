@@ -53,6 +53,11 @@ function clean(current, input) {
       next[group] = { ...(next[group] || {}), [k]: u };
     }
   }
+  if ('turnstile_sitekey' in input) {
+    const k = text(input.turnstile_sitekey, 100);
+    if (k && !/^[0-9A-Za-z_-]{10,100}$/.test(k)) throw new Error('Неверный ключ Turnstile (site key)');
+    next.turnstile_sitekey = k;
+  }
   if (input.payment && typeof input.payment === 'object') {
     const iban = text(input.payment.iban, 50).replace(/\s+/g, '').toUpperCase();
     if (iban && !validIban(iban)) throw new Error('IBAN с ошибкой — проверь цифры');

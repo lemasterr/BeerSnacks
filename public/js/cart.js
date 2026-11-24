@@ -195,14 +195,42 @@
         <div class="cart__total"><span>${esc(u.total)}</span><strong>${eur(total)}</strong></div>
         <p class="cart__small">${esc(fmt(u.pickupNote, { h: o.pay_hours, d: o.pickup_days }))} ${esc(u.incl)}</p>
         ${alc ? `<p class="warn">${BS.warnHtml()}</p>` : ''}
+        ${settings().turnstile_sitekey ? '<div class="cart__captcha" id="cart-captcha"></div>' : ''}
         <p class="cart__err" id="cart-err" role="alert" hidden></p>
         <button type="submit" class="cart__go" id="cart-submit">${esc(u.submit)}</button>
       </form>`;
   }
 
+  // Cloudflare Turnstile (bot check) — loaded only when the checkout form is shown and a site key is set.
+  let tsLoading = null, tsWidget = null;
+  function loadTurnstile() {
+    if (window.turnstile) return Promise.resolve();
+    tsLoading ||= new Promise((ok, bad) => {
+      const s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      s.async = true; s.onload = ok; s.onerror = bad;
+      document.head.appendChild(s);
+    });
+    return tsLoading;
+  }
+  async function mountCaptcha() {
+    const box = $('cart-captcha');
+    if (!box) return;
+    try {
+      await loadTurnstile();
+      if (!box.isConnected) return;
+      tsWidget = window.turnstile.render(box, {
+        sitekey: settings().turnstile_sitekey, language: BS.lang === 'uk' ? 'uk' : BS.lang,
+        theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light', appearance: 'interaction-only',
+      });
+    } catch { /* blocked or offline: the server will refuse, the customer sees the message */ }
+  }
+  const captchaToken = () => (window.turnstile && tsWidget != null ? window.turnstile.getResponse(tsWidget) : undefined);
+  const resetCaptcha = () => { try { if (window.turnstile && tsWidget != null) window.turnstile.reset(tsWidget); } catch { /* ignore */ } };
+
   dlg.addEventListener('click', (e) => {
     const st = e.target.closest('[data-step]');
-    if (st) { step = st.dataset.step; render(); dlg.querySelector('.cart__body').scrollTop = 0; return; }
+    if (st) { step = st.dataset.step; render(); dlg.querySelector('.cart__body').scrollTop = 0; if (step === 'form') mountCaptcha(); return; }
     if (e.target.closest('#cart-close')) return close();
     const ls = lines();
     const del = e.target.closest('[data-del]');
@@ -225,7 +253,7 @@
       pay: (form.querySelector('[name=pay]:checked') || {}).value || 'iban',
       adult: f.adult ? f.adult.checked : false, terms: f.terms.checked, lang: BS.lang,
       items: lines().map(l => ({ id: l.id, size: l.size || '', qty: l.qty })),
-      captcha: window.turnstile && $('cart-captcha') ? window.turnstile.getResponse($('cart-captcha')) : undefined,
+      captcha: captchaToken(),
     };
     // Quick checks before sending (the server checks the same and more).
     if (data.name.length < 2) return show('name');
@@ -238,6 +266,7 @@
       const res = await fetch('/api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
       const out = await res.json().catch(() => ({}));
       if (!res.ok) {
+        resetCaptcha();   // a token works only once
         const code = String(out.error || 'default');
         if (code.startsWith('unavailable:')) { const p = product(code.split(':')[1]); return show('unavailable', { p: p ? BS.field(p, 'name') : '' }); }
         return show(code);

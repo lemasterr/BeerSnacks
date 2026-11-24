@@ -51,7 +51,8 @@
     try {
       const res = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: $('#login-password').value }) });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error === 'Invalid password' ? 'Неверный пароль' : (data.error || 'Ошибка входа'));
+      if (!res.ok) throw new Error(data.error === 'Invalid password' ? 'Неверный пароль'
+        : res.status === 429 ? 'Слишком много неверных попыток. Подожди 15 минут.' : (data.error || 'Ошибка входа'));
       $('#login-password').value = '';
       await start();
     } catch (ex) { err.textContent = ex.message; err.hidden = false; }
@@ -580,6 +581,7 @@
       <div class="sec"><h3>Заказы и оплата</h3><p class="muted">Реквизиты видят покупатели на странице заказа. Алкоголь продаётся только с предоплатой по IBAN.</p>
         <label class="check"><input type="checkbox" data-path="orders.enabled" ${(s.orders || {}).enabled ? 'checked' : ''}> <b>Приём заказов на сайте включён</b> — покупатели видят кнопку «В корзину»</label>
         <div class="grid2">${inp('payment.recipient', 'Получатель платежа', (s.payment || {}).recipient, co.name || 'Beermix OÜ')}${inp('payment.iban', 'IBAN', (s.payment || {}).iban, 'EE00 0000 0000 0000 0000')}</div>
+        <div class="grid2">${inp('turnstile_sitekey', 'Защита от ботов: Turnstile site key (публичный)', s.turnstile_sitekey, '0x4AAAA…')}</div>
         <div class="grid2">${inp('orders.pay_hours', 'Сколько часов ждать оплату', (s.orders || {}).pay_hours ?? 24)}${inp('orders.pickup_days', 'Сколько дней хранить готовый заказ', (s.orders || {}).pickup_days ?? 1)}</div></div>
       <div class="sec"><h3>Магазины</h3><p class="muted">Часы — в виде 11:00-20:00, пустое поле = закрыто. Сайт показывает их в футере и пишет «открыто до…». Самовывоз: в каком магазине можно забрать заказ.</p>${(s.stores || []).map((st, i) => `<div class="store-set">
         <div class="grid2">${inp(`stores.${i}.name`, 'Название', st.name)}${inp(`stores.${i}.address`, 'Адрес', st.address)}</div>
