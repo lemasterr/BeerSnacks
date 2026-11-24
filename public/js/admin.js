@@ -208,21 +208,70 @@
     if (S.uploadFor === '__editor') editorUpload(f); else uploadPhotoFor(S.uploadFor, f);
   });
 
-  // photos: resize + WebP in the browser, upload to R2, attach to product
-  async function toWebp(file, max = 1000, quality = 0.85) {
-    const bmp = await createImageBitmap(file);
-    const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
-    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
-    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-    const blob = await new Promise(r => c.toBlob(r, 'image/webp', quality));
-    if (!blob) throw new Error('Браузер не умеет WebP');
-    return blob;
+  // photos: prepared in the browser like the catalog photos (pipeline/tools/finalize_images.py + make_thumbs.sh):
+  // transparent packshots are trimmed to the object with a 4 % margin, long side ≤ 800 px, plus a 420 px tall
+  // card thumbnail. Both are WebP; Safari can't encode WebP itself, so a WebAssembly libwebp is loaded for it.
+  const PHOTO_MAX = 800, THUMB_H = 420;
+  const canvasOf = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+
+  function alphaBox(ctx, w, h) {      // bounding box of visible pixels, or null if the image is opaque
+    const d = ctx.getImageData(0, 0, w, h).data;
+    let x0 = w, y0 = h, x1 = -1, y1 = -1, see = false;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const a = d[(y * w + x) * 4 + 3];
+      if (a < 250) see = true;
+      if (a > 10) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    return see && x1 >= 0 ? { x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1 } : null;
   }
+
+  function scaled(src, sx, sy, sw, sh, w, h, pad = 0) {
+    const c = canvasOf(w + 2 * pad, h + 2 * pad), ctx = c.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(src, sx, sy, sw, sh, pad, pad, w, h);
+    return c;
+  }
+
+  let wasmWebp = null;              // libwebp module, loaded once and only when the browser can't encode WebP
+  async function encodeWebp(c, quality, alphaQuality) {
+    const native = await new Promise(r => c.toBlob(r, 'image/webp', quality));
+    if (native && native.type === 'image/webp') return native;
+    wasmWebp ||= import('./vendor/webp/webp_enc.js').then(m => m.default({ noInitialRun: true }));
+    const enc = await wasmWebp;
+    const img = c.getContext('2d').getImageData(0, 0, c.width, c.height);
+    const out = enc.encode(img.data, c.width, c.height, { ...WEBP_DEFAULTS, quality: Math.round(quality * 100), alpha_quality: alphaQuality, method: 4 });
+    if (!out) throw new Error('Не удалось сохранить фото в WebP');
+    return new Blob([out], { type: 'image/webp' });
+  }
+  // struct WebPConfig defaults (from @jsquash/webp meta.js)
+  const WEBP_DEFAULTS = { quality: 75, target_size: 0, target_PSNR: 0, method: 4, sns_strength: 50, filter_strength: 60,
+    filter_sharpness: 0, filter_type: 1, partitions: 0, segments: 4, pass: 1, show_compressed: 0, preprocessing: 0,
+    autofilter: 0, partition_limit: 0, alpha_compression: 1, alpha_filtering: 1, alpha_quality: 100, lossless: 0,
+    exact: 0, image_hint: 0, emulate_jpeg_size: 0, thread_level: 0, low_memory: 0, near_lossless: 100,
+    use_delta_palette: 0, use_sharp_yuv: 0 };
+
+  async function preparePhoto(file) {
+    const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
+    // work copy no bigger than 1600 px: enough for an 800 px result, keeps the alpha scan fast
+    const k0 = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const work = scaled(bmp, 0, 0, bmp.width, bmp.height, Math.round(bmp.width * k0), Math.round(bmp.height * k0));
+    bmp.close?.();
+    const box = alphaBox(work.getContext('2d', { willReadFrequently: true }), work.width, work.height)
+      || { x: 0, y: 0, w: work.width, h: work.height, opaque: true };
+    const k = Math.min(1, PHOTO_MAX / Math.max(box.w, box.h));
+    const w = Math.max(1, Math.round(box.w * k)), h = Math.max(1, Math.round(box.h * k));
+    const pad = box.opaque ? 0 : Math.round(Math.max(w, h) * 0.04);
+    const full = scaled(work, box.x, box.y, box.w, box.h, w, h, pad);
+    const tk = Math.min(1, THUMB_H / full.height);
+    const small = tk < 1 ? scaled(full, 0, 0, full.width, full.height, Math.max(1, Math.round(full.width * tk)), THUMB_H) : full;
+    return { photo: await encodeWebp(full, 0.84, 100), thumb: await encodeWebp(small, 0.74, 80) };
+  }
+
   async function uploadFile(file, nameHint) {
-    const webp = await toWebp(file);
+    const { photo, thumb } = await preparePhoto(file);
     const base = String(nameHint || 'product').toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-|-$/g, '') || 'product';
     const fd = new FormData();
-    fd.append('file', webp, base + '.webp'); fd.append('filename', base);
+    fd.append('file', photo, base + '.webp'); fd.append('thumb', thumb, base + '.webp'); fd.append('filename', base);
     const { url } = await api('/api/admin/upload', { method: 'POST', body: fd });
     return url;
   }

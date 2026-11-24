@@ -115,7 +115,9 @@
   // "draft" / "bottled" are derived filters: a product is draft when it has a 0.5 L price,
   // so its real subcategory can stay the country.
   // Cards use a light copy (img/products/sm/, 420 px tall); the product sheet shows the full image.
-  const thumb = (src) => /^img\/products\/[^/]+\.webp$/.test(src) ? src.replace('img/products/', 'img/products/sm/') : src;
+  // Admin uploads (/media/<key>.webp) have their thumbnail at /media/sm/<key>.webp.
+  const thumb = (src) => /^img\/products\/[^/]+\.webp$/.test(src) ? src.replace('img/products/', 'img/products/sm/')
+    : /^\/media\/[^/]+\.webp$/.test(src) ? src.replace('/media/', '/media/sm/') : src;
   // Mandatory warning for alcohol advertising (Reklaamiseadus § 28 lg 4): always this exact Estonian text.
   const LEGAL_WARN = 'Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist.';
   const warnHtml = () => `<b lang="et">${LEGAL_WARN}</b>${ui().warnTr ? `<span>${esc(ui().warnTr)}</span>` : ''}`;
