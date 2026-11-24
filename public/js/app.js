@@ -29,7 +29,7 @@
       warnShort: 'Алкоголь може зашкодити вашому здоров’ю.', 
       snowOff: 'Вимкнути сніг', snowOn: 'Увімкнути сніг',
       ageQ: 'Вам уже є 18 років?', ageYes: 'Так, мені 18+', ageNo: 'Ні', ageDenied: 'Сайт містить інформацію про алкоголь і доступний лише особам від 18 років.',
-      cookie: 'Ми не використовуємо рекламні чи аналітичні cookie. Сайт зберігає у браузері лише вибрану мову та тему.', ok: 'Зрозуміло', privacy: 'Політика конфіденційності',
+      cookie: 'Ми не використовуємо рекламні чи аналітичні cookie. Сайт зберігає у браузері лише вибрану мову та тему.', ok: 'Зрозуміло', privacy: 'Політика конфіденційності', terms: 'Умови продажу',
       warn: 'Увага! Це алкогольний напій. Алкоголь може зашкодити вашому здоров’ю.', map: 'Як нас знайти', newyear: 'З Новим роком і Різдвом!',
       title: 'Пиво та снеки у Таллінні', search: 'Пошук: пиво, кальмар, сидр…', all: 'Усі',
       inStock: 'В наявності', outOfStock: 'Немає в наявності', openUntil: 'Відкрито до {t}', closedOpens: 'Зачинено · відкриємо о {t}',
@@ -45,7 +45,7 @@
       warnShort: 'Алкоголь может навредить вашему здоровью.', 
       snowOff: 'Выключить снег', snowOn: 'Включить снег',
       ageQ: 'Вам уже есть 18 лет?', ageYes: 'Да, мне 18+', ageNo: 'Нет', ageDenied: 'Сайт содержит информацию об алкоголе и доступен только лицам от 18 лет.',
-      cookie: 'Мы не используем рекламные и аналитические cookie. Сайт хранит в браузере только выбранный язык и тему.', ok: 'Понятно', privacy: 'Политика конфиденциальности',
+      cookie: 'Мы не используем рекламные и аналитические cookie. Сайт хранит в браузере только выбранный язык и тему.', ok: 'Понятно', privacy: 'Политика конфиденциальности', terms: 'Условия продажи',
       warn: 'Внимание! Это алкогольный напиток. Алкоголь может навредить вашему здоровью.', map: 'Как нас найти', newyear: 'С Новым годом и Рождеством!',
       title: 'Пиво и снеки в Таллинне', search: 'Поиск: пиво, кальмар, сидр…', all: 'Все',
       inStock: 'В наличии', outOfStock: 'Нет в наличии', openUntil: 'Открыто до {t}', closedOpens: 'Закрыто · откроемся в {t}',
@@ -61,7 +61,7 @@
       warnShort: 'Alkohol võib kahjustada teie tervist.', 
       snowOff: 'Lülita lumi välja', snowOn: 'Lülita lumi sisse',
       ageQ: 'Kas oled vähemalt 18-aastane?', ageYes: 'Jah, olen 18+', ageNo: 'Ei', ageDenied: 'Leht sisaldab teavet alkoholi kohta ja on mõeldud ainult vähemalt 18-aastastele.',
-      cookie: 'Me ei kasuta reklaami- ega analüütikaküpsiseid. Leht salvestab brauserisse ainult valitud keele ja teema.', ok: 'Selge', privacy: 'Privaatsuspoliitika',
+      cookie: 'Me ei kasuta reklaami- ega analüütikaküpsiseid. Leht salvestab brauserisse ainult valitud keele ja teema.', ok: 'Selge', privacy: 'Privaatsuspoliitika', terms: 'Müügitingimused',
       warn: 'Tähelepanu! Tegemist on alkoholiga. Alkohol võib kahjustada teie tervist.', map: 'Kuidas meid leida', newyear: 'Head uut aastat ja häid jõule!',
       title: 'Õlu ja snäkid Tallinnas', search: 'Otsi: õlu, kalmaar, siider…', all: 'Kõik',
       inStock: 'Laos', outOfStock: 'Otsas', openUntil: 'Avatud kuni {t}', closedOpens: 'Suletud · avame {t}',
@@ -77,7 +77,7 @@
       warnShort: 'Alcohol may harm your health.', 
       snowOff: 'Turn snow off', snowOn: 'Turn snow on',
       ageQ: 'Are you 18 or older?', ageYes: 'Yes, I am 18+', ageNo: 'No', ageDenied: 'This site contains information about alcohol and is only for persons aged 18 and over.',
-      cookie: 'We use no advertising or analytics cookies. The site only stores your chosen language and theme in your browser.', ok: 'Got it', privacy: 'Privacy policy',
+      cookie: 'We use no advertising or analytics cookies. The site only stores your chosen language and theme in your browser.', ok: 'Got it', privacy: 'Privacy policy', terms: 'Terms of sale',
       warn: 'Attention! This is an alcoholic beverage. Alcohol may harm your health.', map: 'How to find us', newyear: 'Merry Christmas and Happy New Year!',
       title: 'Beer and snacks in Tallinn', search: 'Search: beer, squid, cider…', all: 'All',
       inStock: 'In stock', outOfStock: 'Out of stock', openUntil: 'Open until {t}', closedOpens: 'Closed · opens at {t}',
@@ -203,6 +203,7 @@
     $('foot-age').textContent = u.age;
     $('foot-warn').innerHTML = warnHtml();
     const pl = $('foot-privacy'); pl.textContent = u.privacy; pl.href = `privacy.html?lang=${state.lang}`;
+    const tl = $('foot-terms'); tl.textContent = u.terms; tl.href = `terms.html?lang=${state.lang}`;
     $('foot-contact-title').textContent = u.contacts;
 
     const s = state.data.settings || {};
@@ -418,6 +419,7 @@
     renderStatic();
     renderCats();
     renderProducts(opts);
+    document.dispatchEvent(new CustomEvent('bs:render'));   // cart.js redraws in the new language
   }
 
   // Animate filter changes with the View Transitions API when available.
@@ -468,8 +470,10 @@
           <p>${esc(u.where)}</p>
           ${stores.map(s => `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.address)}" target="_blank" rel="noopener"><strong>${esc(s.name)}</strong> ${esc(s.address)}</a>`).join('')}
         </div>`}
+        ${p.in_stock === false ? '' : `<div class="sheet__buy" id="sheet-buy" data-id="${esc(p.id)}"></div>`}
         ${isAlcohol(p) ? `<p class="warn">${warnHtml()}</p>` : ''}
       </div>`;
+    document.dispatchEvent(new CustomEvent('bs:sheet', { detail: { id: p.id } }));   // cart.js fills #sheet-buy
     els.sheet.showModal();
     els.sheet.focus({ preventScroll: true });  // no focus ring on the first store link
     document.documentElement.classList.add('sheet-open');
@@ -623,6 +627,12 @@
     if (a.dataset.age === 'yes') { localStorage.setItem('bs_age_ok', '1'); closeGate(); }
     else $('gate-age').querySelector('p').textContent = ui().ageDenied;
   });
+
+  // Shared with cart.js (pickup orders).
+  window.BS = {
+    get lang() { return state.lang; }, get data() { return state.data; },
+    ui, field, esc, fmt, isAlcohol, isDraft, warnHtml, hoursText,
+  };
 
   renderStatic();
   load();

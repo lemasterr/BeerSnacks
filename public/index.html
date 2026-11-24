@@ -19,7 +19,7 @@
   <link rel="icon" type="image/png" sizes="48x48" href="/img/favicon-48.png" />
   <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="stylesheet" href="css/style.css?v=20261124c" />
+  <link rel="stylesheet" href="css/style.css?v=20261124d" />
   <script>
     // Apply saved theme before first paint (no flash).
     (function () {
@@ -127,6 +127,7 @@
       <span id="foot-rights"></span>
       <span id="foot-company"></span>
       <a id="foot-privacy" href="privacy.html"></a>
+      <a id="foot-terms" href="terms.html"></a>
       <span id="foot-age"></span>
     </div>
   </footer>
@@ -138,6 +139,18 @@
     </button>
   </dialog>
 
+  <dialog class="sheet cart" id="cart" tabindex="-1" aria-labelledby="cart-title">
+    <div class="cart__head"><h2 id="cart-title"></h2>
+      <button class="icon-btn" id="cart-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg></button>
+    </div>
+    <div class="cart__body" id="cart-body"></div>
+  </dialog>
+
+  <button class="cart-fab" id="cart-fab" type="button" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h13l-1.5 8.5a2 2 0 0 1-2 1.5H9.4a2 2 0 0 1-2-1.6L5.6 4H3" /><circle cx="10" cy="20.5" r="1.3" /><circle cx="17" cy="20.5" r="1.3" /></svg>
+    <span class="cart-fab__n">0</span><span class="cart-fab__sum"></span>
+  </button>
+
   <button class="to-top icon-btn" id="to-top" type="button" aria-label="Back to top">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6" /></svg>
   </button>
@@ -148,6 +161,7 @@
   </div>
 
   <noscript><p class="wrap">Beer&amp;Snacks — Õismäe tee 1a, Mahtra tn 1, Tallinn. Please enable JavaScript to see the catalog.</p></noscript>
-  <script src="js/app.js?v=20261124c" defer></script>
+  <script src="js/app.js?v=20261124d" defer></script>
+  <script src="js/cart.js?v=20261124d" defer></script>
 </body>
 </html>

@@ -577,6 +577,10 @@
       <div class="sec"><h3>Реквизиты (футер и политика конфиденциальности)</h3><div class="grid3">${inp('company.name', 'Название фирмы', co.name, 'OÜ …')}${inp('company.reg', 'Рег. код', co.reg, '1xxxxxxx')}${inp('company.vat', 'Номер НДС (KMKR)', co.vat, 'EE…')}${inp('company.address', 'Юр. адрес', co.address)}</div></div>
       <div class="sec"><h3>Соцсети</h3><div class="grid3">${inp('socials.instagram', 'Instagram', so.instagram)}${inp('socials.facebook', 'Facebook', so.facebook)}${inp('socials.tiktok', 'TikTok', so.tiktok)}</div></div>
       <div class="sec"><h3>Доставка</h3><div class="grid2">${inp('delivery.wolt', 'Wolt', d.wolt)}${inp('delivery.bolt', 'Bolt Food', d.bolt)}</div></div>
+      <div class="sec"><h3>Заказы и оплата</h3><p class="muted">Реквизиты видят покупатели на странице заказа. Алкоголь продаётся только с предоплатой по IBAN.</p>
+        <label class="check"><input type="checkbox" data-path="orders.enabled" ${(s.orders || {}).enabled ? 'checked' : ''}> <b>Приём заказов на сайте включён</b> — покупатели видят кнопку «В корзину»</label>
+        <div class="grid2">${inp('payment.recipient', 'Получатель платежа', (s.payment || {}).recipient, co.name || 'Beermix OÜ')}${inp('payment.iban', 'IBAN', (s.payment || {}).iban, 'EE00 0000 0000 0000 0000')}</div>
+        <div class="grid2">${inp('orders.pay_hours', 'Сколько часов ждать оплату', (s.orders || {}).pay_hours ?? 24)}${inp('orders.pickup_days', 'Сколько дней хранить готовый заказ', (s.orders || {}).pickup_days ?? 1)}</div></div>
       <div class="sec"><h3>Магазины</h3><p class="muted">Часы — в виде 11:00-20:00, пустое поле = закрыто. Сайт показывает их в футере и пишет «открыто до…». Самовывоз: в каком магазине можно забрать заказ.</p>${(s.stores || []).map((st, i) => `<div class="store-set">
         <div class="grid2">${inp(`stores.${i}.name`, 'Название', st.name)}${inp(`stores.${i}.address`, 'Адрес', st.address)}</div>
         <label class="check"><input type="checkbox" data-path="stores.${i}.pickup" ${st.pickup ? 'checked' : ''}> Принимает заказы на самовывоз</label>
@@ -592,9 +596,10 @@
     $$('#settings-form [data-path]').forEach(el => {
       const keys = el.dataset.path.split('.'); let o = next;
       keys.slice(0, -1).forEach(k => { o[k] = o[k] ?? {}; o = o[k]; });
-      o[keys.at(-1)] = el.type === 'checkbox' ? el.checked : el.value.trim();
+      o[keys.at(-1)] = el.type === 'checkbox' ? el.checked : keys[0] === 'orders' ? Number(el.value.trim()) : el.value.trim();
     });
     try {
+      if (next.orders?.enabled && !String(next.payment?.iban || '').trim()) throw new Error('Чтобы включить заказы, впиши IBAN');
       const { settings } = await api('/api/admin/settings', { method: 'PUT', body: next });
       S.settings = settings; $('#settings-save').disabled = true; toast('Настройки сохранены'); renderProducts();
     } catch (e) { fail(e); }
@@ -603,11 +608,12 @@
   // ── Routing ──
   function route() {
     const h = location.hash.slice(1);
-    const v = ['products', 'categories', 'settings'].includes(h) ? h : 'products';
+    const v = ['orders', 'products', 'categories', 'settings'].includes(h) ? h : 'products';
     $$('.view').forEach(el => { el.hidden = el.id !== `view-${v}`; });
     $$('.side a').forEach(a => a.classList.toggle('is-active', a.dataset.view === v));
     if (v === 'categories') renderCats();
     if (v === 'settings') renderSettings();
+    if (v === 'orders') renderOrders();
   }
   window.addEventListener('hashchange', route);
   window.addEventListener('beforeunload', (e) => {
@@ -615,6 +621,111 @@
   });
 
   // ── Boot ──
+  // ── Orders: polled every few seconds, new ones ring a bell ──
+  const OST = { new: 'Новый', paid: 'Оплачен', ready: 'Готов к выдаче', done: 'Выдан', cancelled: 'Отменён', expired: 'Просрочен' };
+  const O = { list: new Map(), since: 0, seenMax: 0, first: true, timer: null, unseen: 0, disabled: false };
+  const eur = (c) => `${(c / 100).toFixed(2).replace('.', ',')} €`;
+  const when = (ms) => ms ? new Intl.DateTimeFormat('ru-RU', { timeZone: 'Europe/Tallinn', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(ms)) : '';
+  const soundOn = () => localStorage.getItem('bs_admin_sound') !== 'off';
+  let audio;
+  function bell() {
+    if (!soundOn()) return;
+    try {
+      audio ||= new (window.AudioContext || window.webkitAudioContext)();
+      if (audio.state === 'suspended') audio.resume();
+      [[880, 0], [1320, 0.18], [880, 0.36], [1320, 0.54]].forEach(([f, t]) => {
+        const o = audio.createOscillator(), g = audio.createGain();
+        o.type = 'sine'; o.frequency.value = f; o.connect(g); g.connect(audio.destination);
+        const at = audio.currentTime + t;
+        g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(0.35, at + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, at + 0.16);
+        o.start(at); o.stop(at + 0.17);
+      });
+    } catch { /* no audio */ }
+  }
+  // Browsers only allow sound after a click on the page: unlock it on the first click.
+  document.addEventListener('click', () => { try { audio ||= new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === 'suspended') audio.resume(); } catch { /* ignore */ } }, { once: true });
+  function renderSoundBtn() { $('#orders-sound').textContent = soundOn() ? '🔔 Звук включён' : '🔕 Звук выключен'; }
+  $('#orders-sound').addEventListener('click', () => { localStorage.setItem('bs_admin_sound', soundOn() ? 'off' : 'on'); renderSoundBtn(); if (soundOn()) bell(); });
+
+  const openCount = () => [...O.list.values()].filter(o => o.status === 'new').length;
+  function renderBadge() {
+    const n = openCount();
+    $('#orders-badge').hidden = !n; $('#orders-badge').textContent = n;
+    document.title = `${n ? `(${n}) ` : ''}Админка — Beer&Snacks`;
+  }
+
+  async function pollOrders() {
+    clearTimeout(O.timer);
+    try {
+      const d = await api(`/api/admin/orders${O.since ? `?since=${O.since - 2000}` : ''}`);
+      O.disabled = !!d.disabled;
+      let fresh = 0;
+      for (const o of d.orders) {
+        if (!O.first && o.id > O.seenMax && o.status === 'new') fresh++;
+        O.list.set(o.id, o);
+        O.seenMax = Math.max(O.seenMax, o.id);
+      }
+      O.since = d.now;
+      if (fresh) { bell(); toast(fresh === 1 ? 'Новый заказ!' : `Новых заказов: ${fresh}`); }
+      O.first = false;
+      renderBadge();
+      if (!$('#view-orders').hidden && (d.orders.length || fresh)) renderOrders();
+    } catch { /* offline or logged out: try again later */ }
+    O.timer = setTimeout(pollOrders, document.hidden ? 30_000 : 10_000);
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('#app').hidden) pollOrders(); });
+
+  function orderActions(o) {
+    const b = (to, label, cls = '') => `<button class="btn btn--sm ${cls}" data-oid="${o.id}" data-to="${to}">${label}</button>`;
+    const out = [];
+    if (o.status === 'new' && o.pay === 'iban') out.push(b('paid', '✓ Оплата пришла', 'btn--primary'));
+    if ((o.status === 'new' && o.pay === 'cash') || o.status === 'paid') out.push(b('ready', 'Собран — готов к выдаче', 'btn--primary'));
+    if (o.status === 'ready') out.push(b('done', o.has_alcohol ? 'Выдан, документ проверен' : 'Выдан', 'btn--primary'));
+    if (o.status === 'expired') out.push(b('new', 'Восстановить'));
+    if (['new', 'paid', 'ready', 'expired'].includes(o.status)) out.push(b('cancelled', 'Отменить', 'btn--ghost btn--danger'));
+    return out.join('');
+  }
+
+  function renderOrders() {
+    renderSoundBtn();
+    $('#orders-off').hidden = !O.disabled;
+    const filter = $('#orders-filter').value;
+    const list = [...O.list.values()].filter(o => filter === 'all' || ['new', 'paid', 'ready'].includes(o.status)).sort((a, b) => b.id - a.id);
+    const now = Date.now();
+    $('#orders-list').innerHTML = list.length ? list.map(o => {
+      const deadline = o.status === 'new' ? (o.pay === 'iban' ? o.pay_by : o.pickup_by) : (o.status === 'ready' ? o.pickup_by : null);
+      const late = deadline && deadline < now;
+      return `<article class="order order--${o.status}">
+        <header class="order__head">
+          <strong class="order__code">${esc(o.code)}</strong>
+          <span class="order__st order__st--${o.status}">${OST[o.status] || o.status}</span>
+          <span class="muted">${when(o.created_at)}</span>
+          <span class="order__sum">${eur(o.total)}</span>
+        </header>
+        <div class="order__body">
+          <div class="order__who"><b>${esc(o.name)}</b> · <a href="tel:${esc(o.phone.replace(/[^\d+]/g, ''))}">${esc(o.phone)}</a>${o.email ? ` · <a href="mailto:${esc(o.email)}">${esc(o.email)}</a>` : ''}</div>
+          <div class="muted">${esc(o.store_name)} · ${o.pay === 'iban' ? `IBAN, пояснение <b>${esc(o.code)}</b>` : 'оплата на кассе'}${o.has_alcohol ? ' · <b>алкоголь: проверить документ</b>' : ''}</div>
+          ${deadline ? `<div class="${late ? 'order__late' : 'muted'}">${o.status === 'new' && o.pay === 'iban' ? 'Оплатить до' : 'Забрать до'} ${when(deadline)}${late ? ' — срок прошёл' : ''}</div>` : ''}
+          <ul class="order__items">${o.items.map(i => `<li><span>${esc((i.name && (i.name.ru || i.name.et)) || i.id)}${i.size ? ` · ${i.size === '05' ? '0,5 л' : '1 л'}` : ''}</span><span>× ${i.qty}</span><span>${eur(i.price * i.qty)}</span></li>`).join('')}</ul>
+          ${o.comment ? `<p class="order__comment">💬 ${esc(o.comment)}</p>` : ''}
+        </div>
+        <footer class="order__acts">${orderActions(o)}</footer>
+      </article>`;
+    }).join('') : `<p class="empty">${filter === 'all' ? 'Заказов за 14 дней нет.' : 'Активных заказов нет.'}</p>`;
+  }
+  $('#orders-filter').addEventListener('change', renderOrders);
+  $('#orders-list').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-to]');
+    if (!b) return;
+    const o = O.list.get(Number(b.dataset.oid));
+    if (b.dataset.to === 'cancelled' && !confirm(`Отменить заказ ${o.code}?${o.status === 'paid' || (o.status === 'ready' && o.pay === 'iban') ? '\nОн уже оплачен — деньги нужно вернуть покупателю.' : ''}`)) return;
+    b.disabled = true;
+    try {
+      const { order } = await api(`/api/admin/orders/${o.id}`, { method: 'PUT', body: { status: b.dataset.to } });
+      O.list.set(order.id, order); renderBadge(); renderOrders(); toast(`${order.code}: ${OST[order.status]}`);
+    } catch (ex) { fail(ex); b.disabled = false; pollOrders(); }
+  });
+
   async function start() {
     const [products, catData, settings] = await Promise.all([
       api('/api/admin/products'), api('/api/admin/categories'), api('/api/admin/settings'),
@@ -629,6 +740,7 @@
     draftCats = null;
     $('#login').hidden = true; $('#app').hidden = false;
     renderProducts(); route();
+    pollOrders();
   }
 
   (async () => {

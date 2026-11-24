@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Tellimus · Beer&amp;Snacks</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+  <link rel="stylesheet" href="css/style.css?v=20261124d" />
+  <script>
+    (function () {
+      var t = localStorage.getItem('bs_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <style>
+    .doc { max-width: 680px; padding-top: 28px; padding-bottom: 80px; }
+    .doc__top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .doc__home { font-weight: 600; color: var(--ink-2); text-decoration: none; }
+    .doc__home:hover { color: var(--ink); text-decoration: underline; }
+    .doc h1 { font: 800 clamp(24px, 6vw, 36px)/1.1 var(--display); letter-spacing: -.03em; margin: 26px 0 6px; }
+    .ord__date { color: var(--muted); font-size: 14px; }
+    .ord__status { display: inline-block; margin-top: 14px; padding: 6px 14px; border-radius: 999px; font-weight: 700; font-size: 14px; background: var(--tile); border: 1.5px solid var(--line); }
+    .ord__status[data-s="new"] { background: var(--tag); color: var(--tag-ink); border-color: var(--tag); }
+    .ord__status[data-s="paid"], .ord__status[data-s="ready"] { background: var(--hop); color: var(--paper); border-color: var(--hop); }
+    .ord__status[data-s="cancelled"], .ord__status[data-s="expired"] { color: var(--muted); }
+    .ord__hint { margin-top: 10px; color: var(--ink-2); }
+    .box { margin-top: 22px; padding: 18px; border-radius: 18px; background: var(--tile); border: 1px solid var(--line); display: grid; gap: 10px; }
+    .box h2 { font: 700 17px/1.25 var(--display); }
+    .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: 15px; }
+    .kv dt { color: var(--muted); }
+    .kv dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .copy { border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 8px; padding: 3px 8px; font: 600 12px var(--text); cursor: pointer; }
+    .items { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+    .items li { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
+    .items span:last-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .ord__total { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 10px; font-weight: 800; font-size: 18px; }
+    .small { font-size: 13px; color: var(--muted); }
+    .err { margin-top: 30px; color: var(--ink-2); }
+  </style>
+</head>
+<body>
+  <main class="wrap doc">
+    <div class="doc__top">
+      <a class="logo" href="./">Beer&amp;Snacks</a>
+      <a class="doc__home" id="home" href="./">← Kataloog</a>
+    </div>
+    <div id="out" aria-live="polite"></div>
+  </main>
+  <script src="js/order.js?v=20261124d" defer></script>
+</body>
+</html>

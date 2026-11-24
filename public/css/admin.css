@@ -232,3 +232,27 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
 .store-set .hours { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
 .store-set .hours input { font-variant-numeric: tabular-nums; font-size: 13px; padding-inline: 6px; }
 @media (max-width: 760px) { .store-set .hours { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* ── Orders ── */
+.side__badge { margin-left: auto; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: var(--tag); color: #17251d; font-size: 12px; font-weight: 800; display: inline-grid; place-items: center; }
+.orders__tools { display: flex; gap: 8px; align-items: center; }
+.orders__off { padding: 12px 14px; border-radius: 10px; background: var(--hover); margin-bottom: 12px; }
+.orders { display: grid; gap: 12px; }
+.order { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: grid; gap: 10px; }
+.order--new { border-color: var(--tag); box-shadow: 0 0 0 2px color-mix(in srgb, var(--tag) 45%, transparent); }
+.order--done, .order--cancelled, .order--expired { opacity: .7; }
+.order__head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.order__code { font: 700 17px var(--display); }
+.order__sum { margin-left: auto; font: 700 17px var(--display); font-variant-numeric: tabular-nums; }
+.order__st { padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--hover); }
+.order__st--new { background: var(--tag); color: #17251d; }
+.order__st--paid, .order__st--ready { background: var(--hop); color: #fff; }
+.order__body { display: grid; gap: 4px; font-size: 14px; }
+.order__who a { color: inherit; }
+.order__late { color: #b42318; font-weight: 600; }
+.order__items { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 3px; }
+.order__items li { display: grid; grid-template-columns: 1fr auto 90px; gap: 10px; }
+.order__items li span:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.order__comment { background: var(--hover); padding: 8px 10px; border-radius: 8px; }
+.order__acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.order__acts:empty { display: none; }

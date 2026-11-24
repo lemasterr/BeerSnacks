@@ -3,6 +3,7 @@
 // PUT → update site settings (only known fields; links must be http(s), texts are length-limited)
 import { json, error, readJsonBody } from '../../_lib/store.js';
 import { STORE_DEFAULTS, normalizeRange, withStoreDefaults } from '../../_lib/stores.js';
+import { validIban, formatIban, ORDER_DEFAULTS } from '../../_lib/orders.js';
 
 const DEFAULT_SETTINGS = {
   phone: '',
@@ -52,6 +53,19 @@ function clean(current, input) {
       next[group] = { ...(next[group] || {}), [k]: u };
     }
   }
+  if (input.payment && typeof input.payment === 'object') {
+    const iban = text(input.payment.iban, 50).replace(/\s+/g, '').toUpperCase();
+    if (iban && !validIban(iban)) throw new Error('IBAN с ошибкой — проверь цифры');
+    next.payment = { recipient: text(input.payment.recipient, 120), iban: iban ? formatIban(iban) : '' };
+  }
+  if (input.orders && typeof input.orders === 'object') {
+    const num = (v, min, max, d) => { const n = Math.round(Number(v)); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : d; };
+    next.orders = {
+      enabled: input.orders.enabled === true,
+      pay_hours: num(input.orders.pay_hours, 1, 168, ORDER_DEFAULTS.pay_hours),
+      pickup_days: num(input.orders.pickup_days, 1, 14, ORDER_DEFAULTS.pickup_days),
+    };
+  }
   if (Array.isArray(input.stores)) {
     const prev = withStoreDefaults(current).stores || [];
     next.stores = input.stores.slice(0, 10).map((s, i) => {
@@ -77,7 +91,8 @@ export async function onRequestGet({ env }) {
     settings = DEFAULT_SETTINGS;
     await env.DB_KV.put('site:settings', JSON.stringify(settings));
   }
-  return json(withStoreDefaults(settings), 200, { 'Cache-Control': 'no-store' });
+  settings = withStoreDefaults(settings);
+  return json({ ...settings, orders: { ...ORDER_DEFAULTS, ...(settings.orders || {}) }, payment: settings.payment || { recipient: '', iban: '' } }, 200, { 'Cache-Control': 'no-store' });
 }
 
 export async function onRequestPut({ request, env }) {

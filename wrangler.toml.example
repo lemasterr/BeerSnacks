@@ -12,6 +12,12 @@ id = "<KV namespace id>"
 binding = "IMAGES_BUCKET"
 bucket_name = "beersnacks-images"
 
+[[d1_databases]]
+binding = "DB"                       # pickup orders (migrations/ — apply with: npx wrangler d1 migrations apply beersnacks-orders)
+database_name = "beersnacks-orders"
+database_id = "<D1 database id>"
+migrations_dir = "migrations"
+
 # Secrets (put in .dev.vars locally, and in Pages → Settings → Variables for production):
 #   ADMIN_PASSWORD   admin panel password
 # Images: product photos live in public/img/products/*.webp (served free as static files).

@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex">
   <title>Админка — Beer&amp;Snacks</title>
   <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
-  <link rel="stylesheet" href="css/admin.css?v=20261124c">
+  <link rel="stylesheet" href="css/admin.css?v=20261124d">
   <script>
     document.documentElement.dataset.theme = localStorage.getItem('bs_theme') ||
       (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -42,6 +42,9 @@
     </header>
 
     <nav class="side" aria-label="Разделы">
+      <a href="#orders" data-view="orders">
+        <svg viewBox="0 0 24 24"><path d="M6 7h13l-1.5 8.5a2 2 0 0 1-2 1.5H9.4a2 2 0 0 1-2-1.6L5.6 4H3"/><circle cx="10" cy="20.5" r="1.3"/><circle cx="17" cy="20.5" r="1.3"/></svg> Заказы <span class="side__badge" id="orders-badge" hidden></span>
+      </a>
       <a href="#products" data-view="products">
         <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Товары
       </a>
@@ -54,6 +57,24 @@
     </nav>
 
     <main class="main">
+      <!-- Orders -->
+      <section class="view" id="view-orders" hidden>
+        <div class="view__head">
+          <div>
+            <h1>Заказы</h1>
+            <p class="muted">Новые заказы появляются сами, без перезагрузки. Самовывоз: оплата по IBAN (алкоголь — только так) или на кассе.</p>
+          </div>
+          <div class="orders__tools">
+            <button class="btn btn--sm" id="orders-sound" type="button"></button>
+            <select class="input" id="orders-filter">
+              <option value="open">Активные</option>
+              <option value="all">Все за 14 дней</option>
+            </select>
+          </div>
+        </div>
+        <p class="orders__off" id="orders-off" hidden>Заказы ещё не подключены на сервере (нет базы D1).</p>
+        <div class="orders" id="orders-list"></div>
+      </section>
       <!-- Products -->
       <section class="view" id="view-products">
         <div class="kpis" id="kpis"></div>
@@ -148,6 +169,6 @@
   </div>
 
   <div class="toast" id="toast" role="status" hidden></div>
-  <script src="js/admin.js?v=20261124c"></script>
+  <script src="js/admin.js?v=20261124d"></script>
 </body>
 </html>
