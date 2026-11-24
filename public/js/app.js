@@ -16,8 +16,10 @@
       out.push(`${days} ${hours[d] ? hours[d].replace('-', '–') : u.closed}`);
       d = e + 1;
     }
-    return out.join(' · ');
+    return out;
   }
+  // One line per group of days, never broken inside a group ("Сб–Вс 11:00–18:00").
+  const hoursHtml = (hours, u) => hoursText(hours, u).map(g => `<span class="store__hours-row">${esc(g)}</span>`).join('');
 
   // Interface strings (product data and category names come from the admin panel).
   const UI = {
@@ -219,7 +221,7 @@
       const dir = m ? `https://www.google.com/maps/dir/?api=1&amp;destination=${m[1]},${m[2]}` : `https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(st.address)}`;
       return `<a class="store" href="${dir}" target="_blank" rel="noopener" aria-label="${esc(u.route)}: ${esc(st.name)}, ${esc(st.address)}">
         ${m ? `<span class="store__map"><img src="img/map_${m[0]}_sm.webp" alt="" loading="lazy" decoding="async" width="480" height="304" /></span>` : ''}
-        <strong>${esc(st.name)}</strong><span class="store__addr">${esc(st.address)}</span>${Array.isArray(st.hours) ? `<span class="store__hours">${esc(hoursText(st.hours, u))}</span>` : ''}<span class="store__route">${esc(u.route)} →</span></a>`;
+        <strong>${esc(st.name)}</strong><span class="store__addr">${esc(st.address)}</span>${Array.isArray(st.hours) ? `<span class="store__hours">${hoursHtml(st.hours, u)}</span>` : ''}<span class="store__route">${esc(u.route)} →</span></a>`;
     }).join('') + '</div>';
 
     const icons = {  // solid glyphs (the stylesheet strips strokes from footer icons)
