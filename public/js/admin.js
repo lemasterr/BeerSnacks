@@ -577,7 +577,11 @@
       <div class="sec"><h3>Реквизиты (футер и политика конфиденциальности)</h3><div class="grid3">${inp('company.name', 'Название фирмы', co.name, 'OÜ …')}${inp('company.reg', 'Рег. код', co.reg, '1xxxxxxx')}${inp('company.vat', 'Номер НДС (KMKR)', co.vat, 'EE…')}${inp('company.address', 'Юр. адрес', co.address)}</div></div>
       <div class="sec"><h3>Соцсети</h3><div class="grid3">${inp('socials.instagram', 'Instagram', so.instagram)}${inp('socials.facebook', 'Facebook', so.facebook)}${inp('socials.tiktok', 'TikTok', so.tiktok)}</div></div>
       <div class="sec"><h3>Доставка</h3><div class="grid2">${inp('delivery.wolt', 'Wolt', d.wolt)}${inp('delivery.bolt', 'Bolt Food', d.bolt)}</div></div>
-      <div class="sec"><h3>Магазины</h3>${(s.stores || []).map((st, i) => `<div class="grid2">${inp(`stores.${i}.name`, 'Название', st.name)}${inp(`stores.${i}.address`, 'Адрес', st.address)}</div>`).join('')}</div>
+      <div class="sec"><h3>Магазины</h3><p class="muted">Часы — в виде 11:00-20:00, пустое поле = закрыто. Сайт показывает их в футере и пишет «открыто до…». Самовывоз: в каком магазине можно забрать заказ.</p>${(s.stores || []).map((st, i) => `<div class="store-set">
+        <div class="grid2">${inp(`stores.${i}.name`, 'Название', st.name)}${inp(`stores.${i}.address`, 'Адрес', st.address)}</div>
+        <label class="check"><input type="checkbox" data-path="stores.${i}.pickup" ${st.pickup ? 'checked' : ''}> Принимает заказы на самовывоз</label>
+        <div class="hours">${['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((dn, d) => inp(`stores.${i}.hours.${d}`, dn, (st.hours || [])[d] || '', 'закрыто')).join('')}</div>
+      </div>`).join('')}</div>
     </div>`;
   }
   $('#settings-form').addEventListener('input', () => { $('#settings-save').disabled = false; });
@@ -588,7 +592,7 @@
     $$('#settings-form [data-path]').forEach(el => {
       const keys = el.dataset.path.split('.'); let o = next;
       keys.slice(0, -1).forEach(k => { o[k] = o[k] ?? {}; o = o[k]; });
-      o[keys.at(-1)] = el.value.trim();
+      o[keys.at(-1)] = el.type === 'checkbox' ? el.checked : el.value.trim();
     });
     try {
       const { settings } = await api('/api/admin/settings', { method: 'PUT', body: next });

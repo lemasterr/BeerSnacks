@@ -661,3 +661,4 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+.store__hours { font-size: 13px; opacity: .85; font-variant-numeric: tabular-nums; }

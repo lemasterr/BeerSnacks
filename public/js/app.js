@@ -4,8 +4,20 @@
 
   const LANGS = ['uk', 'ru', 'et', 'en'];
   const TZ = 'Europe/Tallinn';
-  // Opening hours: [weekday 0=Sun..6=Sat] -> [open, close] in minutes.
-  const HOURS = { 0: [600, 1320], 1: [780, 1320], 2: [780, 1320], 3: [780, 1320], 4: [780, 1320], 5: [780, 1320], 6: [600, 1320] };
+  // Opening hours come from the admin settings: store.hours[0=Mon..6=Sun] = "HH:MM-HH:MM" or "" (closed).
+  const toMin = (t) => { const [h, m] = t.split(':'); return h * 60 + +m; };
+  const range = (r) => (r && /^\d\d:\d\d-\d\d:\d\d$/.test(r) ? r.split('-').map(toMin) : null);
+  // "Пн–Пт 11:00–20:00 · Сб–Вс 11:00–18:00": consecutive days with the same hours are joined.
+  function hoursText(hours, u) {
+    const out = [];
+    for (let d = 0; d < 7;) {
+      let e = d; while (e + 1 < 7 && (hours[e + 1] || '') === (hours[d] || '')) e++;
+      const days = d === e ? u.days[d] : `${u.days[d]}–${u.days[e]}`;
+      out.push(`${days} ${hours[d] ? hours[d].replace('-', '–') : u.closed}`);
+      d = e + 1;
+    }
+    return out.join(' · ');
+  }
 
   // Interface strings (product data and category names come from the admin panel).
   const UI = {
@@ -23,7 +35,7 @@
       stores: 'Магазини', contacts: 'Контакти', where: 'Є в магазинах', nowhere: 'Зараз немає в магазинах',
       age: 'Алкоголь продається особам від 18 років.', theme: 'Змінити тему', error: 'Не вдалося завантажити каталог. Оновіть сторінку.',
       kg: 'кг', g100: '100 г', half: '0,5 л', litre: '1 л',
-      order: 'Замовити в {s}', route: 'Маршрут', phone: 'Телефон',
+      order: 'Замовити в {s}', route: 'Маршрут', phone: 'Телефон', days: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'], closed: 'зачинено',
     },
     ru: {
       warnTr: 'Внимание! Это алкоголь. Алкоголь может навредить вашему здоровью.',
@@ -39,7 +51,7 @@
       stores: 'Магазины', contacts: 'Контакты', where: 'Есть в магазинах', nowhere: 'Сейчас нет в магазинах',
       age: 'Алкоголь продаётся лицам старше 18 лет.', theme: 'Сменить тему', error: 'Не удалось загрузить каталог. Обновите страницу.',
       kg: 'кг', g100: '100 г', half: '0,5 л', litre: '1 л',
-      order: 'Заказать в {s}', route: 'Маршрут', phone: 'Телефон',
+      order: 'Заказать в {s}', route: 'Маршрут', phone: 'Телефон', days: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], closed: 'закрыто',
     },
     et: {
       warnTr: '',
@@ -55,7 +67,7 @@
       stores: 'Poed', contacts: 'Kontakt', where: 'Saadaval poodides', nowhere: 'Hetkel poodides otsas',
       age: 'Alkoholi müüakse alates 18. eluaastast.', theme: 'Vaheta teemat', error: 'Kataloogi laadimine ebaõnnestus. Värskenda lehte.',
       kg: 'kg', g100: '100 g', half: '0,5 l', litre: '1 l',
-      order: 'Telli {s} kaudu', route: 'Teekond', phone: 'Telefon',
+      order: 'Telli {s} kaudu', route: 'Teekond', phone: 'Telefon', days: ['E', 'T', 'K', 'N', 'R', 'L', 'P'], closed: 'suletud',
     },
     en: {
       warnTr: 'Attention! This is alcohol. Alcohol may harm your health.',
@@ -71,7 +83,7 @@
       stores: 'Stores', contacts: 'Contact', where: 'Available at', nowhere: 'Not in stores right now',
       age: 'Alcohol is sold to persons aged 18 and over.', theme: 'Toggle theme', error: 'Could not load the catalog. Please reload the page.',
       kg: 'kg', g100: '100 g', half: '0.5 L', litre: '1 L',
-      order: 'Order on {s}', route: 'Directions', phone: 'Phone',
+      order: 'Order on {s}', route: 'Directions', phone: 'Phone', days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], closed: 'closed',
     },
   };
 
@@ -181,7 +193,10 @@
 
     const f = t.footer || {};
     $('foot-about').textContent = f.about || '';
-    $('foot-hours').textContent = f.hoursValue || '';
+    const hs = ((state.data.settings || {}).stores || []).filter(st => Array.isArray(st.hours));
+    // Hours are shown on each store card; the old single line stays only as a fallback.
+    $('foot-hours').textContent = hs.length ? '' : (f.hoursValue || '');
+    $('foot-hours').hidden = !!hs.length;
     $('foot-rights').textContent = f.rights || `© ${new Date().getFullYear()} Beer&Snacks`;
     $('foot-age').textContent = u.age;
     $('foot-warn').innerHTML = warnHtml();
@@ -204,7 +219,7 @@
       const dir = m ? `https://www.google.com/maps/dir/?api=1&amp;destination=${m[1]},${m[2]}` : `https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(st.address)}`;
       return `<a class="store" href="${dir}" target="_blank" rel="noopener" aria-label="${esc(u.route)}: ${esc(st.name)}, ${esc(st.address)}">
         ${m ? `<span class="store__map"><img src="img/map_${m[0]}_sm.webp" alt="" loading="lazy" decoding="async" width="480" height="304" /></span>` : ''}
-        <strong>${esc(st.name)}</strong><span class="store__addr">${esc(st.address)}</span><span class="store__route">${esc(u.route)} →</span></a>`;
+        <strong>${esc(st.name)}</strong><span class="store__addr">${esc(st.address)}</span>${Array.isArray(st.hours) ? `<span class="store__hours">${esc(hoursText(st.hours, u))}</span>` : ''}<span class="store__route">${esc(u.route)} →</span></a>`;
     }).join('') + '</div>';
 
     const icons = {  // solid glyphs (the stylesheet strips strokes from footer icons)
@@ -313,20 +328,28 @@
   function renderOpenStatus() {
     const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
       .formatToParts(new Date()).map(p => [p.type, p.value]));
-    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.weekday);
+    const day = (['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.weekday) + 6) % 7;  // 0 = Monday
     const mins = Number(parts.hour) * 60 + Number(parts.minute);
     const hhmm = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
-    const [open, close] = HOURS[day];
+    const all = ((state.data.settings || {}).stores || []).map(st => st.hours || []);
     const el = $('open-status');
-    if (mins >= open && mins < close) {
-      el.textContent = fmt(ui().openUntil, { t: hhmm(close) });
+    if (!all.length) { el.textContent = ''; return; }
+    // Open if any store is open now (until the latest closing); otherwise the earliest next opening.
+    const openNow = all.map(h => range(h[day])).filter(r => r && mins >= r[0] && mins < r[1]);
+    if (openNow.length) {
+      el.textContent = fmt(ui().openUntil, { t: hhmm(Math.max(...openNow.map(r => r[1]))) });
       el.dataset.open = 'true';
-    } else {
-      const next = mins < open ? open : HOURS[(day + 1) % 7][0];
-      el.textContent = fmt(ui().closedOpens, { t: hhmm(next) });
-      el.dataset.open = 'false';
+      return;
     }
+    let next = null;
+    for (let k = 0; k < 7 && next === null; k++) {
+      const starts = all.map(h => range(h[(day + k) % 7])).filter(r => r && (k > 0 || r[0] > mins)).map(r => r[0]);
+      if (starts.length) next = Math.min(...starts);
+    }
+    el.textContent = next === null ? '' : fmt(ui().closedOpens, { t: hhmm(next) });
+    el.dataset.open = 'false';
   }
+
 
   function renderCats() {
     const counts = {};

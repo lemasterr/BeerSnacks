@@ -2,23 +2,25 @@
 // GET → return site settings
 // PUT → update site settings (only known fields; links must be http(s), texts are length-limited)
 import { json, error, readJsonBody } from '../../_lib/store.js';
+import { STORE_DEFAULTS, normalizeRange, withStoreDefaults } from '../../_lib/stores.js';
 
 const DEFAULT_SETTINGS = {
   phone: '',
   socials: {
     facebook: 'https://www.facebook.com/people/BeerSnacks/61574467306145/',
     instagram: 'https://www.instagram.com/tallinnbeersnacks',
-    tiktok: 'https://www.tiktok.com/@beer_and_snacks.tallinn'
+    tiktok: 'https://www.tiktok.com/@beer_and_snacks'
   },
   delivery: {
     wolt: 'https://wolt.com/en/est/tallinn/venue/beer-snacks-beer',
     bolt: 'https://food.bolt.eu/en/1-tallinn/p/143802-beersnacks/'
   },
   stores: [
-    { name: 'Õismäe', address: 'Õismäe tee 1a, 13514 Tallinn', field: 'stock_oismae' },
-    { name: 'Mahtra', address: 'Mahtra tn 1, 13811 Tallinn', field: 'stock_mahtra' }
+    { name: 'Õismäe', address: 'Õismäe tee 1a, 13514 Tallinn', field: 'stock_oismae', ...STORE_DEFAULTS.stock_oismae },
+    { name: 'Mahtra', address: 'Mahtra tn 1, 13811 Tallinn', field: 'stock_mahtra', ...STORE_DEFAULTS.stock_mahtra }
   ]
 };
+const DAYS_RU = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
 const SEASONS = ['', 'auto', 'newyear', 'valentine', 'independence', 'womensday', 'easter', 'midsummer', 'oktoberfest', 'halloween'];
 const STORE_FIELDS = ['stock_oismae', 'stock_mahtra'];
@@ -51,11 +53,20 @@ function clean(current, input) {
     }
   }
   if (Array.isArray(input.stores)) {
-    next.stores = input.stores.slice(0, 10).map((s, i) => ({
-      name: text(s && s.name, 60),
-      address: text(s && s.address, 200),
-      field: STORE_FIELDS.includes(s && s.field) ? s.field : (current.stores?.[i]?.field || ''),
-    }));
+    const prev = withStoreDefaults(current).stores || [];
+    next.stores = input.stores.slice(0, 10).map((s, i) => {
+      s = s && typeof s === 'object' ? s : {};
+      const field = STORE_FIELDS.includes(s.field) ? s.field : (prev[i]?.field || '');
+      const name = text(s.name, 60);
+      const hoursIn = Array.isArray(s.hours) ? s.hours : (prev[i]?.hours || Array(7).fill(''));
+      const hours = Array.from({ length: 7 }, (_, d) => {
+        const r = normalizeRange(hoursIn[d]);
+        if (r === null) throw new Error(`${name || 'Магазин'}, ${DAYS_RU[d]}: время в виде 11:00-20:00 (пусто = закрыто)`);
+        return r;
+      });
+      const pickup = 'pickup' in s ? s.pickup === true || s.pickup === 'true' : !!prev[i]?.pickup;
+      return { name, address: text(s.address, 200), field, pickup, hours };
+    });
   }
   return next;
 }
@@ -66,7 +77,7 @@ export async function onRequestGet({ env }) {
     settings = DEFAULT_SETTINGS;
     await env.DB_KV.put('site:settings', JSON.stringify(settings));
   }
-  return json(settings, 200, { 'Cache-Control': 'no-store' });
+  return json(withStoreDefaults(settings), 200, { 'Cache-Control': 'no-store' });
 }
 
 export async function onRequestPut({ request, env }) {

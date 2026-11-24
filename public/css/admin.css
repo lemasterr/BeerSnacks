@@ -225,3 +225,10 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
   .photo { grid-template-columns: 110px 1fr; } .photo__img { width: 110px; height: 110px; }
   .view__head { flex-direction: column; }
 }
+
+/* Settings → stores: hours per weekday */
+.store-set { display: grid; gap: 10px; padding: 12px 0; border-top: 1px solid var(--line); }
+.store-set:first-of-type { border-top: 0; }
+.store-set .hours { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.store-set .hours input { font-variant-numeric: tabular-nums; font-size: 13px; padding-inline: 6px; }
+@media (max-width: 760px) { .store-set .hours { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

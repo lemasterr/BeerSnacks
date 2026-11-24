@@ -3,6 +3,7 @@
 // The built response is kept in the Cloudflare edge cache for 60 s, so a crowd of visitors costs
 // one set of KV reads per minute per data centre (admin edits appear within about a minute).
 import { json } from '../_lib/store.js';
+import { withStoreDefaults } from '../_lib/stores.js';
 
 const TTL = 60;
 
@@ -32,7 +33,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
   });
 
   const res = json(
-    { catalog: visible, categories: cats, translations: translations || {}, settings: settings || {} },
+    { catalog: visible, categories: cats, translations: translations || {}, settings: withStoreDefaults(settings || {}) },
     200,
     { 'Cache-Control': `public, max-age=${TTL}, stale-while-revalidate=300` },
   );
