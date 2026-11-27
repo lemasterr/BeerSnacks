@@ -688,6 +688,7 @@ html.sheet-open { overflow: hidden; }  /* no background scrolling behind the pro
   display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 20px 0 16px; border: 0; border-radius: 999px;
   background: var(--ink); color: var(--paper); font: 700 15px var(--text); cursor: pointer; box-shadow: 0 10px 30px rgb(10 18 13 / .3);
 }
+.cart-fab[hidden] { display: none; }   /* display:inline-flex above would otherwise override [hidden] */
 .cart-fab svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .cart-fab__n { min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: var(--tag); color: var(--tag-ink); font-size: 13px; display: inline-grid; place-items: center; }
 .cart-fab__sum { font-variant-numeric: tabular-nums; }
